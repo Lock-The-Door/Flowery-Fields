@@ -11,6 +11,11 @@ public class Object : MonoBehaviour, IPointerClickHandler
     public void OnPointerClick(PointerEventData eventData)
     {
         Debug.Log("Object Clicked");
+
+        Debug.Log("Navigating to... " + transform.position.x + ", " + transform.position.y);
+        player.SendMessage("Navigate", new object[]{ transform.position, gameObject });
+
+        Debug.Log("Grabbing Item...");
         if (player.InHand != item)
             player.InHand = item;
         else

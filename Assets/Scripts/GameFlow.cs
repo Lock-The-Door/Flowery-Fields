@@ -80,8 +80,52 @@ public class GameFlow : MonoBehaviour
                         case FlowerBed.FlowerBedState.WeakFlowers:
                             if (randomFlowerChance > 0.5)
                                 state = FlowerBed.FlowerBedState.DeadFlowers; // 50% chance of flower death
-                            else if (randomFlowerChance > 0.1)
+                            else if (randomFlowerChance > 0.4)
                                 state = FlowerBed.FlowerBedState.NormalFlowers; // 10% chance of upgrade
+                            break;
+                    }
+                }
+
+                break;
+
+            case Weather.Rainy:
+                foreach (FlowerBed FlowerBedScript in FlowerBedScripts)
+                {
+                    ref FlowerBed.FlowerBedState state = ref FlowerBedScript.state;
+                    float randomFlowerChance = Random.value;
+
+                    switch (state)
+                    {
+                        // Normal Circumstances
+                        case FlowerBed.FlowerBedState.Planted:
+                            if (randomFlowerChance > 0.15)
+                                state = FlowerBed.FlowerBedState.NormalFlowers;
+                            else
+                                state = FlowerBed.FlowerBedState.BeautifulFlowers; // 15% chance of better flowers
+                            break;
+                        case FlowerBed.FlowerBedState.Watered:
+                                state = FlowerBed.FlowerBedState.Drowned;
+                            break;
+
+                        // Unharvested Flowers
+                        case FlowerBed.FlowerBedState.SuperFlowers:
+                            state = FlowerBed.FlowerBedState.BeautifulFlowers;
+                            break;
+                        case FlowerBed.FlowerBedState.BeautifulFlowers:
+                            if (randomFlowerChance > 0.7)
+                                state = FlowerBed.FlowerBedState.NormalFlowers; // 30% chance of downgrade
+                            break;
+                        case FlowerBed.FlowerBedState.NormalFlowers:
+                            if (randomFlowerChance > 0.7)
+                                state = FlowerBed.FlowerBedState.WeakFlowers; // 30% chance of downgrade
+                            else if (randomFlowerChance > 0.4)
+                                state = FlowerBed.FlowerBedState.BeautifulFlowers; // 30% chance of upgrade
+                            break;
+                        case FlowerBed.FlowerBedState.WeakFlowers:
+                            if (randomFlowerChance > 0.7)
+                                state = FlowerBed.FlowerBedState.DeadFlowers; // 30% chance of flower death
+                            else if (randomFlowerChance > 0.4)
+                                state = FlowerBed.FlowerBedState.NormalFlowers; // 30% chance of upgrade
                             break;
                     }
                 }

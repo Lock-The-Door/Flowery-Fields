@@ -26,6 +26,11 @@ public class FlowerBed : MonoBehaviour, IPointerClickHandler
     {
         Debug.Log("Flower Bed Clicked");
 
+        Debug.Log("Navigating to... " + transform.position.x + ", " + transform.position.y);
+        player.SendMessage("Navigate", new object[] { transform.position, gameObject });
+
+        Debug.Log("Doing action...");
+
         switch(player.InHand)
         {
             case Player.Items.Nothing:
