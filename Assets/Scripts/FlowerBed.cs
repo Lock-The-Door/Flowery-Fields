@@ -21,6 +21,16 @@ public class FlowerBed : MonoBehaviour, IPointerClickHandler
 
     public Player player;
     public FlowerBedState state = FlowerBedState.Empty;
+    public const int SeedsPrice = 7;
+    public const int WaterPrice = 1;
+    private Dictionary<FlowerBedState, int> FlowerSellPrice = new Dictionary<FlowerBedState, int> { 
+        {FlowerBedState.DeadFlowers, 0},
+        {FlowerBedState.Drowned, 0},
+        {FlowerBedState.WeakFlowers, 5},
+        {FlowerBedState.NormalFlowers, 15},
+        {FlowerBedState.BeautifulFlowers, 50},
+        {FlowerBedState.SuperFlowers, 100},
+    };
 
     public void OnPointerClick(PointerEventData eventData)
     {
@@ -34,16 +44,25 @@ public class FlowerBed : MonoBehaviour, IPointerClickHandler
         switch(player.InHand)
         {
             case Player.Items.Nothing:
-                if (state == FlowerBedState.DeadFlowers || state == FlowerBedState.WeakFlowers || state == FlowerBedState.NormalFlowers || state == FlowerBedState.BeautifulFlowers || state == FlowerBedState.SuperFlowers)
+                if (FlowerSellPrice.TryGetValue(state, out int sellPrice))
+                {
                     state = FlowerBedState.Empty;
+                    player.money += sellPrice;
+                }
                 break;
             case Player.Items.Seeds:
                 if (state == FlowerBedState.Empty)
+                {
                     state = FlowerBedState.Planted;
+                    player.money -= SeedsPrice; 
+                }
                 break;
             case Player.Items.WateringCan:
                 if (state == FlowerBedState.Planted)
+                {
                     state = FlowerBedState.Watered;
+                    player.money -= WaterPrice;
+                }
                 break;
         }
     }

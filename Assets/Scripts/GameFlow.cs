@@ -37,9 +37,23 @@ public class GameFlow : MonoBehaviour
         }
     }
 
+    public Player Player;
+    public bool inDebt = false;
     void FinishDay()
     {
         Debug.Log("Finishing day!");
+
+        // Manage Debt
+        if (Player.money < 0)
+        {
+            if (inDebt)
+                Debug.Log("Game Over, you are in debt");
+            else
+                inDebt = true;
+        }
+        else
+            inDebt = false;
+
 
         // Get Flower Beds States
         var FlowerBedScripts = FlowerBeds.GetComponentsInChildren<FlowerBed>();

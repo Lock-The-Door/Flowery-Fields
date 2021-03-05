@@ -12,6 +12,7 @@ public class Player : MonoBehaviour
         WateringCan
     }
 
+    public int money = 100;
     public Items InHand = Items.Nothing;
 
     public NavMeshAgent agent;
