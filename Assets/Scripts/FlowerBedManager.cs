@@ -1,18 +1,31 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class FlowerBedManager : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    public Player Player;
+    public GameObject FlowerBed;
 
-    // Update is called once per frame
-    void Update()
+    Vector3[] FlowerBedLocations =
     {
-        
+        new Vector3(-4, -8),
+        new Vector3(0, -8),
+        new Vector3(4, -8),
+
+        new Vector3(-4, 8),
+        new Vector3(0, 8),
+        new Vector3(4, 8),
+
+        new Vector3(-8, 8),
+        new Vector3(-8, 4),
+        new Vector3(-8, 0),
+        new Vector3(-8, -4),
+        new Vector3(-8, -8)
+    };
+
+    void MakeFlowerBed(int level)
+    {
+        var NewFlowerBed = Instantiate(FlowerBed, transform);
+        NewFlowerBed.transform.position = FlowerBedLocations[level];
+        NewFlowerBed.GetComponent<FlowerBed>().player = Player;
     }
 }

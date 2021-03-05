@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 4017540830125543298}
   - component: {fileID: 3223949380698618599}
   - component: {fileID: 6088570200120363396}
+  - component: {fileID: 8341654478554899369}
   m_Layer: 5
   m_Name: Buy
   m_TagString: Untagged
@@ -120,6 +121,21 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &8341654478554899369
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 664974279733453760}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c71a1c0dc3c87c64b879ad474f78beef, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Shop: {fileID: 0}
+  BuyButton: {fileID: 0}
+  ShopItem: 0
 --- !u!1 &2753143513200084675
 GameObject:
   m_ObjectHideFlags: 0
@@ -228,10 +244,10 @@ RectTransform:
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 175, y: 37.5}
-  m_SizeDelta: {x: 625, y: -75}
-  m_Pivot: {x: 0, y: 0.5}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: 25, y: 35}
+  m_SizeDelta: {x: -300, y: -80}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &316462321796751619
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -438,10 +454,10 @@ RectTransform:
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 175, y: -37.5}
-  m_SizeDelta: {x: 625, y: -75}
-  m_Pivot: {x: 0, y: 0.5}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: 25, y: -35}
+  m_SizeDelta: {x: -300, y: -80}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &5050263336551008499
 CanvasRenderer:
   m_ObjectHideFlags: 0

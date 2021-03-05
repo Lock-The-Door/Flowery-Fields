@@ -212,6 +212,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33faf433a36143a4ab1c6caa7fb34d2b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Player: {fileID: 684367974}
+  FlowerBedManager: {fileID: 2141535387}
+  CenterFarm: {fileID: 519420033}
 --- !u!1 &99801425
 GameObject:
   m_ObjectHideFlags: 0
@@ -729,8 +732,8 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 116735957}
-  - {fileID: 1599662066}
   - {fileID: 1736720614}
+  - {fileID: 1599662066}
   m_Father: {fileID: 33020143}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1536,7 +1539,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 70ced885a2e6abc45ab936004f4137e5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  weather: 0
+  weather: 50
   FlowerBeds: {fileID: 2141535385}
   Player: {fileID: 684367974}
   inDebt: 0
@@ -2360,7 +2363,7 @@ RectTransform:
   m_Children:
   - {fileID: 674716470}
   m_Father: {fileID: 386295548}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
@@ -2636,7 +2639,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 386295548}
-  m_RootOrder: 2
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
@@ -3541,6 +3544,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5da237b7185adf74e9b4202606806d17, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Player: {fileID: 684367974}
+  FlowerBed: {fileID: 2664975889381648385, guid: b8bbce4b7a6882447a3adb609515432e, type: 3}
 --- !u!1001 &7080961904011949017
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3629,6 +3634,14 @@ PrefabInstance:
     - target: {fileID: 4757370735593944361, guid: 38961e91fb2238b43816705aa16661a4, type: 3}
       propertyPath: m_fontSize
       value: 60
+      objectReference: {fileID: 0}
+    - target: {fileID: 8341654478554899369, guid: 38961e91fb2238b43816705aa16661a4, type: 3}
+      propertyPath: Shop
+      value: 
+      objectReference: {fileID: 33020146}
+    - target: {fileID: 8341654478554899369, guid: 38961e91fb2238b43816705aa16661a4, type: 3}
+      propertyPath: ShopItem
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8997718260683313364, guid: 38961e91fb2238b43816705aa16661a4, type: 3}
       propertyPath: m_Name
