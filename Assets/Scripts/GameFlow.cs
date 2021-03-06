@@ -26,8 +26,8 @@ public class GameFlow : MonoBehaviour
 
             // Matching weather
             Debug.Log("Weather is: " + weather);
-            weatherText.text = weather.ToString(); // Update text --temp, will be replaced with images
             weather = randomWeather;
+            weatherText.text = weather.ToString(); // Update text --temp, will be replaced with images
             return;
         }
     }
