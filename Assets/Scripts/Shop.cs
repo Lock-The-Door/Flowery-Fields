@@ -81,4 +81,6 @@ public class Shop : MonoBehaviour
             // Change buy button image
         }
     }
+
+    public bool isMaxedOut => !ShopItemLevels.Except(ShopItemMaxLevels).Any();
 }

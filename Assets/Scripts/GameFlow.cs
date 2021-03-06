@@ -4,8 +4,8 @@ public class GameFlow : MonoBehaviour
 {
     public enum Weather
     {
-        Sunny = 50,
-        Rainy = 35,
+        Sunny = 55,
+        Rainy = 30,
         SuperStorm = 10,
         NaturalDisaster = 5
     }
@@ -30,6 +30,7 @@ public class GameFlow : MonoBehaviour
     }
 
     public Player Player;
+    public Shop Shop;
     public bool finishedGame = false;
     public bool inDebt = false;
     void FinishDay()
@@ -48,7 +49,7 @@ public class GameFlow : MonoBehaviour
             inDebt = false;
 
         // Game won?
-        if (!finishedGame && Player.money > 5000)
+        if (!finishedGame && Player.money > 5000 && Shop.isMaxedOut)
         {
             Debug.Log("You've made a lot of money, your family is proud of you. The end! :)");
             finishedGame = true;
@@ -76,10 +77,20 @@ public class GameFlow : MonoBehaviour
                     {
                         // Normal Circumstances
                         case FlowerBed.FlowerBedState.Planted:
-                            state = FlowerBed.FlowerBedState.DeadFlowers;
+                            if (randomFlowerChance > 0.05)
+                                state = FlowerBed.FlowerBedState.DeadFlowers;
+                            else
+                                state = FlowerBed.FlowerBedState.WeakFlowers; // rare chance of surviving flowers
                             break;
                         case FlowerBed.FlowerBedState.Watered:
-                            state = FlowerBed.FlowerBedState.NormalFlowers;
+                            if (randomFlowerChance > 0.1)
+                                state = FlowerBed.FlowerBedState.NormalFlowers; // 90% normal
+                            else if (randomFlowerChance > 0.05)
+                                state = FlowerBed.FlowerBedState.BeautifulFlowers; // 5% chance of better flowers
+                            else if (randomFlowerChance > 0.01)
+                                state = FlowerBed.FlowerBedState.WeakFlowers; // 4% chance of weak flowers
+                            else
+                                state = FlowerBed.FlowerBedState.SuperFlowers; // 1% chance of super flowers
                             break;
 
                         // Unharvested Flowers
@@ -87,20 +98,22 @@ public class GameFlow : MonoBehaviour
                             state = FlowerBed.FlowerBedState.BeautifulFlowers;
                             break;
                         case FlowerBed.FlowerBedState.BeautifulFlowers:
-                            if (randomFlowerChance > 0.5)
-                                state = FlowerBed.FlowerBedState.NormalFlowers; // 50% chance of downgrade
+                            if (randomFlowerChance > 0.55)
+                                state = FlowerBed.FlowerBedState.NormalFlowers; // 45% chance of downgrade
+                            else if (randomFlowerChance > 0.45)
+                                state = FlowerBed.FlowerBedState.SuperFlowers; // 10% chance of upgrade
                             break;
                         case FlowerBed.FlowerBedState.NormalFlowers:
-                            if (randomFlowerChance > 0.5)
-                                state = FlowerBed.FlowerBedState.WeakFlowers; // 50% chance of downgrade
-                            else if (randomFlowerChance > 0.25)
+                            if (randomFlowerChance > 0.85)
+                                state = FlowerBed.FlowerBedState.WeakFlowers; // 15% chance of downgrade
+                            else if (randomFlowerChance > 0.6)
                                 state = FlowerBed.FlowerBedState.BeautifulFlowers; // 25% chance of upgrade
                             break;
                         case FlowerBed.FlowerBedState.WeakFlowers:
                             if (randomFlowerChance > 0.5)
                                 state = FlowerBed.FlowerBedState.DeadFlowers; // 50% chance of flower death
-                            else if (randomFlowerChance > 0.4)
-                                state = FlowerBed.FlowerBedState.NormalFlowers; // 10% chance of upgrade
+                            else if (randomFlowerChance > 0.25)
+                                state = FlowerBed.FlowerBedState.NormalFlowers; // 25% chance of upgrade
                             break;
                     }
                 }
@@ -117,13 +130,18 @@ public class GameFlow : MonoBehaviour
                     {
                         // Normal Circumstances
                         case FlowerBed.FlowerBedState.Planted:
-                            if (randomFlowerChance > 0.15)
-                                state = FlowerBed.FlowerBedState.NormalFlowers;
+                            if (randomFlowerChance > 0.2)
+                                state = FlowerBed.FlowerBedState.NormalFlowers; // 80% chance of normal flowers
+                            else if (randomFlowerChance > 0.02)
+                                state = FlowerBed.FlowerBedState.BeautifulFlowers; // 18% chance of better flowers
                             else
-                                state = FlowerBed.FlowerBedState.BeautifulFlowers; // 15% chance of better flowers
+                                state = FlowerBed.FlowerBedState.SuperFlowers; // 2% chance of super flowers
                             break;
                         case FlowerBed.FlowerBedState.Watered:
-                                state = FlowerBed.FlowerBedState.Drowned;
+                            if (randomFlowerChance > 0.05)
+                                state = FlowerBed.FlowerBedState.DrownedFlowers;
+                            else
+                                state = FlowerBed.FlowerBedState.WeakFlowers; // rare chance of surviving flowers
                             break;
 
                         // Unharvested Flowers
@@ -163,13 +181,15 @@ public class GameFlow : MonoBehaviour
                         case FlowerBed.FlowerBedState.Planted:
                             if (randomFlowerChance > 0.5)
                                 state = FlowerBed.FlowerBedState.DeadFlowers; // 50% death rate
-                            else if (randomFlowerChance > 0.375)
-                                state = FlowerBed.FlowerBedState.BeautifulFlowers; // 25% chance of surviving flowers are better (12.5%)
+                            else if (randomFlowerChance > 0.20)
+                                state = FlowerBed.FlowerBedState.BeautifulFlowers; // 20% flowers are better
+                            else if (randomFlowerChance > 0.15)
+                                state = FlowerBed.FlowerBedState.SuperFlowers; // 5% of flowers are super flowers
                             else
-                                state = FlowerBed.FlowerBedState.NormalFlowers;
+                                state = FlowerBed.FlowerBedState.NormalFlowers; // rest 15% are normal
                             break;
                         case FlowerBed.FlowerBedState.Watered:
-                            state = FlowerBed.FlowerBedState.Drowned;
+                            state = FlowerBed.FlowerBedState.DrownedFlowers;
                             break;
 
                         // Unharvested Flowers
@@ -182,26 +202,26 @@ public class GameFlow : MonoBehaviour
                                 state = FlowerBed.FlowerBedState.WeakFlowers; // 5% triple downgrade
                             break;
                         case FlowerBed.FlowerBedState.BeautifulFlowers:
-                            if (randomFlowerChance > 0.3)
-                                state = FlowerBed.FlowerBedState.NormalFlowers; // 70% 1 downgrade
-                            else if (randomFlowerChance > 0.15)
-                                state = FlowerBed.FlowerBedState.WeakFlowers; // 15% double downgrade
-                            else if (randomFlowerChance > 0.14)
+                            if (randomFlowerChance > 0.6)
+                                state = FlowerBed.FlowerBedState.NormalFlowers; // 40% 1 downgrade
+                            else if (randomFlowerChance > 0.5)
+                                state = FlowerBed.FlowerBedState.WeakFlowers; // 10% double downgrade
+                            else if (randomFlowerChance > 0.49)
                                 state = FlowerBed.FlowerBedState.DeadFlowers; // 1% triple downgrade
-                            else if (randomFlowerChance < 0.04)
-                                state = FlowerBed.FlowerBedState.SuperFlowers; // 10% upgrade chance
+                            else if (randomFlowerChance < 0.29)
+                                state = FlowerBed.FlowerBedState.SuperFlowers; // 20% upgrade chance
                             break;
                         case FlowerBed.FlowerBedState.NormalFlowers:
-                            if (randomFlowerChance > 0.5)
-                                state = FlowerBed.FlowerBedState.WeakFlowers; // 50% chance of downgrade
-                            else
+                            if (randomFlowerChance > 0.75)
+                                state = FlowerBed.FlowerBedState.WeakFlowers; // 25% chance of downgrade
+                            else if (randomFlowerChance > 0.25)
                                 state = FlowerBed.FlowerBedState.BeautifulFlowers; // 50% chance of upgrade
                             break;
                         case FlowerBed.FlowerBedState.WeakFlowers:
-                            if (randomFlowerChance > 0.25)
-                                state = FlowerBed.FlowerBedState.DeadFlowers; // 75% chance of flower death
-                            else if (randomFlowerChance > 0.10)
-                                state = FlowerBed.FlowerBedState.NormalFlowers; // 15% chance of upgrade
+                            if (randomFlowerChance > 0.5)
+                                state = FlowerBed.FlowerBedState.DeadFlowers; // 50% chance of flower death
+                            else if (randomFlowerChance > 0.25)
+                                state = FlowerBed.FlowerBedState.NormalFlowers; // 25% chance of upgrade
                             break;
                     }
                 }
@@ -218,49 +238,56 @@ public class GameFlow : MonoBehaviour
                     {
                         // Normal Circumstances
                         case FlowerBed.FlowerBedState.Planted:
-                            if (randomFlowerChance > 0.999)
-                                state = FlowerBed.FlowerBedState.SuperFlowers; // 0.1% chance for super flowers
-                            else if (randomFlowerChance > 0.994)
-                                state = FlowerBed.FlowerBedState.NormalFlowers; // 0.5% chance for normal flowers
-                            else if (randomFlowerChance > 0.984)
-                                state = FlowerBed.FlowerBedState.WeakFlowers; // 1% chance for weak flowers
+                            if (randomFlowerChance > 0.95)
+                                state = FlowerBed.FlowerBedState.SuperFlowers; // 5% chance for super flowers
+                            else if (randomFlowerChance > 0.9)
+                                state = FlowerBed.FlowerBedState.BeautifulFlowers; // 5% chance for beautiful flowers
+                            else if (randomFlowerChance > 0.85)
+                                state = FlowerBed.FlowerBedState.NormalFlowers; // 5% chance for normal flowers
+                            else if (randomFlowerChance > 0.8)
+                                state = FlowerBed.FlowerBedState.WeakFlowers; // 5% chance for weak flowers
+                            else
+                                state = FlowerBed.FlowerBedState.DeadFlowers; // otherwise, dead
                             break;
                         case FlowerBed.FlowerBedState.Watered:
-                            state = FlowerBed.FlowerBedState.Drowned;
+                            if (randomFlowerChance > 0.05)
+                                state = FlowerBed.FlowerBedState.DrownedFlowers; // 95% death rate
+                            else
+                                state = FlowerBed.FlowerBedState.WeakFlowers;
                             break;
 
                         // Unharvested Flowers
                         case FlowerBed.FlowerBedState.SuperFlowers:
                             if (randomFlowerChance > 0.75)
                                 state = FlowerBed.FlowerBedState.BeautifulFlowers; // 25% 1 downgrade
+                            else if (randomFlowerChance > 0.5)
+                                state = FlowerBed.FlowerBedState.NormalFlowers; // 25% double downgrade
                             else if (randomFlowerChance > 0.25)
-                                state = FlowerBed.FlowerBedState.NormalFlowers; // 50% double downgrade
-                            else
                                 state = FlowerBed.FlowerBedState.WeakFlowers; // 25% triple downgrade
                             break;
                         case FlowerBed.FlowerBedState.BeautifulFlowers:
-                            if (randomFlowerChance > 0.65)
-                                state = FlowerBed.FlowerBedState.NormalFlowers; // 35% 1 downgrade
-                            else if (randomFlowerChance > 0.15)
-                                state = FlowerBed.FlowerBedState.WeakFlowers; // 50% double downgrade
-                            else if (randomFlowerChance > 0.1)
-                                state = FlowerBed.FlowerBedState.DeadFlowers; // 5% triple downgrade
-                            else if (randomFlowerChance > 0.05)
-                                state = FlowerBed.FlowerBedState.SuperFlowers; // 5% upgrade chance
+                            if (randomFlowerChance > 0.75)
+                                state = FlowerBed.FlowerBedState.NormalFlowers; // 25% 1 downgrade
+                            else if (randomFlowerChance > 0.5)
+                                state = FlowerBed.FlowerBedState.WeakFlowers; // 25% double downgrade
+                            else if (randomFlowerChance > 0.25)
+                                state = FlowerBed.FlowerBedState.SuperFlowers; // 25% upgrade chance
                             break;
                         case FlowerBed.FlowerBedState.NormalFlowers:
-                            if (randomFlowerChance > 0.25)
-                                state = FlowerBed.FlowerBedState.WeakFlowers; // 75% chance of downgrade
-                            else if (randomFlowerChance > 0.15)
-                                state = FlowerBed.FlowerBedState.BeautifulFlowers; // 10% chance of upgrade
-                            else if (randomFlowerChance > 0.1)
-                                state = FlowerBed.FlowerBedState.SuperFlowers; // 5% chance of double upgrade
+                            if (randomFlowerChance > 0.8)
+                                state = FlowerBed.FlowerBedState.WeakFlowers; // 20% chance of downgrade
+                            else if (randomFlowerChance > 0.6)
+                                state = FlowerBed.FlowerBedState.DeadFlowers; // 20% dead
+                            else if (randomFlowerChance > 0.4)
+                                state = FlowerBed.FlowerBedState.BeautifulFlowers; // 20% chance of upgrade
+                            else if (randomFlowerChance > 0.2)
+                                state = FlowerBed.FlowerBedState.SuperFlowers; // 20% chance of double upgrade
                             break;
                         case FlowerBed.FlowerBedState.WeakFlowers:
-                            if (randomFlowerChance > 0.01)
-                                state = FlowerBed.FlowerBedState.DeadFlowers; // 99% chance of flower death
-                            else if (randomFlowerChance > 0.005)
-                                state = FlowerBed.FlowerBedState.NormalFlowers; // 0.5% chance of upgrade
+                            if (randomFlowerChance > 0.6)
+                                state = FlowerBed.FlowerBedState.DeadFlowers; // 40% chance of flower death
+                            else if (randomFlowerChance > 0.2)
+                                state = FlowerBed.FlowerBedState.NormalFlowers; // 40% chance of upgrade
                             break;
                     }
                 }

@@ -1666,6 +1666,8 @@ MonoBehaviour:
   weather: 50
   FlowerBeds: {fileID: 2141535385}
   Player: {fileID: 684367974}
+  Shop: {fileID: 33020146}
+  finishedGame: 0
   inDebt: 0
 --- !u!4 &1033100300
 Transform:

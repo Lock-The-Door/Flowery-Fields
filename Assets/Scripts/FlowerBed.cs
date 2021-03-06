@@ -10,7 +10,7 @@ public class FlowerBed : MonoBehaviour, IPointerClickHandler
         Empty,
         Planted,
         Watered,
-        Drowned,
+        DrownedFlowers,
         DeadFlowers,
         WeakFlowers,
         NormalFlowers,
@@ -24,7 +24,7 @@ public class FlowerBed : MonoBehaviour, IPointerClickHandler
     public const int WaterPrice = 1;
     private Dictionary<FlowerBedState, int> FlowerSellPrice = new Dictionary<FlowerBedState, int> { 
         {FlowerBedState.DeadFlowers, 0},
-        {FlowerBedState.Drowned, 0},
+        {FlowerBedState.DrownedFlowers, 0},
         {FlowerBedState.WeakFlowers, 5},
         {FlowerBedState.NormalFlowers, 15},
         {FlowerBedState.BeautifulFlowers, 50},
@@ -81,7 +81,7 @@ public class FlowerBed : MonoBehaviour, IPointerClickHandler
             case FlowerBedState.Watered:
                 SpriteRenderer.color = Color.cyan;
                 break;
-            case FlowerBedState.Drowned:
+            case FlowerBedState.DrownedFlowers:
                 SpriteRenderer.color = Color.blue;
                 break;
             case FlowerBedState.DeadFlowers:
