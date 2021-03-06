@@ -25,6 +25,7 @@ public class Shop : MonoBehaviour
     };
 
     public Player Player;
+    public PopupManager PopupManager;
 
     public FlowerBedManager FlowerBedManager;
     public CenterFarm CenterFarm;
@@ -35,6 +36,7 @@ public class Shop : MonoBehaviour
         if (cost > Player.money)
         {
             Debug.Log("You are too poor! :(");
+            PopupManager.ShowBottomPopup("Not enough money...", Color.red);
             return;
         }
 

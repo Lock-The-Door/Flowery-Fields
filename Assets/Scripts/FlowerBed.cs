@@ -20,8 +20,6 @@ public class FlowerBed : MonoBehaviour, IPointerClickHandler
 
     public Player player;
     public FlowerBedState state = FlowerBedState.Empty;
-    public const int SeedsPrice = 7;
-    public const int WaterPrice = 1;
     private Dictionary<FlowerBedState, int> FlowerSellPrice = new Dictionary<FlowerBedState, int> { 
         {FlowerBedState.DeadFlowers, 0},
         {FlowerBedState.DrownedFlowers, 0},
@@ -31,6 +29,9 @@ public class FlowerBed : MonoBehaviour, IPointerClickHandler
         {FlowerBedState.SuperFlowers, 100},
     };
 
+    public const int SeedsPrice = 7;
+    public const int WaterPrice = 1;
+    public PopupManager PopupManager;
     public void OnPointerClick(PointerEventData eventData)
     {
         Debug.Log("Flower Bed Clicked");
@@ -55,6 +56,7 @@ public class FlowerBed : MonoBehaviour, IPointerClickHandler
                     if (player.money < SeedsPrice)
                     {
                         Debug.Log("Not enough money...");
+                        PopupManager.ShowBottomPopup("Not enough money...", Color.red);
                         return;
                     }
                     state = FlowerBedState.Planted;
@@ -67,6 +69,7 @@ public class FlowerBed : MonoBehaviour, IPointerClickHandler
                     if (player.money < WaterPrice)
                     {
                         Debug.Log("Not enough money...");
+                        PopupManager.ShowBottomPopup("Not enough money...", Color.red);
                         return;
                     }
                     state = FlowerBedState.Watered;

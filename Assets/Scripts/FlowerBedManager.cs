@@ -3,6 +3,7 @@ using UnityEngine;
 public class FlowerBedManager : MonoBehaviour
 {
     public Player Player;
+    public PopupManager PopupManager;
     public GameObject FlowerBed;
 
     Vector3[] FlowerBedLocations =
@@ -27,5 +28,6 @@ public class FlowerBedManager : MonoBehaviour
         var NewFlowerBed = Instantiate(FlowerBed, transform);
         NewFlowerBed.transform.position = FlowerBedLocations[level];
         NewFlowerBed.GetComponent<FlowerBed>().player = Player;
+        NewFlowerBed.GetComponent<FlowerBed>().PopupManager = PopupManager;
     }
 }

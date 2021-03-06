@@ -1,3 +1,4 @@
+using TMPro;
 using UnityEngine;
 
 public class GameFlow : MonoBehaviour
@@ -13,6 +14,7 @@ public class GameFlow : MonoBehaviour
 
     public GameObject FlowerBeds;
 
+    void Start() => GenerateWeather();
     void GenerateWeather()
     {
         int randomWeatherInt = Random.Range(0,101);
@@ -24,12 +26,14 @@ public class GameFlow : MonoBehaviour
 
             // Matching weather
             Debug.Log("Weather is: " + weather);
+            weatherText.text = weather.ToString(); // Update text --temp, will be replaced with images
             weather = randomWeather;
             return;
         }
     }
 
     public Player Player;
+    public TextMeshProUGUI weatherText;
     public Shop Shop;
     public bool finishedGame = false;
     public bool inDebt = false;
@@ -64,6 +68,8 @@ public class GameFlow : MonoBehaviour
         // Get Flower Beds States
         var FlowerBedScripts = FlowerBeds.GetComponentsInChildren<FlowerBed>();
 
+
+        // WEATHER
         // Apply logic to flower beds
         switch (weather)
         {
