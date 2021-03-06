@@ -47,6 +47,11 @@ public class GameFlow : MonoBehaviour
             inDebt = false;
 
 
+        // PLAYER
+        Player.InHand = Player.Items.Nothing; // Empty hands
+
+
+        // FLOWER BEDS
         // Get Flower Beds States
         var FlowerBedScripts = FlowerBeds.GetComponentsInChildren<FlowerBed>();
 

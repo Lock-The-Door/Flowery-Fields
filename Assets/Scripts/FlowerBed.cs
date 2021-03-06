@@ -42,7 +42,7 @@ public class FlowerBed : MonoBehaviour, IPointerClickHandler
 
         switch(player.InHand)
         {
-            case Player.Items.Nothing:
+            case Player.Items.Shovel:
                 if (FlowerSellPrice.TryGetValue(state, out int sellPrice))
                 {
                     state = FlowerBedState.Empty;

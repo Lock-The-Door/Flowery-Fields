@@ -7,6 +7,7 @@ public class Player : MonoBehaviour
     public enum Items
     {
         Nothing,
+        Shovel,
         Seeds,
         WateringCan
     }
