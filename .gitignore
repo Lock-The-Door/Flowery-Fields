@@ -5,6 +5,9 @@
 [Bb]uilds/
 [Ll]ogs/
 
+#Build Output
+bin/
+
 # Plugins
 Assets/Plugins
 
