@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Shop : MonoBehaviour
 {
@@ -10,7 +11,7 @@ public class Shop : MonoBehaviour
         FlowerBeds
     }
 
-    Dictionary<ShopItems, int> ShopItemPrices = new Dictionary<ShopItems, int>
+    public Dictionary<ShopItems, int> ShopItemPrices = new Dictionary<ShopItems, int>
     {
         { ShopItems.FlowerBeds, 300 }
     };
@@ -67,11 +68,17 @@ public class Shop : MonoBehaviour
                 break;
         }
 
+        var buyButton = GetComponentsInChildren<ShopBuyButton>().First(buyButton => buyButton.ShopItem == shopItem);
+
+        buyButton.text.text = ShopItemPrices[shopItem].ToString(); // Update price visuals
+
         // Prevent Overleveling
         if (ShopItemLevels.TryGetValue(shopItem, out int currentLevel) && currentLevel == ShopItemMaxLevels[shopItem])
         {
-            var buyButton = GetComponentsInChildren<ShopBuyButton>().First(buyButton => buyButton.ShopItem == shopItem);
             buyButton.BuyButton.interactable = false;
+            buyButton.text.GetComponent<RectTransform>().sizeDelta = new Vector2(buyButton.text.GetComponent<RectTransform>().sizeDelta.x, 90); // change text size
+            buyButton.text.text = "Sold Out!";
+            buyButton.transform.Find("Money Icon").gameObject.SetActive(false); // Disable money icon image
             // Change buy button image
         }
     }
