@@ -13,11 +13,6 @@ public class GameFlow : MonoBehaviour
 
     public GameObject FlowerBeds;
 
-    private void Start()
-    {
-        GenerateWeather();
-    }
-
     void GenerateWeather()
     {
         int randomWeatherInt = Random.Range(0,101);
