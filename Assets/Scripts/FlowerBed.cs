@@ -52,6 +52,11 @@ public class FlowerBed : MonoBehaviour, IPointerClickHandler
             case Player.Items.Seeds:
                 if (state == FlowerBedState.Empty)
                 {
+                    if (player.money < SeedsPrice)
+                    {
+                        Debug.Log("Not enough money...");
+                        return;
+                    }
                     state = FlowerBedState.Planted;
                     player.money -= SeedsPrice; 
                 }
@@ -59,6 +64,11 @@ public class FlowerBed : MonoBehaviour, IPointerClickHandler
             case Player.Items.WateringCan:
                 if (state == FlowerBedState.Planted)
                 {
+                    if (player.money < WaterPrice)
+                    {
+                        Debug.Log("Not enough money...");
+                        return;
+                    }
                     state = FlowerBedState.Watered;
                     player.money -= WaterPrice;
                 }
