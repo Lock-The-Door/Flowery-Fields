@@ -30,6 +30,7 @@ public class GameFlow : MonoBehaviour
     }
 
     public Player Player;
+    public bool finishedGame = false;
     public bool inDebt = false;
     void FinishDay()
     {
@@ -45,6 +46,13 @@ public class GameFlow : MonoBehaviour
         }
         else
             inDebt = false;
+
+        // Game won?
+        if (!finishedGame && Player.money > 5000)
+        {
+            Debug.Log("You've made a lot of money, your family is proud of you. The end! :)");
+            finishedGame = true;
+        }
 
 
         // PLAYER
