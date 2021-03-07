@@ -1,3 +1,4 @@
+using System.Linq;
 using UnityEngine;
 
 public class FlowerBedManager : MonoBehaviour
@@ -29,5 +30,8 @@ public class FlowerBedManager : MonoBehaviour
         NewFlowerBed.transform.position = FlowerBedLocations[level];
         NewFlowerBed.GetComponent<FlowerBed>().player = Player;
         NewFlowerBed.GetComponent<FlowerBed>().PopupManager = PopupManager;
+        NewFlowerBed.GetComponent<FlowerBed>().id = level;
     }
+
+    void RemoveFlowerBed(int level) => Destroy(GetComponentsInChildren<FlowerBed>().First(flowerBed => flowerBed.id == level).gameObject);
 }

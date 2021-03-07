@@ -33,8 +33,10 @@ public class GameFlow : MonoBehaviour
     }
 
     public Player Player;
+    public PopupManager PopupManager;
     public TextMeshProUGUI weatherText;
     public Shop Shop;
+    public FlowerBedManager FlowerBedManager;
     public bool finishedGame = false;
     public bool inDebt = false;
     void FinishDay()
@@ -45,9 +47,33 @@ public class GameFlow : MonoBehaviour
         if (Player.money < 0)
         {
             if (inDebt)
-                Debug.Log("Game Over, you are in debt");
+            {
+                Debug.Log("You are in debt");
+                // Try to sell flowerbeds first to cover debt
+                int level = Shop.ShopItemLevels[Shop.ShopItems.FlowerBeds];
+                if (level > 0)
+                {
+                    // Display message
+                    PopupManager.ShowWindowPopup("You sold a flowerbed", "Since you were still in debt, you were forced to sell a flowerbed to help you get back on your feet.");
+
+                    Shop.ShopItemPrices[Shop.ShopItems.FlowerBeds] -= 25 * level;// Lower flowerbed price
+                    FlowerBedManager.SendMessage("RemoveFlowerBed", --Shop.ShopItemLevels[Shop.ShopItems.FlowerBeds]); // Sell flowerbed
+                    Player.money += 500; // Return $500
+                    Shop.UpdateBuyButtonVisual(Shop.ShopItems.FlowerBeds); // Update visuals
+                }
+                else
+                {
+                    // Display message
+                    PopupManager.ShowWindowPopup("You've lost everything...", "Sadly, you've ended up with less money than you've started with. Luckily for you, your parents were nice enough to pay for your debts and give you a fresh start.");
+
+                    Player.money = 100;
+                }
+            }
             else
+            {
                 inDebt = true;
+                PopupManager.ShowWindowPopup("You're in debt!", "You are in debt! Get out of debt or you'll soon need to start selling your flowerbeds!");
+            }
         }
         else
             inDebt = false;
@@ -56,6 +82,7 @@ public class GameFlow : MonoBehaviour
         if (!finishedGame && Player.money > 5000 && Shop.isMaxedOut)
         {
             Debug.Log("You've made a lot of money, your family is proud of you. The end! :)");
+            PopupManager.ShowWindowPopup("You did it!", "You've made a lot of money, your family is proud of you. The end! :)");
             finishedGame = true;
         }
 

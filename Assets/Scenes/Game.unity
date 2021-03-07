@@ -1688,8 +1688,10 @@ MonoBehaviour:
   weather: 50
   FlowerBeds: {fileID: 2141535385}
   Player: {fileID: 684367974}
+  PopupManager: {fileID: 1663070396}
   weatherText: {fileID: 1543743208}
   Shop: {fileID: 33020146}
+  FlowerBedManager: {fileID: 2141535387}
   finishedGame: 0
   inDebt: 0
 --- !u!4 &1033100300
@@ -2909,6 +2911,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   BottomPopupTextPrefab: {fileID: 417492598781158081, guid: 19db16c4bbc6a334bafbc2383ebad0a6, type: 3}
+  WindowPopup: {fileID: 8283545584610265731, guid: 099c1a53ca0115746b26d1224f7c84b1, type: 3}
 --- !u!224 &1694237757 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 8997718260683313365, guid: 38961e91fb2238b43816705aa16661a4, type: 3}

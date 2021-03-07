@@ -19,6 +19,7 @@ public class FlowerBed : MonoBehaviour, IPointerClickHandler
     }
 
     public Player player;
+    public int id = -1;
     public FlowerBedState state = FlowerBedState.Empty;
     private Dictionary<FlowerBedState, int> FlowerSellPrice = new Dictionary<FlowerBedState, int> { 
         {FlowerBedState.DeadFlowers, 0},

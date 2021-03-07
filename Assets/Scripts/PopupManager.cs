@@ -13,4 +13,16 @@ public class PopupManager : MonoBehaviour
         popupText.text = message;
         popupText.color = color;
     }
+    
+    public WindowPopup WindowPopup;
+
+    public void ShowWindowPopup(string title, string description)
+    {
+        var popup = Instantiate(WindowPopup, transform);
+        TextMeshProUGUI popupTitle = popup.TitleText;
+        TextMeshProUGUI popupDetails = popup.DetailsText;
+
+        popupTitle.text = title;
+        popupDetails.text = description;
+    }
 }

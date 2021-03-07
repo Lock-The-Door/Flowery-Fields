@@ -15,7 +15,7 @@ public class Shop : MonoBehaviour
         { ShopItems.FlowerBeds, 300 }
     };
 
-    Dictionary<ShopItems, int> ShopItemLevels = new Dictionary<ShopItems, int>
+    public Dictionary<ShopItems, int> ShopItemLevels = new Dictionary<ShopItems, int>
     {
         { ShopItems.FlowerBeds, 0 }
     };
@@ -69,9 +69,14 @@ public class Shop : MonoBehaviour
                 break;
         }
 
+        UpdateBuyButtonVisual(shopItem);
+    }
+
+    public void UpdateBuyButtonVisual(ShopItems shopItem)
+    {
         var buyButton = GetComponentsInChildren<ShopBuyButton>().First(buyButton => buyButton.ShopItem == shopItem);
 
-        buyButton.text.text = ShopItemPrices[shopItem].ToString(); // Update price visuals
+        buyButton.text.text = ShopItemPrices[shopItem].ToString(); // Update price text
 
         // Prevent Overleveling
         if (ShopItemLevels.TryGetValue(shopItem, out int currentLevel) && currentLevel == ShopItemMaxLevels[shopItem])
@@ -81,6 +86,12 @@ public class Shop : MonoBehaviour
             buyButton.text.text = "Sold Out!";
             buyButton.transform.Find("Money Icon").gameObject.SetActive(false); // Disable money icon image
             // Change buy button image
+        }
+        else if (buyButton.BuyButton.interactable == false) // re-enable buy button
+        {
+            buyButton.BuyButton.interactable = true;
+            buyButton.text.GetComponent<RectTransform>().sizeDelta = new Vector2(buyButton.text.GetComponent<RectTransform>().sizeDelta.x, 25); // change text size
+            buyButton.transform.Find("Money Icon").gameObject.SetActive(true); // Enable money icon image
         }
     }
 
