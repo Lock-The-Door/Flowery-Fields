@@ -213,6 +213,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Player: {fileID: 684367974}
+  GameFlow: {fileID: 1033100299}
   PopupManager: {fileID: 1663070396}
   FlowerBedManager: {fileID: 2141535387}
   CenterFarm: {fileID: 519420033}
@@ -1433,6 +1434,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9fa10d79757577f4395b48694cab4e20, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  PlayerGender: 1
   money: 100
   InHand: 0
   agent: {fileID: 684367975}
@@ -1686,6 +1688,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   weather: 50
+  familyPayment: 20
   FlowerBeds: {fileID: 2141535385}
   Player: {fileID: 684367974}
   PopupManager: {fileID: 1663070396}
