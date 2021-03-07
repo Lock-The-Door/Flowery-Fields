@@ -12,6 +12,14 @@ public class Player : MonoBehaviour
         WateringCan
     }
 
+    public enum Gender
+    {
+        Boy,
+        Girl
+    }
+
+    public Gender PlayerGender = Gender.Girl;
+
     public int money = 100;
     public Items InHand = Items.Nothing;
 

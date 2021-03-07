@@ -12,9 +12,23 @@ public class GameFlow : MonoBehaviour
     }
     public Weather weather;
 
+    public int familyPayment = 20;
+
     public GameObject FlowerBeds;
 
-    void Start() => GenerateWeather();
+    void Start()
+    {
+        GenerateWeather(); // Generate weather for first day
+
+        // Show starter story
+        PopupManager.ShowWindowPopup("The adventure begins!", 
+            $"You are a young {Player.PlayerGender} who's with a failing middle class family. " + 
+            "As a last resort, your parents let you use your creativity to make some money. " + 
+            "And as someone who loves flowers, you decided to start a flower farm to sell some flowers!");
+        PopupManager.ShowWindowPopup("Supporting your family!",
+            "Knowing your family needs some help, you'll start by giving $20 to your family everyday.");
+    }
+
     void GenerateWeather()
     {
         int randomWeatherInt = Random.Range(0,101);
@@ -67,6 +81,7 @@ public class GameFlow : MonoBehaviour
                     PopupManager.ShowWindowPopup("You've lost everything...", "Sadly, you've ended up with less money than you've started with. Luckily for you, your parents were nice enough to pay for your debts and give you a fresh start.");
 
                     Player.money = 100;
+                    familyPayment = 20;
                 }
             }
             else
@@ -76,7 +91,11 @@ public class GameFlow : MonoBehaviour
             }
         }
         else
+        {
             inDebt = false;
+
+            Player.money -= familyPayment;
+        }
 
         // Game won?
         if (!finishedGame && Player.money > 5000 && Shop.isMaxedOut)
