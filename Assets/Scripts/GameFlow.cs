@@ -48,9 +48,10 @@ public class GameFlow : MonoBehaviour
 
     public Player Player;
     public PopupManager PopupManager;
+    public FlowerBedManager FlowerBedManager;
     public TextMeshProUGUI weatherText;
     public Shop Shop;
-    public FlowerBedManager FlowerBedManager;
+    public BorrowMoney BorrowMoney;
     public bool finishedGame = false;
     public bool inDebt = false;
     void FinishDay()
@@ -94,7 +95,9 @@ public class GameFlow : MonoBehaviour
         {
             inDebt = false;
 
-            Player.money -= familyPayment;
+            Player.money -= familyPayment; // Pay family
+            Player.money -= BorrowMoney.totalDailyPayment; // Pay loans
+            BorrowMoney.UpdateDailyPayments();
         }
 
         // Game won?

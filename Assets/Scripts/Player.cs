@@ -14,11 +14,11 @@ public class Player : MonoBehaviour
 
     public enum Gender
     {
-        Boy,
-        Girl
+        boy,
+        girl
     }
 
-    public Gender PlayerGender = Gender.Girl;
+    public Gender PlayerGender = Gender.girl;
 
     public int money = 100;
     public Items InHand = Items.Nothing;
