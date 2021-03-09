@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using System.Linq;
 using TMPro;
 using UnityEngine;
 
@@ -27,6 +29,11 @@ public class GameFlow : MonoBehaviour
             $"You are a young {Player.PlayerGender} who's with a failing middle class family. " + 
             "As a last resort, your parents let you use your creativity to make some money. " + 
             "And as someone who loves flowers, you decided to start a flower farm to sell some flowers!");
+
+        // Set variables in randomiser
+        RandomEvents.Player = Player;
+        RandomEvents.PopupManager = PopupManager;
+        RandomEvents.FlowerBedManager = FlowerBedManager;
     }
 
     void GenerateWeather()
@@ -98,6 +105,8 @@ public class GameFlow : MonoBehaviour
             Player.money -= familyPayment; // Pay family
             Player.money -= BorrowMoney.totalDailyPayment; // Pay loans
             BorrowMoney.UpdateDailyPayments();
+
+            RandomEvents.Run(); // Random events
         }
 
         // Game won?
@@ -352,5 +361,122 @@ public class GameFlow : MonoBehaviour
 
         // Create new weather for tomorrow
         GenerateWeather();
+    }
+
+    
+}
+
+public class RandomEvent
+{
+    public enum EventType
+    {
+        Money,
+        Flower
+    }
+
+    public string name;
+    public string description;
+    public EventType eventType;
+    public float chance;
+    public System.Delegate eventFunction;
+
+    public RandomEvent (string _name, string _description, EventType _eventType, float _chance, System.Delegate _eventFunction)
+    {
+        name = _name;
+        description = _description;
+        chance = _chance;
+        eventFunction = _eventFunction;
+    }
+}
+public static class RandomEvents
+{
+    public static List<RandomEvent> RandomEventList = new List<RandomEvent>
+    {
+        new RandomEvent("Some Sweet Extra Cash!", "Your family managed to get a hold of some extra money", RandomEvent.EventType.Money, 0.10f, new System.Action(ExtraCash)),
+        new RandomEvent("Someone stole your flowers!", "Your flowers were stolen by a thief!", RandomEvent.EventType.Flower, 0.02f, new System.Action(StolenFlowers)),
+        new RandomEvent("Pollination", "Some of your flowers got lucky and got pollinated, making them better!", RandomEvent.EventType.Flower, 0.1f, new System.Action(Pollination)),
+        new RandomEvent("Pollination Storm!!!", "All your flowers were upgraded while you were gone today!", RandomEvent.EventType.Flower, 0.01f, new System.Action(PollinationStorm))
+    };
+
+    public static void Run()
+    {
+        List<RandomEvent> RandomEventsToRun = new List<RandomEvent>();
+        foreach (RandomEvent randomEvent in RandomEventList)
+        {
+            if (Random.value <= randomEvent.chance)
+                RandomEventsToRun.Add(randomEvent);
+        }
+
+        foreach (RandomEvent.EventType eventType in (RandomEvent.EventType[])System.Enum.GetValues(typeof(RandomEvent.EventType)))
+        {
+            var randomEventsOfType = RandomEventsToRun.FindAll(randomEvent => randomEvent.eventType == eventType);
+
+            if (randomEventsOfType.Count == 0)
+                continue;
+
+            RunEvent(randomEventsOfType[Random.Range(0, randomEventsOfType.Count)]);
+        }
+    }
+
+    public static PopupManager PopupManager;
+    static void RunEvent(RandomEvent randomEventToRun)
+    {
+        PopupManager.ShowWindowPopup(randomEventToRun.name, randomEventToRun.description);
+        randomEventToRun.eventFunction.DynamicInvoke();
+    }
+
+
+    // Random event functions
+    public static Player Player;
+
+    // Money Events
+
+    static void ExtraCash()
+    {
+        Player.money += 100;
+    }
+
+
+    // Flower Events
+    public static FlowerBedManager FlowerBedManager;
+    static FlowerBed[] FlowerBeds => FlowerBedManager.GetComponentsInChildren<FlowerBed>();
+
+    static void StolenFlowers()
+    {
+        foreach (FlowerBed flowerBed in FlowerBeds)
+            flowerBed.state = FlowerBed.FlowerBedState.Empty;
+    }
+
+    static void Pollination()
+    {
+        foreach (FlowerBed flowerBed in FlowerBeds)
+        {
+            if (Random.value > 0.5f)
+                Pollinate(flowerBed);
+        }
+    }
+    static void PollinationStorm()
+    {
+        foreach (FlowerBed flowerBed in FlowerBeds)
+            Pollinate(flowerBed);
+    }
+    static void Pollinate(FlowerBed flowerBed)
+    {
+        switch (flowerBed.state)
+        {
+            case FlowerBed.FlowerBedState.DeadFlowers:
+            case FlowerBed.FlowerBedState.DrownedFlowers:
+                flowerBed.state = FlowerBed.FlowerBedState.WeakFlowers;
+                break;
+            case FlowerBed.FlowerBedState.WeakFlowers:
+                flowerBed.state = FlowerBed.FlowerBedState.NormalFlowers;
+                break;
+            case FlowerBed.FlowerBedState.NormalFlowers:
+                flowerBed.state = FlowerBed.FlowerBedState.BeautifulFlowers;
+                break;
+            case FlowerBed.FlowerBedState.BeautifulFlowers:
+                flowerBed.state = FlowerBed.FlowerBedState.SuperFlowers;
+                break;
+        }
     }
 }
