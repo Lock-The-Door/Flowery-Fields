@@ -1,10 +1,13 @@
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class WindowPopup : MonoBehaviour
 {
     public TextMeshProUGUI TitleText;
     public TextMeshProUGUI DetailsText;
+
+    public Button OkButton;
 
     RectTransform RectTransform;
     Vector2 startSize = new Vector2(0, 0);

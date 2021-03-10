@@ -28,8 +28,7 @@ public class Shop : MonoBehaviour
     public GameFlow GameFlow;
     public PopupManager PopupManager;
 
-    bool beingGenerous_StoryLineTrigger = false;
-
+    public StorylineManager StorylineManager;
     public FlowerBedManager FlowerBedManager;
     public CenterFarm CenterFarm;
     void BuyItem(ShopItems shopItem)
@@ -70,12 +69,7 @@ public class Shop : MonoBehaviour
                 ShopItemPrices[ShopItems.FlowerBeds] += 25 * ShopItemLevels[ShopItems.FlowerBeds];
 
                 GameFlow.familyPayment += 10; // Increase family payments
-                // Storyline trigger
-                if (!beingGenerous_StoryLineTrigger)
-                {
-                    PopupManager.ShowWindowPopup("Being generous!", "As you make more money, you decide to become more generous give more money to your family.");
-                    beingGenerous_StoryLineTrigger = true; // trip trigger
-                }
+                StorylineManager.ShowStoryline("Being Generous"); // Storyline trigger
                 break;
         }
 

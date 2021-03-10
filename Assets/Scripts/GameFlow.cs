@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Linq;
 using TMPro;
 using UnityEngine;
 
@@ -18,17 +17,13 @@ public class GameFlow : MonoBehaviour
 
     public GameObject FlowerBeds;
 
+    public StorylineManager StorylineManager;
+
     void Start()
     {
         GenerateWeather(); // Generate weather for first day
 
-        // Show starter story
-        PopupManager.ShowWindowPopup("Supporting your family!",
-            "Knowing your family needs some help, you'll start by giving $20 to your family everyday.");
-        PopupManager.ShowWindowPopup("The adventure begins!", 
-            $"You are a young {Player.PlayerGender} who's with a failing middle class family. " + 
-            "As a last resort, your parents let you use your creativity to make some money. " + 
-            "And as someone who loves flowers, you decided to start a flower farm to sell some flowers!");
+        StorylineManager.ShowStoryline("The Adventure Begins"); // Show starter story
 
         // Set variables in randomiser
         RandomEvents.Player = Player;
@@ -113,7 +108,7 @@ public class GameFlow : MonoBehaviour
         if (!finishedGame && Player.money > 5000 && Shop.isMaxedOut)
         {
             Debug.Log("You've made a lot of money, your family is proud of you. The end! :)");
-            PopupManager.ShowWindowPopup("You did it!", "You've made a lot of money, your family is proud of you. The end! :)");
+            StorylineManager.ShowStoryline("The End");
             finishedGame = true;
         }
 

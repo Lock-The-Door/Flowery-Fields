@@ -215,6 +215,7 @@ MonoBehaviour:
   Player: {fileID: 684367974}
   GameFlow: {fileID: 1033100299}
   PopupManager: {fileID: 1663070396}
+  StorylineManager: {fileID: 1033100301}
   FlowerBedManager: {fileID: 2141535387}
   CenterFarm: {fileID: 519420033}
 --- !u!1 &48510398
@@ -3351,6 +3352,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1033100300}
   - component: {fileID: 1033100299}
+  - component: {fileID: 1033100301}
   m_Layer: 0
   m_Name: Game Flow
   m_TagString: Untagged
@@ -3373,6 +3375,7 @@ MonoBehaviour:
   weather: 50
   familyPayment: 20
   FlowerBeds: {fileID: 2141535385}
+  StorylineManager: {fileID: 1033100301}
   Player: {fileID: 684367974}
   PopupManager: {fileID: 1663070396}
   FlowerBedManager: {fileID: 2141535387}
@@ -3395,6 +3398,20 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1033100301
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1033100298}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6bb077f671fce1840bd8899ee9d747fe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Player: {fileID: 684367974}
+  PopupManager: {fileID: 1663070396}
 --- !u!1001 &1121898546
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4981,6 +4998,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 49c601c784de8ee4987545cf242f02f4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  StorylineManager: {fileID: 1033100301}
   PopupManager: {fileID: 1663070396}
   BorrowMoneyUi: {fileID: 1909823476}
 --- !u!61 &1550989567
