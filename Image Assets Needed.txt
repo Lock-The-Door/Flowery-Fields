@@ -1,0 +1,36 @@
+Player:
+	Boy:
+		
+	Girl:
+		
+Tools:
+	Shovel
+	Seedbag
+	Watering Can
+
+Flowerbeds:
+	Empty Flowerbed
+	Flowerbed with seeds (white dots idk)
+	Flowerbed with watered seeds (darker soil)
+	Flowerbed with drowned flowers
+	Flowerbed with dead flowers
+	Weak flowers (droopy flowers)
+	Normal flowers
+	Beutiful flowers (big, beutiful)
+	Super flowers (super big, glowy, beutiful) (I will also add some particle effectly probably)
+
+Weather Text:
+	Sunny
+	Rainy
+	Super Storm
+	Natural Disaster
+
+Shop UI:
+	Money Icon
+	Shop Icon
+	Flower bed shop icon
+	Buy icon
+
+Misc.:
+	Bank Sign
+	

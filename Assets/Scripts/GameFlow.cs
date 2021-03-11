@@ -129,7 +129,7 @@ public class GameFlow : MonoBehaviour
             case Weather.Sunny:
                 foreach (FlowerBed FlowerBedScript in FlowerBedScripts)
                 {
-                    ref FlowerBed.FlowerBedState state = ref FlowerBedScript.state;
+                    FlowerBed.FlowerBedState state = FlowerBedScript.state;
                     float randomFlowerChance = Random.value;
 
                     switch (state)
@@ -175,6 +175,8 @@ public class GameFlow : MonoBehaviour
                                 state = FlowerBed.FlowerBedState.NormalFlowers; // 25% chance of upgrade
                             break;
                     }
+
+                    FlowerBedScript.UpdateFlowerbedState(state);
                 }
 
                 break;
@@ -182,7 +184,7 @@ public class GameFlow : MonoBehaviour
             case Weather.Rainy:
                 foreach (FlowerBed FlowerBedScript in FlowerBedScripts)
                 {
-                    ref FlowerBed.FlowerBedState state = ref FlowerBedScript.state;
+                    FlowerBed.FlowerBedState state = FlowerBedScript.state;
                     float randomFlowerChance = Random.value;
 
                     switch (state)
@@ -224,6 +226,8 @@ public class GameFlow : MonoBehaviour
                                 state = FlowerBed.FlowerBedState.NormalFlowers; // 30% chance of upgrade
                             break;
                     }
+
+                    FlowerBedScript.UpdateFlowerbedState(state);
                 }
 
                 break;
@@ -231,7 +235,7 @@ public class GameFlow : MonoBehaviour
             case Weather.SuperStorm:
                 foreach (FlowerBed FlowerBedScript in FlowerBedScripts)
                 {
-                    ref FlowerBed.FlowerBedState state = ref FlowerBedScript.state;
+                    FlowerBed.FlowerBedState state = FlowerBedScript.state;
                     float randomFlowerChance = Random.value;
 
                     switch (state)
@@ -283,6 +287,8 @@ public class GameFlow : MonoBehaviour
                                 state = FlowerBed.FlowerBedState.NormalFlowers; // 25% chance of upgrade
                             break;
                     }
+
+                    FlowerBedScript.UpdateFlowerbedState(state);
                 }
 
                 break;
@@ -349,6 +355,8 @@ public class GameFlow : MonoBehaviour
                                 state = FlowerBed.FlowerBedState.NormalFlowers; // 40% chance of upgrade
                             break;
                     }
+
+                    FlowerBedScript.UpdateFlowerbedState(state);
                 }
 
                 break;
@@ -439,7 +447,7 @@ public static class RandomEvents
     static void StolenFlowers()
     {
         foreach (FlowerBed flowerBed in FlowerBeds)
-            flowerBed.state = FlowerBed.FlowerBedState.Empty;
+            flowerBed.UpdateFlowerbedState(FlowerBed.FlowerBedState.Empty);
     }
 
     static void Pollination()
@@ -457,21 +465,25 @@ public static class RandomEvents
     }
     static void Pollinate(FlowerBed flowerBed)
     {
-        switch (flowerBed.state)
+        FlowerBed.FlowerBedState newState = flowerBed.state;
+
+        switch (newState)
         {
             case FlowerBed.FlowerBedState.DeadFlowers:
             case FlowerBed.FlowerBedState.DrownedFlowers:
-                flowerBed.state = FlowerBed.FlowerBedState.WeakFlowers;
+                newState = FlowerBed.FlowerBedState.WeakFlowers;
                 break;
             case FlowerBed.FlowerBedState.WeakFlowers:
-                flowerBed.state = FlowerBed.FlowerBedState.NormalFlowers;
+                newState = FlowerBed.FlowerBedState.NormalFlowers;
                 break;
             case FlowerBed.FlowerBedState.NormalFlowers:
-                flowerBed.state = FlowerBed.FlowerBedState.BeautifulFlowers;
+                newState = FlowerBed.FlowerBedState.BeautifulFlowers;
                 break;
             case FlowerBed.FlowerBedState.BeautifulFlowers:
-                flowerBed.state = FlowerBed.FlowerBedState.SuperFlowers;
+                newState = FlowerBed.FlowerBedState.SuperFlowers;
                 break;
         }
+
+        flowerBed.UpdateFlowerbedState(newState);
     }
 }

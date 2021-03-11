@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -30,6 +31,19 @@ public class FlowerBed : MonoBehaviour, IPointerClickHandler
         {FlowerBedState.SuperFlowers, 100},
     };
 
+    int flowers = 10;
+    public List<Flower> flowerTypes;
+    void Start() => GenerateFlowers();
+    void GenerateFlowers()
+    {
+        transform.GetComponentsInChildren<Flower>().ToList().ForEach(flower => Destroy(flower.gameObject));
+
+        for (int i = 0; i < flowers; i++)
+        {
+            Instantiate(flowerTypes[Random.Range(0, flowerTypes.Count)], transform);
+        }
+    }
+
     public const int SeedsPrice = 7;
     public const int WaterPrice = 1;
     public PopupManager PopupManager;
@@ -47,7 +61,7 @@ public class FlowerBed : MonoBehaviour, IPointerClickHandler
             case Player.Items.Shovel:
                 if (FlowerSellPrice.TryGetValue(state, out int sellPrice))
                 {
-                    state = FlowerBedState.Empty;
+                    UpdateFlowerbedState(FlowerBedState.Empty);
                     player.money += sellPrice;
                 }
                 break;
@@ -60,7 +74,7 @@ public class FlowerBed : MonoBehaviour, IPointerClickHandler
                         PopupManager.ShowBottomPopup("Not enough money...", Color.red);
                         return;
                     }
-                    state = FlowerBedState.Planted;
+                    UpdateFlowerbedState(FlowerBedState.Planted);
                     player.money -= SeedsPrice; 
                 }
                 break;
@@ -73,17 +87,23 @@ public class FlowerBed : MonoBehaviour, IPointerClickHandler
                         PopupManager.ShowBottomPopup("Not enough money...", Color.red);
                         return;
                     }
-                    state = FlowerBedState.Watered;
+                    UpdateFlowerbedState(FlowerBedState.Watered);
                     player.money -= WaterPrice;
                 }
                 break;
         }
     }
 
-    void Update()
+    public void UpdateFlowerbedState(FlowerBedState flowerBedState)
     {
-        SpriteRenderer SpriteRenderer = GetComponent<SpriteRenderer>();
+        state = flowerBedState;
 
+        if (flowerBedState == FlowerBedState.Empty)
+            GenerateFlowers();
+
+        BroadcastMessage("UpdateFlower", flowerBedState);
+
+        SpriteRenderer SpriteRenderer = GetComponent<SpriteRenderer>();
         switch (state)
         {
             case FlowerBedState.Empty:
