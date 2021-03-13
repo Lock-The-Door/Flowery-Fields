@@ -46,8 +46,8 @@ public class GameFlow : MonoBehaviour
                 continue;
 
             // Matching weather
-            Debug.Log("Weather is: " + weather.ToString());
             weather = randomWeather;
+            Debug.Log("Weather is: " + weather);
             WeatherGui.GetComponentInChildren<TextMeshProUGUI>().text = weather.ToString(); // Update text
             WeatherGui.GetComponent<Image>().sprite = WeatherImages[System.Array.IndexOf(weatherTypes.Reverse().ToArray(), weather)]; // Update Image
             return;
@@ -63,6 +63,9 @@ public class GameFlow : MonoBehaviour
     public BorrowMoney BorrowMoney;
     public bool finishedGame = false;
     public bool inDebt = false;
+
+    
+
     void FinishDay()
     {
         Debug.Log("Finishing day!");
@@ -90,6 +93,7 @@ public class GameFlow : MonoBehaviour
                     // Display message
                     PopupManager.ShowWindowPopup("You've lost everything...", "Sadly, you've ended up with less money than you've started with. Luckily for you, your parents were nice enough to pay for your debts and give you a fresh start.");
 
+                    // Reset values
                     Player.money = 100;
                     familyPayment = 20;
                 }
@@ -131,6 +135,7 @@ public class GameFlow : MonoBehaviour
 
         // WEATHER
         // Apply logic to flower beds
+        Debug.Log(weather);
         switch (weather)
         {
             case Weather.Sunny:

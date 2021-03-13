@@ -30,9 +30,14 @@ public class FlowerBed : MonoBehaviour, IPointerClickHandler
         {FlowerBedState.SuperFlowers, 100},
     };
 
+
+    void Start()
+    {
+        GenerateFlowers();
+    }
+
     int flowers = 10;
     public List<Flower> flowerTypes;
-    void Start() => GenerateFlowers();
     void GenerateFlowers()
     {
         transform.GetComponentsInChildren<Flower>().ToList().ForEach(flower => Destroy(flower.gameObject));
@@ -51,6 +56,10 @@ public class FlowerBed : MonoBehaviour, IPointerClickHandler
     public const int SeedsPrice = 7;
     public const int WaterPrice = 1;
     public PopupManager PopupManager;
+
+    public AudioSource PlantingSound;
+    public AudioSource WateringSound;
+
     public void OnPointerClick(PointerEventData eventData)
     {
         Debug.Log("Flower Bed Clicked");
@@ -91,6 +100,9 @@ public class FlowerBed : MonoBehaviour, IPointerClickHandler
                         PopupManager.ShowBottomPopup("Not enough money...", Color.red);
                         return;
                     }
+
+                    WateringSound.Play();
+
                     UpdateFlowerbedState(FlowerBedState.Watered);
                     player.money -= WaterPrice;
                 }
