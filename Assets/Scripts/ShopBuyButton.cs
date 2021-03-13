@@ -15,8 +15,6 @@ public class ShopBuyButton : MonoBehaviour
         BuyButton = GetComponent<Button>();
         BuyButton.onClick.AddListener(() => Shop.SendMessage("BuyItem", ShopItem));
 
-        text = GetComponentInChildren<TextMeshProUGUI>();
-
-        text.text = Shop.ShopItemPrices[ShopItem].ToString(); // Set price visual
+        Shop.UpdateBuyButtonVisual(ShopItem);
     }
 }

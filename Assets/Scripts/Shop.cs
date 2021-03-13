@@ -80,23 +80,16 @@ public class Shop : MonoBehaviour
     {
         var buyButton = GetComponentsInChildren<ShopBuyButton>().First(buyButton => buyButton.ShopItem == shopItem);
 
-        buyButton.text.text = ShopItemPrices[shopItem].ToString(); // Update price text
+        buyButton.text.text = "$" + ShopItemPrices[shopItem].ToString(); // Update price text
 
         // Prevent Overleveling
         if (ShopItemLevels.TryGetValue(shopItem, out int currentLevel) && currentLevel == ShopItemMaxLevels[shopItem])
         {
             buyButton.BuyButton.interactable = false;
-            buyButton.text.GetComponent<RectTransform>().sizeDelta = new Vector2(buyButton.text.GetComponent<RectTransform>().sizeDelta.x, 90); // change text size
             buyButton.text.text = "Sold Out!";
-            buyButton.transform.Find("Money Icon").gameObject.SetActive(false); // Disable money icon image
-            // Change buy button image
         }
         else if (buyButton.BuyButton.interactable == false) // re-enable buy button
-        {
             buyButton.BuyButton.interactable = true;
-            buyButton.text.GetComponent<RectTransform>().sizeDelta = new Vector2(buyButton.text.GetComponent<RectTransform>().sizeDelta.x, 25); // change text size
-            buyButton.transform.Find("Money Icon").gameObject.SetActive(true); // Enable money icon image
-        }
     }
 
     public bool isMaxedOut => !ShopItemLevels.Except(ShopItemMaxLevels).Any();

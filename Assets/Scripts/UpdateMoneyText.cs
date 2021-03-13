@@ -25,16 +25,16 @@ public class UpdateMoneyText : MonoBehaviour
         // Set Goal
         if (Player.money != animateGoal)
         {
-            if (Player.money > System.Convert.ToInt32(TextMeshPro.text))
+            if (Player.money > System.Convert.ToInt32(TextMeshPro.text.Substring(1)))
             {
                 animateGoal = Player.money;
                 time = 0;
-                animateStart = System.Convert.ToInt32(TextMeshPro.text);
+                animateStart = System.Convert.ToInt32(TextMeshPro.text.Substring(1));
             }
-            else if (Player.money < System.Convert.ToInt32(TextMeshPro.text))
+            else if (Player.money < System.Convert.ToInt32(TextMeshPro.text.Substring(1)))
             {
                 time = 1;
-                TextMeshPro.text = Player.money.ToString();
+                TextMeshPro.text = "$" + Player.money.ToString();
                 animateGoal = Player.money;
             }
         }
@@ -43,7 +43,7 @@ public class UpdateMoneyText : MonoBehaviour
         if (time < 1)
         {
             time += Time.deltaTime * speed;
-            TextMeshPro.text = Mathf.RoundToInt(Mathf.Lerp(animateStart, animateGoal, time)).ToString();
+            TextMeshPro.text = "$" + Mathf.RoundToInt(Mathf.Lerp(animateStart, animateGoal, time)).ToString();
         }
     }
 }

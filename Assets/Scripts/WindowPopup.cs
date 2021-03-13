@@ -32,7 +32,6 @@ public class WindowPopup : MonoBehaviour
         {
             time += Time.deltaTime;
             RectTransform.localScale = Vector2.Lerp(startSize, endSize, time);
-            Debug.Log("Interpolated");
         }
         else if (closing)
             Destroy(gameObject);

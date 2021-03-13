@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -20,16 +19,6 @@ public class Flower : MonoBehaviour
         { FlowerBed.FlowerBedState.BeautifulFlowers, BeautifulFlowers },
         { FlowerBed.FlowerBedState.SuperFlowers, SuperFlowers },
     };
-
-    void Start()
-    {
-        SpriteRenderer = GetComponent<SpriteRenderer>();
-
-        var flowerPosition = new Vector3(Random.Range(-0.3f, 0.3f), Random.Range(-0.25f, 0.25f));
-        flowerPosition.z = flowerPosition.y - 0.26f;
-
-        transform.localPosition = flowerPosition;
-    }
 
     void UpdateFlower(FlowerBed.FlowerBedState state)
     {

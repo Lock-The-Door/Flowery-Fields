@@ -7,7 +7,6 @@ public class FlowerBed : MonoBehaviour, IPointerClickHandler
 {
     public enum FlowerBedState
     {
-        Locked,
         Empty,
         Planted,
         Watered,
@@ -40,7 +39,12 @@ public class FlowerBed : MonoBehaviour, IPointerClickHandler
 
         for (int i = 0; i < flowers; i++)
         {
-            Instantiate(flowerTypes[Random.Range(0, flowerTypes.Count)], transform);
+            var flower = Instantiate(flowerTypes[Random.Range(0, flowerTypes.Count)], transform);
+
+            var flowerPosition = new Vector3(Random.Range(-0.3f, 0.3f), Random.Range(-0.25f, 0.25f));
+            flowerPosition.z = flowerPosition.y - 0.26f;
+
+            flower.transform.localPosition = flowerPosition;
         }
     }
 

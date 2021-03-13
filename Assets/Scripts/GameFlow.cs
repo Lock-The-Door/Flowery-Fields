@@ -1,6 +1,8 @@
 using System.Collections.Generic;
+using System.Linq;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class GameFlow : MonoBehaviour
 {
@@ -34,16 +36,20 @@ public class GameFlow : MonoBehaviour
     void GenerateWeather()
     {
         int randomWeatherInt = Random.Range(0,101);
-        
-        foreach (Weather randomWeather in (Weather[]) System.Enum.GetValues(typeof(Weather)))
+
+        var weatherTypes = (Weather[]) System.Enum.GetValues(typeof(Weather));
+
+
+        foreach (Weather randomWeather in weatherTypes)
         {
             if (randomWeatherInt > (int)randomWeather)
                 continue;
 
             // Matching weather
-            Debug.Log("Weather is: " + weather);
+            Debug.Log("Weather is: " + weather.ToString());
             weather = randomWeather;
-            weatherText.text = weather.ToString(); // Update text --temp, will be replaced with images
+            WeatherGui.GetComponentInChildren<TextMeshProUGUI>().text = weather.ToString(); // Update text
+            WeatherGui.GetComponent<Image>().sprite = WeatherImages[System.Array.IndexOf(weatherTypes.Reverse().ToArray(), weather)]; // Update Image
             return;
         }
     }
@@ -51,7 +57,8 @@ public class GameFlow : MonoBehaviour
     public Player Player;
     public PopupManager PopupManager;
     public FlowerBedManager FlowerBedManager;
-    public TextMeshProUGUI weatherText;
+    public GameObject WeatherGui;
+    public List<Sprite> WeatherImages;
     public Shop Shop;
     public BorrowMoney BorrowMoney;
     public bool finishedGame = false;

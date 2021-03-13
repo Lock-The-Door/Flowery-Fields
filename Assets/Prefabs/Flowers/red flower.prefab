@@ -95,7 +95,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0093667b089069c41b7912fbbed3fdf3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  SpriteRenderer: {fileID: 0}
+  SpriteRenderer: {fileID: 5029651072206134508}
   DeadFlowers: {fileID: 0}
   WeakFlowers: {fileID: 0}
   NormalFlowers: {fileID: 21300000, guid: c5a3a707d0b6f8f4b958fa9746a11f2f, type: 3}
