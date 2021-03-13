@@ -1,10 +1,12 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class Object : MonoBehaviour, IPointerClickHandler
+public class Tool : MonoBehaviour, IPointerClickHandler
 {
     public Player player;
     public Player.Items item;
+
+    public AudioSource PickupSound;
 
     public void OnPointerClick(PointerEventData eventData)
     {
@@ -14,6 +16,9 @@ public class Object : MonoBehaviour, IPointerClickHandler
         player.SendMessage("Navigate", new object[]{ transform.position, gameObject });
 
         Debug.Log("Grabbing Item...");
+
+        PickupSound.Play();
+
         if (player.InHand != item)
             player.InHand = item;
         else
