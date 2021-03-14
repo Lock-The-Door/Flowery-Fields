@@ -77,16 +77,16 @@ public class GameFlow : MonoBehaviour
             {
                 Debug.Log("You are in debt");
                 // Try to sell flowerbeds first to cover debt
-                int level = Shop.ShopItemLevels[Shop.ShopItems.FlowerBeds];
-                if (level > 0)
+                ShopItem shopItem = Shop.ShopItems.Find(shopItem => shopItem.Name == "Flower Bed");
+                if (shopItem.Level > 0)
                 {
                     // Display message
                     PopupManager.ShowWindowPopup("You sold a flowerbed", "Since you were still in debt, you were forced to sell a flowerbed to help you get back on your feet.");
 
-                    Shop.ShopItemPrices[Shop.ShopItems.FlowerBeds] -= 25 * level;// Lower flowerbed price
-                    FlowerBedManager.SendMessage("RemoveFlowerBed", --Shop.ShopItemLevels[Shop.ShopItems.FlowerBeds]); // Sell flowerbed
+                    shopItem.Price -= 25 * shopItem.Level;// Lower flowerbed price
+                    FlowerBedManager.SendMessage("RemoveFlowerBed", --shopItem.Level); // Sell flowerbed
                     Player.money += 500; // Return $500
-                    Shop.UpdateBuyButtonVisual(Shop.ShopItems.FlowerBeds); // Update visuals
+                    Shop.UpdateBuyButtonVisual(shopItem); // Update visuals
                 }
                 else
                 {

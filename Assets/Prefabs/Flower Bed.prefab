@@ -12,7 +12,6 @@ GameObject:
   - component: {fileID: 7793522007643527581}
   - component: {fileID: 8493536864925034723}
   - component: {fileID: 5836528327599112255}
-  - component: {fileID: 8310959986101507299}
   - component: {fileID: 1047401575997054399}
   m_Layer: 0
   m_Name: Flower Bed
@@ -133,22 +132,6 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
---- !u!114 &8310959986101507299
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2664975889381648385}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1e3fdca004f2d45fe8abbed571a8abd5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_OverrideArea: 1
-  m_Area: 1
-  m_IgnoreFromBuild: 0
-  m_AffectedAgents: ffffffff
 --- !u!82 &1047401575997054399
 AudioSource:
   m_ObjectHideFlags: 0
