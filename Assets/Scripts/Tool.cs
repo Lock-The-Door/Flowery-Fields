@@ -13,7 +13,7 @@ public class Tool : MonoBehaviour, IPointerClickHandler
         Debug.Log("Object Clicked");
 
         Debug.Log("Navigating to... " + transform.position.x + ", " + transform.position.y);
-        player.SendMessage("Navigate", new object[]{ transform.position, gameObject });
+        player.Navigate(new Vector3[] { transform.position + new Vector3(-2, 0) }, gameObject);
 
         Debug.Log("Grabbing Item...");
 

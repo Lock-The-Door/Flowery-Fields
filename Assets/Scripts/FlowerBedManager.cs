@@ -5,6 +5,7 @@ public class FlowerBedManager : MonoBehaviour
 {
     public Player Player;
     public PopupManager PopupManager;
+    public PathfindingManager PathfindingManager;
     public GameObject FlowerBed;
 
     Vector3[] FlowerBedLocations =
@@ -26,11 +27,16 @@ public class FlowerBedManager : MonoBehaviour
 
     void MakeFlowerBed(int level)
     {
+        // Create Flowerbed
         var NewFlowerBed = Instantiate(FlowerBed, transform);
         NewFlowerBed.transform.position = FlowerBedLocations[level];
         NewFlowerBed.GetComponent<FlowerBed>().player = Player;
         NewFlowerBed.GetComponent<FlowerBed>().PopupManager = PopupManager;
         NewFlowerBed.GetComponent<FlowerBed>().id = level;
+
+        // Adjust pathfinding
+        PathfindingManager.Pathfinding.GetGrid().GetXY(NewFlowerBed.transform.position, out int flowerBedX, out int flowerBedY);
+        PathfindingManager.Pathfinding.GetNode(flowerBedX, flowerBedY).SetIsWalkable(false);
     }
 
     void RemoveFlowerBed(int level) => Destroy(GetComponentsInChildren<FlowerBed>().First(flowerBed => flowerBed.id == level).gameObject);

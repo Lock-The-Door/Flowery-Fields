@@ -1,6 +1,6 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.AI;
 
 public class Player : MonoBehaviour
 {
@@ -23,36 +23,90 @@ public class Player : MonoBehaviour
     public int money = 100;
     public Items InHand = Items.Nothing;
 
-    public NavMeshAgent agent;
+    public PathfindingManager PathfindingManager;
 
-    void Start()
+    Coroutine NavigationCoroutine;
+    Vector3 nextNode;
+    public float walkspeed;
+
+    public void Navigate(Vector3[] targetLocs, GameObject callback)
     {
-        agent = GetComponent<NavMeshAgent>();
-        agent.updateRotation = false;
-        agent.updateUpAxis = false;
+        if (NavigationCoroutine != null)
+            StopCoroutine(NavigationCoroutine); // Cancel navigation
+
+        // Find closest end pos
+        Vector3 targetLoc = Vector3.zero;
+        float closestDistance = float.MaxValue;
+        foreach (Vector3 possibleTargetLoc in targetLocs)
+        {
+            float distance = Vector3.Distance(transform.position, possibleTargetLoc);
+            if (distance > closestDistance)
+                continue;
+            targetLoc = possibleTargetLoc;
+            closestDistance = distance;
+        }
+
+        PathfindingManager.Pathfinding.GetGrid().GetXY(targetLoc, out int targetx, out int targety);
+        Debug.Log(targetx + ", " + targety);
+
+        var path = PathfindingManager.Pathfinding.FindPath(transform.position, targetLoc);
+
+        if (path == null || path.Count == 0)
+            Debug.LogError("Not moving");
+
+        float initialTime = 0;
+
+        // prevent diags
+        if (path.Count > 1)
+        {
+            if (transform.position != path[0])
+            {
+                // compare distance from second node to the last next node and the current positional node
+                // Current node pos
+                PathfindingManager.Pathfinding.GetGrid().GetXY(transform.position, out int currentGridX, out int currentGridY);
+                Vector3 currentWorldGridPos = new Vector3(currentGridX, currentGridY) * PathfindingManager.Pathfinding.GetGrid().GetCellSize() + PathfindingManager.Pathfinding.GetGrid().originPosition + Vector3.one * PathfindingManager.Pathfinding.GetGrid().GetCellSize() * .5f;
+
+                Debug.Log("Currently at " + currentWorldGridPos);
+
+
+                path[0] = Vector3.Distance(path[1], currentWorldGridPos) < Vector3.Distance(path[1], nextNode) ? currentWorldGridPos : nextNode;
+
+                Debug.Log("Going to: " + path[0] + " with initial time: " + initialTime);
+            }
+            else
+            {
+                // Remove start pos
+                path.RemoveAt(0);
+            }
+        }
+
+        Debug.Log("Following path:");
+        string pathInString = "";
+        foreach (Vector3 pathNode in path)
+            pathInString += pathNode;
+        Debug.Log(pathInString);
+
+        NavigationCoroutine = StartCoroutine(NavigatePath(path, callback, initialTime));
     }
 
-    void Navigate(object[] arguments)
+    IEnumerator NavigatePath(List<Vector3> path, GameObject callback, float initialTime = 0)
     {
-        Vector3 targetLoc = (Vector3)arguments[0];
-        GameObject callback = (GameObject)arguments[1];
+        foreach (Vector3 pathNode in path)
+        {
+            Debug.Log(pathNode);
+            nextNode = pathNode;
 
-        agent.ResetPath();
-        agent.SetDestination(targetLoc);
+            Vector3 start = transform.position;
+            Vector3 end = pathNode;
+            float time = path[0] == pathNode ? initialTime : 0;
 
-        if (Vector3.Distance(transform.position, targetLoc) > agent.stoppingDistance)
-            StartCoroutine("ArrivalDetection", arguments);
-        else
-            Debug.Log("Arrived!");
-    }
+            while (time < 1)
+            {
+                time += Time.deltaTime * walkspeed;
+                transform.position = Vector3.Lerp(start, end, time);
 
-    IEnumerable ArrivalDetection(object[] arguments)
-    {
-        Vector3 targetLoc = (Vector3)arguments[0];
-        GameObject callback = (GameObject)arguments[1];
-
-        yield return new WaitUntil(() => Vector3.Distance(transform.position, targetLoc) <= agent.stoppingDistance);
-
-        Debug.Log("Arrived!");
+                yield return new WaitForFixedUpdate();
+            }
+        }
     }
 }

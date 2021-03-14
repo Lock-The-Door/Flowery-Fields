@@ -65,7 +65,14 @@ public class FlowerBed : MonoBehaviour, IPointerClickHandler
         Debug.Log("Flower Bed Clicked");
 
         Debug.Log("Navigating to... " + transform.position.x + ", " + transform.position.y);
-        player.SendMessage("Navigate", new object[] { transform.position, gameObject });
+        var flowerBedEndPositions = new Vector3[]
+        {
+            transform.position + new Vector3(2, 0), // right
+            transform.position + new Vector3(0, 2), // up
+            transform.position + new Vector3(-2, 0), // left
+            transform.position + new Vector3(0, -2) // down
+        };
+        player.Navigate(flowerBedEndPositions, gameObject);
 
         Debug.Log("Doing action...");
 
@@ -88,7 +95,7 @@ public class FlowerBed : MonoBehaviour, IPointerClickHandler
                         return;
                     }
                     UpdateFlowerbedState(FlowerBedState.Planted);
-                    player.money -= SeedsPrice; 
+                    player.money -= SeedsPrice;
                 }
                 break;
             case Player.Items.WateringCan:
