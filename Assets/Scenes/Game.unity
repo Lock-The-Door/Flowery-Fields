@@ -2405,6 +2405,7 @@ MonoBehaviour:
   money: 100
   InHand: 0
   PathfindingManager: {fileID: 1130199448}
+  walkspeed: 2.5
 --- !u!1 &742415104
 GameObject:
   m_ObjectHideFlags: 0
@@ -6951,6 +6952,7 @@ MonoBehaviour:
   dailyPaymentText: {fileID: 1412090659}
   totalDailyPaymentText: {fileID: 873744118}
   maxMoneyAvalibleToBorrow: 1000
+  Player: {fileID: 0}
 --- !u!1 &1910192054
 GameObject:
   m_ObjectHideFlags: 0

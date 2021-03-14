@@ -136,7 +136,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Shop: {fileID: 0}
   BuyButton: {fileID: 0}
-  text: {fileID: 0}
+  text: {fileID: 2006565504195448474}
   ShopItem: 0
 --- !u!1 &2753143513200084675
 GameObject:

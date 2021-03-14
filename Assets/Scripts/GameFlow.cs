@@ -13,7 +13,7 @@ public class GameFlow : MonoBehaviour
         SuperStorm = 10,
         NaturalDisaster = 5
     }
-    public Weather weather;
+    public Weather weather = Weather.Sunny;
 
     public int familyPayment = 20;
 

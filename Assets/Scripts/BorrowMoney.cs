@@ -109,9 +109,13 @@ public class BorrowMoney : MonoBehaviour
         UpdatePrices();
     }
 
+
+    public Player Player;
+
     void Close() => gameObject.SetActive(false);
     void Confirm()
     {
+        Player.money += moneyBorrowing;
         dailyPayments.Add(new BorrowedMoneyInfo(dailyPayment, (moneyPlan.value+1)*7, moneyBorrowing));
 
         Close();
