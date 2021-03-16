@@ -21,7 +21,7 @@ public class FlowerBed : MonoBehaviour, IPointerClickHandler
     public Player player;
     public int id = -1;
     public FlowerBedState state = FlowerBedState.Empty;
-    private Dictionary<FlowerBedState, int> FlowerSellPrice = new Dictionary<FlowerBedState, int> { 
+    private readonly Dictionary<FlowerBedState, int> FlowerSellPrice = new Dictionary<FlowerBedState, int> { 
         {FlowerBedState.DeadFlowers, 0},
         {FlowerBedState.DrownedFlowers, 0},
         {FlowerBedState.WeakFlowers, 5},
@@ -38,7 +38,7 @@ public class FlowerBed : MonoBehaviour, IPointerClickHandler
         discountShopItem = Shop.ShopItems.Find(shopItem => shopItem.Name == "Discounts");
     }
 
-    int flowers = 10;
+    readonly int flowers = 10;
     public List<Flower> flowerTypes;
     void GenerateFlowers()
     {

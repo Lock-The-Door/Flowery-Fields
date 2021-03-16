@@ -15,7 +15,7 @@ public class GameFlow : MonoBehaviour
     }
     public Weather weather = Weather.Sunny;
 
-    public int familyPayment => 20 + Shop.TotalBonusFamilyPayment;
+    public int FamilyPayment => 20 + Shop.TotalBonusFamilyPayment;
 
     public GameObject FlowerBeds;
 
@@ -328,8 +328,8 @@ public class GameFlow : MonoBehaviour
         {
             inDebt = false;
 
-            Player.money -= familyPayment; // Pay family
-            Player.money -= BorrowMoney.totalDailyPayment; // Pay loans
+            Player.money -= FamilyPayment; // Pay family
+            Player.money -= BorrowMoney.TotalDailyPayment; // Pay loans
             BorrowMoney.UpdateDailyPayments();
 
             RandomEvents.Run(); // Random events

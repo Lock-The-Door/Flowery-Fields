@@ -9,7 +9,7 @@ public class FlowerBedManager : MonoBehaviour
     public PathfindingManager PathfindingManager;
     public GameObject FlowerBed;
 
-    Vector3[] FlowerBedLocations =
+    readonly Vector3[] FlowerBedLocations =
     {
         new Vector3(-4, -8),
         new Vector3(0, -8),

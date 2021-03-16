@@ -29,13 +29,13 @@ public class BorrowMoney : MonoBehaviour
     public TextMeshProUGUI totalDailyPaymentText;
 
     public int maxMoneyAvalibleToBorrow = 1000;
-    int moneyReadyToBorrow => maxMoneyAvalibleToBorrow - moneyBorrowed;
-    int moneyBorrowed => dailyPayments.Select(payment => payment.MoneyBorrowed).Sum();
+    int MoneyReadyToBorrow => maxMoneyAvalibleToBorrow - MoneyBorrowed;
+    int MoneyBorrowed => dailyPayments.Select(payment => payment.MoneyBorrowed).Sum();
 
-    int[] interestRates = { 3, 10, 15 }; // 3%, 10%, 15%
+    readonly int[] interestRates = { 3, 10, 15 }; // 3%, 10%, 15%
 
-    List<BorrowedMoneyInfo> dailyPayments = new List<BorrowedMoneyInfo>();
-    public int totalDailyPayment => dailyPayments.Select(payment => payment.DailyCost).Sum();
+    readonly List<BorrowedMoneyInfo> dailyPayments = new List<BorrowedMoneyInfo>();
+    public int TotalDailyPayment => dailyPayments.Select(payment => payment.DailyCost).Sum();
     public void UpdateDailyPayments()
     {
         List<BorrowedMoneyInfo> toRemove = new List<BorrowedMoneyInfo>();
@@ -48,8 +48,8 @@ public class BorrowMoney : MonoBehaviour
 
     // current values
     int moneyBorrowing = 0;
-    int moneyToReturn => Mathf.RoundToInt(moneyBorrowing * ((float)interestRates[moneyPlan.value] / 100 + 1));
-    int dailyPayment => moneyToReturn/((moneyPlan.value+1)*7);
+    int MoneyToReturn => Mathf.RoundToInt(moneyBorrowing * ((float)interestRates[moneyPlan.value] / 100 + 1));
+    int DailyPayment => MoneyToReturn/((moneyPlan.value+1)*7);
 
     void Start() => Open();
     
@@ -60,10 +60,10 @@ public class BorrowMoney : MonoBehaviour
         lastInput = "0";
 
         // Set default values
-        borrowLimit.text = $"You can borrow up to ${moneyReadyToBorrow}";
+        borrowLimit.text = $"You can borrow up to ${MoneyReadyToBorrow}";
 
         moneySlider.value = 0;
-        moneySlider.maxValue = moneyReadyToBorrow; // limit slider
+        moneySlider.maxValue = MoneyReadyToBorrow; // limit slider
 
         moneyInput.text = "0";
 
@@ -74,9 +74,9 @@ public class BorrowMoney : MonoBehaviour
 
     void UpdatePrices()
     {
-        toReturnText.text = $"To be returned ({interestRates[moneyPlan.value]}% interest): ${moneyToReturn}";
-        dailyPaymentText.text = $"Daily payment: ${dailyPayment}";
-        totalDailyPaymentText.text = $"Total daily payment: ${totalDailyPayment + dailyPayment}";
+        toReturnText.text = $"To be returned ({interestRates[moneyPlan.value]}% interest): ${MoneyToReturn}";
+        dailyPaymentText.text = $"Daily payment: ${DailyPayment}";
+        totalDailyPaymentText.text = $"Total daily payment: ${TotalDailyPayment + DailyPayment}";
     }
 
     public void MoneySliderUpdate(float newValue)
@@ -98,8 +98,8 @@ public class BorrowMoney : MonoBehaviour
         }
 
         // See if in range
-        if (newValue > moneyReadyToBorrow)
-            newValue = moneyReadyToBorrow;
+        if (newValue > MoneyReadyToBorrow)
+            newValue = MoneyReadyToBorrow;
 
 
         moneyBorrowing = newValue;
@@ -116,7 +116,7 @@ public class BorrowMoney : MonoBehaviour
     void Confirm()
     {
         Player.money += moneyBorrowing;
-        dailyPayments.Add(new BorrowedMoneyInfo(dailyPayment, (moneyPlan.value + 1) * 7, moneyBorrowing));
+        dailyPayments.Add(new BorrowedMoneyInfo(DailyPayment, (moneyPlan.value + 1) * 7, moneyBorrowing));
 
         Close();
     }
