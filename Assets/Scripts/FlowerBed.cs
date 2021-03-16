@@ -34,6 +34,8 @@ public class FlowerBed : MonoBehaviour, IPointerClickHandler
     void Start()
     {
         GenerateFlowers();
+
+        discountShopItem = Shop.ShopItems.Find(shopItem => shopItem.Name == "Discounts");
     }
 
     int flowers = 10;
@@ -53,8 +55,10 @@ public class FlowerBed : MonoBehaviour, IPointerClickHandler
         }
     }
 
-    public const int SeedsPrice = 7;
-    public const int WaterPrice = 1;
+    public Shop Shop;
+    private ShopItem discountShopItem;
+    private int SeedsPrice => Mathf.RoundToInt(7 * (1 - discountShopItem.Level / discountShopItem.MaxLevel * 0.9f));
+    private int WaterPrice => Mathf.RoundToInt(3 * (1 - discountShopItem.Level / discountShopItem.MaxLevel * 0.9f));
     public PopupManager PopupManager;
 
     public AudioSource PlantingSound;

@@ -14,6 +14,8 @@ public class ShopBuyButton : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        Shop = GetComponentInParent<Shop>(); // Set shop
+
         // Get shop item from name
         ShopItem = Shop.ShopItems.FirstOrDefault(shopItem => shopItem.Name == ShopItemName);
         if (ShopItem == null)

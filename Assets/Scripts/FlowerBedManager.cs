@@ -4,6 +4,7 @@ using UnityEngine;
 public class FlowerBedManager : MonoBehaviour
 {
     public Player Player;
+    public Shop Shop;
     public PopupManager PopupManager;
     public PathfindingManager PathfindingManager;
     public GameObject FlowerBed;
@@ -32,6 +33,7 @@ public class FlowerBedManager : MonoBehaviour
         NewFlowerBed.transform.position = FlowerBedLocations[level];
         NewFlowerBed.GetComponent<FlowerBed>().player = Player;
         NewFlowerBed.GetComponent<FlowerBed>().PopupManager = PopupManager;
+        NewFlowerBed.GetComponent<FlowerBed>().Shop = Shop;
         NewFlowerBed.GetComponent<FlowerBed>().id = level;
 
         // Adjust pathfinding

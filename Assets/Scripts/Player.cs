@@ -29,7 +29,7 @@ public class Player : MonoBehaviour
     Coroutine NavigationCoroutine;
     Vector3 nextNode;
     public float startWalkspeed;
-    private float walkspeed => startWalkspeed + .5f * Shop.ShopItems.Find(shopItem => shopItem.Name == "Shoes").Level;
+    private float Walkspeed => startWalkspeed + .5f * Shop.ShopItems.Find(shopItem => shopItem.Name == "Shoes").Level;
 
     public void Navigate(Vector3[] targetLocs, GameObject callback)
     {
@@ -104,7 +104,7 @@ public class Player : MonoBehaviour
 
             while (time < 1)
             {
-                time += Time.deltaTime * walkspeed;
+                time += Time.deltaTime * Walkspeed;
                 transform.position = Vector3.Lerp(start, end, time);
 
                 yield return new WaitForFixedUpdate();

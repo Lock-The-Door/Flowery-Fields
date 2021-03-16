@@ -116,7 +116,7 @@ public class BorrowMoney : MonoBehaviour
     void Confirm()
     {
         Player.money += moneyBorrowing;
-        dailyPayments.Add(new BorrowedMoneyInfo(dailyPayment, (moneyPlan.value+1)*7, moneyBorrowing));
+        dailyPayments.Add(new BorrowedMoneyInfo(dailyPayment, (moneyPlan.value + 1) * 7, moneyBorrowing));
 
         Close();
     }

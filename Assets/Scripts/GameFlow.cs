@@ -15,7 +15,7 @@ public class GameFlow : MonoBehaviour
     }
     public Weather weather = Weather.Sunny;
 
-    public int familyPayment = 20;
+    public int familyPayment => 20 + Shop.TotalBonusFamilyPayment;
 
     public GameObject FlowerBeds;
 
@@ -77,30 +77,34 @@ public class GameFlow : MonoBehaviour
             {
                 Debug.Log("You are in debt");
                 // Try to sell flowerbeds first to cover debt
-                ShopItem shopItem = Shop.ShopItems.Find(shopItem => shopItem.Name == "Flower Bed");
-                if (shopItem.Level > 0)
-                {
-                    // Display message
-                    PopupManager.ShowWindowPopup("You sold a flowerbed", "Since you were still in debt, you were forced to sell a flowerbed to help you get back on your feet.");
-
-                    FlowerBedManager.SendMessage("RemoveFlowerBed", --shopItem.Level); // Sell flowerbed
-                    Player.money += 500; // Return $500
-                    Shop.UpdateBuyButtonVisual(shopItem); // Update visuals
-                }
-                else
+                var shopItems = Shop.ShopItems.FindAll(shopItem => shopItem.IsDowngradable && shopItem.Level > 0);
+                shopItems.Sort((shopItem1, shopItem2) => shopItem1.Price.CompareTo(shopItem2.Price));
+                if (shopItems.Count == 0)
                 {
                     // Display message
                     PopupManager.ShowWindowPopup("You've lost everything...", "Sadly, you've ended up with less money than you've started with. Luckily for you, your parents were nice enough to pay for your debts and give you a fresh start.");
 
                     // Reset values
                     Player.money = 100;
-                    familyPayment = 20;
+                }
+                else
+                { 
+                    // Display message
+                    PopupManager.ShowWindowPopup($"You sold your {shopItems[0].Name}", $"Since you were still in debt, you were forced to sell some things to help you get back on your feet.");
+
+                    Player.money += shopItems[0].Price; // Return money
+                    int newLevel = --shopItems[0].Level;
+
+                    if (shopItems[0].Name == "Flower Beds") // flower bed edge case
+                        FlowerBedManager.SendMessage("RemoveFlowerBed", newLevel); // Sell flowerbed
+
+                    Shop.UpdateBuyButtonVisual(shopItems[0]); // Update visuals
                 }
             }
             else
             {
                 inDebt = true;
-                PopupManager.ShowWindowPopup("You're in debt!", "You are in debt! Get out of debt or you'll soon need to start selling your flowerbeds!");
+                PopupManager.ShowWindowPopup("You're in debt!", "You are in debt! Get out of debt or you'll soon need to start selling your things!");
             }
         }
         else
@@ -115,7 +119,7 @@ public class GameFlow : MonoBehaviour
         }
 
         // Game won?
-        if (!finishedGame && Player.money > 5000 && Shop.isMaxedOut)
+        if (!finishedGame && Player.money > 5000 && Shop.IsMaxedOut)
         {
             Debug.Log("You've made a lot of money, your family is proud of you. The end! :)");
             StorylineManager.ShowStoryline("The End");
@@ -391,15 +395,19 @@ public class RandomEvent
 
     public string name;
     public string description;
+    public bool isGoodEvent;
     public EventType eventType;
+    public float startingChance;
     public float chance;
     public System.Delegate eventFunction;
 
-    public RandomEvent (string _name, string _description, EventType _eventType, float _chance, System.Delegate _eventFunction)
+    public RandomEvent (string _name, string _description, bool _isGoodEvent, EventType _eventType, float _chance, System.Delegate _eventFunction)
     {
         name = _name;
         description = _description;
-        chance = _chance;
+        isGoodEvent = _isGoodEvent;
+        eventType = _eventType;
+        startingChance = _chance;
         eventFunction = _eventFunction;
     }
 }
@@ -407,10 +415,10 @@ public static class RandomEvents
 {
     public static List<RandomEvent> RandomEventList = new List<RandomEvent>
     {
-        new RandomEvent("Some Sweet Extra Cash!", "Your family managed to get a hold of some extra money", RandomEvent.EventType.Money, 0.10f, new System.Action(ExtraCash)),
-        new RandomEvent("Someone stole your flowers!", "Your flowers were stolen by a thief!", RandomEvent.EventType.Flower, 0.02f, new System.Action(StolenFlowers)),
-        new RandomEvent("Pollination", "Some of your flowers got lucky and got pollinated, making them better!", RandomEvent.EventType.Flower, 0.1f, new System.Action(Pollination)),
-        new RandomEvent("Pollination Storm!!!", "All your flowers were upgraded while you were gone today!", RandomEvent.EventType.Flower, 0.01f, new System.Action(PollinationStorm))
+        new RandomEvent("Some Sweet Extra Cash!", "Your family managed to get a hold of some extra money", true, RandomEvent.EventType.Money, 0.10f, new System.Action(ExtraCash)),
+        new RandomEvent("Someone stole your flowers!", "Your flowers were stolen by a thief!", false, RandomEvent.EventType.Flower, 0.02f, new System.Action(StolenFlowers)),
+        new RandomEvent("Pollination", "Some of your flowers got lucky and got pollinated, making them better!", true, RandomEvent.EventType.Flower, 0.1f, new System.Action(Pollination)),
+        new RandomEvent("Pollination Storm!!!", "All your flowers were upgraded while you were gone today!", true, RandomEvent.EventType.Flower, 0.01f, new System.Action(PollinationStorm))
     };
 
     public static void Run()
@@ -443,6 +451,7 @@ public static class RandomEvents
 
     // Random event functions
     public static Player Player;
+    public static Shop Shop;
 
     // Money Events
 
@@ -462,18 +471,24 @@ public static class RandomEvents
             flowerBed.UpdateFlowerbedState(FlowerBed.FlowerBedState.Empty);
     }
 
+    static int PollinationCycles => Shop.ShopItems.Find(shopItem => shopItem.Name == "Better bees").Level + 1; // calculate number of times to try for pollination from pollination level
     static void Pollination()
     {
-        foreach (FlowerBed flowerBed in FlowerBeds)
+        for (int pollinationCycle = 0; pollinationCycle < PollinationCycles; pollinationCycle++)
         {
-            if (Random.value > 0.5f)
-                Pollinate(flowerBed);
+            foreach (FlowerBed flowerBed in FlowerBeds)
+            {
+                if (Random.value > 0.5f)
+                    Pollinate(flowerBed);
+            }
         }
     }
     static void PollinationStorm()
     {
         foreach (FlowerBed flowerBed in FlowerBeds)
             Pollinate(flowerBed);
+
+        Pollination(); // Run a secondary pollination cycle
     }
     static void Pollinate(FlowerBed flowerBed)
     {

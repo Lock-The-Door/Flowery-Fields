@@ -6,25 +6,27 @@ public class ShopItem
 {
     public readonly string Name;
 
-    private int startingPrice = 0;
-    private System.Func<int, int> priceInflation;
+    private readonly int startingPrice = 0;
+    private readonly System.Func<int, int> priceInflation;
     public int Price => startingPrice + priceInflation.Invoke(Level) * Level;
 
     public int Level = 0;
     public readonly int MaxLevel = -1; // To ignore max level, use -1
 
     public int FamilyPaymentBonus;
+    public bool IsDowngradable;
 
-    private System.Action<ShopItem> UpgradeAction;
+    private readonly System.Action<ShopItem> UpgradeAction;
 
-    public ShopItem(string _name, int _startingPrice, System.Func<int, int> _priceInflation, int _familyPaymentBonus, System.Action<ShopItem> _upgradeAction = null, int _maxLevel = -1)
+    public ShopItem(string _name, int _startingPrice, System.Func<int, int> _priceInflation, int _familyPaymentBonus, int _maxLevel = -1, bool _isDowngradable = false, System.Action<ShopItem> _upgradeAction = null)
     {
         Name = _name;
         startingPrice = _startingPrice;
         priceInflation = _priceInflation;
         FamilyPaymentBonus = _familyPaymentBonus;
-        UpgradeAction = _upgradeAction;
         MaxLevel = _maxLevel;
+        IsDowngradable = _isDowngradable;
+        UpgradeAction = _upgradeAction;
     }
 
     public void Upgrade()
@@ -41,9 +43,12 @@ public class Shop : MonoBehaviour
 {
     public List<ShopItem> ShopItems = new List<ShopItem>
     {
-        new ShopItem(_name: "Flower Beds", _startingPrice: 300, _priceInflation: level => 25 * (level + 1), _familyPaymentBonus: 10, _upgradeAction: ShopItemUpgrades.FlowerBeds, _maxLevel: 11),
-        new ShopItem(_name: "Shoes", _startingPrice: 100, _priceInflation: level => 10 + 2 * level, _familyPaymentBonus: 2, _maxLevel: 25),
-
+        new ShopItem(_name: "Flower Beds", _startingPrice: 300, _priceInflation: level => 25 * (level + 1), _familyPaymentBonus: 10, _maxLevel: 11, _isDowngradable: true, _upgradeAction: ShopItemUpgrades.FlowerBeds),
+        new ShopItem(_name: "Shoes", _startingPrice: 150, _priceInflation: level => 10 + 2 * level, _familyPaymentBonus: 2, _maxLevel: 25, _isDowngradable: true),
+        new ShopItem(_name: "Security", _startingPrice: 250, _priceInflation: level => 50 + 5 * level, _familyPaymentBonus: 15, _maxLevel: 5, _upgradeAction: ShopItemUpgrades.ModifyLuck),
+        new ShopItem(_name: "Luck", _startingPrice: 375, _priceInflation: level => 100 + 10 * level, _familyPaymentBonus: 45, _maxLevel: 5, _upgradeAction: ShopItemUpgrades.ModifyLuck),
+        new ShopItem(_name: "Better bees", _startingPrice: 200, _priceInflation: level => 50 + 10 * level, _familyPaymentBonus: 20, _maxLevel: 3),
+        new ShopItem(_name: "Discounts", _startingPrice: 500, _priceInflation: level => 25 + 25 * level, _familyPaymentBonus: 25, _maxLevel: 5, _isDowngradable: true)
     };
 
     public Player Player;
@@ -65,7 +70,8 @@ public class Shop : MonoBehaviour
     void BuyItem(ShopItem shopItem)
     {
         // See if enough money and take money away
-        int cost = shopItem.Price;
+        var discountShopItem = ShopItems.Find(shopItem => shopItem.Name == "Discounts");
+        int cost = Mathf.RoundToInt(shopItem.Price * (1 - discountShopItem.Level / discountShopItem.MaxLevel * 0.5f));
         if (cost > Player.money)
         {
             Debug.Log("You are too poor! :(");
@@ -77,9 +83,9 @@ public class Shop : MonoBehaviour
 
         Debug.Log($"Buying {shopItem.Name}. Was level {shopItem.Level}");
 
-        shopItem.Upgrade(); // Run function to upgrade
-
         shopItem.Level++; // Increase level
+
+        shopItem.Upgrade(); // Run function to upgrade
 
         UpdateBuyButtonVisual(shopItem); // Update visuals
 
@@ -88,7 +94,7 @@ public class Shop : MonoBehaviour
 
     public void UpdateBuyButtonVisual(ShopItem shopItem)
     {
-        Debug.Log("Update shop visual: " + shopItem);
+        Debug.Log("Update shop visual: " + shopItem.Name);
 
         var buyButton = GetComponentsInChildren<ShopBuyButton>().First(buyButton => buyButton.ShopItem == shopItem);
 
@@ -104,8 +110,8 @@ public class Shop : MonoBehaviour
             buyButton.BuyButton.interactable = true;
     }
 
-    public int totalBonnusFamilyPayment => ShopItems.Select(shopItem => shopItem.FamilyPaymentBonus * shopItem.Level).Sum();
-    public bool isMaxedOut => ShopItems.Any(shopItem => shopItem.Level == shopItem.MaxLevel);
+    public int TotalBonusFamilyPayment => ShopItems.Select(shopItem => shopItem.FamilyPaymentBonus * shopItem.Level).Sum();
+    public bool IsMaxedOut => ShopItems.Any(shopItem => shopItem.Level == shopItem.MaxLevel);
 }
 
 public static class ShopItemUpgrades
@@ -117,7 +123,7 @@ public static class ShopItemUpgrades
 
     public static void FlowerBeds(ShopItem shopItem)
     {
-        FlowerBedManager.SendMessage("MakeFlowerBed", shopItem.Level); // Create Flowerbed
+        FlowerBedManager.SendMessage("MakeFlowerBed", shopItem.Level - 1); // Create Flowerbed
 
         // Center Farm
         switch (shopItem.Level)
@@ -132,5 +138,17 @@ public static class ShopItemUpgrades
                 CenterFarm.leftSideUnlocked = true;
                 break;
         }
+    }
+
+    public static void ModifyLuck(ShopItem shopItem)
+    {
+        bool isPositiveLuck = shopItem.Name == "Luck"; // if luck then give better luck, if security give less unluck
+
+        var eventList = RandomEvents.RandomEventList.FindAll(randomEvent => randomEvent.isGoodEvent == isPositiveLuck);
+
+        if (isPositiveLuck)
+            eventList.ForEach(randomEvent => randomEvent.chance = randomEvent.startingChance * (shopItem.Level + 1));
+        else
+            eventList.ForEach(randomEvent => randomEvent.chance = randomEvent.startingChance * (1 - shopItem.Level / shopItem.MaxLevel));
     }
 }
