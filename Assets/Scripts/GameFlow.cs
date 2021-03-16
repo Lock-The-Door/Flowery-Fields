@@ -138,6 +138,7 @@ public class GameFlow : MonoBehaviour
         Debug.Log(weather);
         switch (weather)
         {
+            default:
             case Weather.Sunny:
                 foreach (FlowerBed FlowerBedScript in FlowerBedScripts)
                 {
