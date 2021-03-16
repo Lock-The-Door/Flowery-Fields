@@ -103,6 +103,7 @@ MonoBehaviour:
   flowerTypes:
   - {fileID: 3412094037727511008, guid: 978caa1cb91a413419b00ece7e455e80, type: 3}
   - {fileID: 9110992020297047437, guid: 9efb66e8b5cba804b90dfe6ae3b0a666, type: 3}
+  - {fileID: -3732566328293332018, guid: 8aba163f4d8df714eb5b71d0e157c3a4, type: 3}
   PopupManager: {fileID: 0}
   PlantingSound: {fileID: 0}
   WateringSound: {fileID: 1047401575997054399}
