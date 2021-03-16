@@ -83,7 +83,6 @@ public class GameFlow : MonoBehaviour
                     // Display message
                     PopupManager.ShowWindowPopup("You sold a flowerbed", "Since you were still in debt, you were forced to sell a flowerbed to help you get back on your feet.");
 
-                    shopItem.Price -= 25 * shopItem.Level;// Lower flowerbed price
                     FlowerBedManager.SendMessage("RemoveFlowerBed", --shopItem.Level); // Sell flowerbed
                     Player.money += 500; // Return $500
                     Shop.UpdateBuyButtonVisual(shopItem); // Update visuals

@@ -24,10 +24,12 @@ public class Player : MonoBehaviour
     public Items InHand = Items.Nothing;
 
     public PathfindingManager PathfindingManager;
+    public Shop Shop;
 
     Coroutine NavigationCoroutine;
     Vector3 nextNode;
-    public float walkspeed;
+    public float startWalkspeed;
+    private float walkspeed => startWalkspeed + .5f * Shop.ShopItems.Find(shopItem => shopItem.Name == "Shoes").Level;
 
     public void Navigate(Vector3[] targetLocs, GameObject callback)
     {

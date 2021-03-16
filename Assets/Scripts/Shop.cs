@@ -5,15 +5,35 @@ using UnityEngine;
 public class ShopItem
 {
     public readonly string Name;
-    public int Price;
+
+    private int startingPrice = 0;
+    private System.Func<int, int> priceInflation;
+    public int Price => startingPrice + priceInflation.Invoke(Level) * Level;
+
     public int Level = 0;
     public readonly int MaxLevel = -1; // To ignore max level, use -1
 
-    public ShopItem(string _name, int _price, int _maxLevel = -1)
+    public int FamilyPaymentBonus;
+
+    private System.Action<ShopItem> UpgradeAction;
+
+    public ShopItem(string _name, int _startingPrice, System.Func<int, int> _priceInflation, int _familyPaymentBonus, System.Action<ShopItem> _upgradeAction = null, int _maxLevel = -1)
     {
         Name = _name;
-        Price = _price;
+        startingPrice = _startingPrice;
+        priceInflation = _priceInflation;
+        FamilyPaymentBonus = _familyPaymentBonus;
+        UpgradeAction = _upgradeAction;
         MaxLevel = _maxLevel;
+    }
+
+    public void Upgrade()
+    {
+        Debug.Log("Running upgrade action for: " + Name);
+        if (UpgradeAction != null)
+            UpgradeAction.Invoke(this);
+        else
+            Debug.Log(Name + " has no attached action");
     }
 }
 
@@ -21,8 +41,9 @@ public class Shop : MonoBehaviour
 {
     public List<ShopItem> ShopItems = new List<ShopItem>
     {
-        new ShopItem("Flower Beds", 300, 11),
-        new ShopItem("Shoes", 100, 25)
+        new ShopItem(_name: "Flower Beds", _startingPrice: 300, _priceInflation: level => 25 * (level + 1), _familyPaymentBonus: 10, _upgradeAction: ShopItemUpgrades.FlowerBeds, _maxLevel: 11),
+        new ShopItem(_name: "Shoes", _startingPrice: 100, _priceInflation: level => 10 + 2 * level, _familyPaymentBonus: 2, _maxLevel: 25),
+
     };
 
     public Player Player;
@@ -32,9 +53,18 @@ public class Shop : MonoBehaviour
     public StorylineManager StorylineManager;
     public FlowerBedManager FlowerBedManager;
     public CenterFarm CenterFarm;
+
+    private void Start()
+    {
+        // Set manager refs for static class
+        ShopItemUpgrades.Player = Player;
+        ShopItemUpgrades.FlowerBedManager = FlowerBedManager;
+        ShopItemUpgrades.CenterFarm = CenterFarm;
+    }
+
     void BuyItem(ShopItem shopItem)
     {
-        // See if enough money
+        // See if enough money and take money away
         int cost = shopItem.Price;
         if (cost > Player.money)
         {
@@ -47,44 +77,11 @@ public class Shop : MonoBehaviour
 
         Debug.Log($"Buying {shopItem.Name}. Was level {shopItem.Level}");
 
-        switch (shopItem.Name)
-        {
-            case "Flower Beds":
-                FlowerBedManager.SendMessage("MakeFlowerBed", shopItem.Level); // Create Flowerbed
+        shopItem.Upgrade(); // Run function to upgrade
 
-                // Center Farm
-                switch (shopItem.Level)
-                {
-                    case 1:
-                        CenterFarm.bottomUnlocked = true;
-                        break;
-                    case 4:
-                        CenterFarm.topUnlocked = true;
-                        break;
-                    case 7:
-                        CenterFarm.leftSideUnlocked = true;
-                        break;
-                }
+        shopItem.Level++; // Increase level
 
-                // Reprice flowerbeds
-                shopItem.Price += 25 * (shopItem.Level + 1);
-
-                GameFlow.familyPayment += 10; // Increase family payments
-                break;
-            case "Shoes":
-                // Increase walkspeed
-                Player.walkspeed += .5f;
-
-                // Reprice shoes
-                shopItem.Price += 10 + 2 * shopItem.Level;
-
-                GameFlow.familyPayment += 2; // Increase family payments
-                break;
-        }
-
-        shopItem.Level++;
-
-        UpdateBuyButtonVisual(shopItem);
+        UpdateBuyButtonVisual(shopItem); // Update visuals
 
         StorylineManager.ShowStoryline("Being Generous"); // Storyline trigger
     }
@@ -107,5 +104,33 @@ public class Shop : MonoBehaviour
             buyButton.BuyButton.interactable = true;
     }
 
+    public int totalBonnusFamilyPayment => ShopItems.Select(shopItem => shopItem.FamilyPaymentBonus * shopItem.Level).Sum();
     public bool isMaxedOut => ShopItems.Any(shopItem => shopItem.Level == shopItem.MaxLevel);
+}
+
+public static class ShopItemUpgrades
+{
+    // Manager references
+    public static Player Player;
+    public static FlowerBedManager FlowerBedManager;
+    public static CenterFarm CenterFarm;
+
+    public static void FlowerBeds(ShopItem shopItem)
+    {
+        FlowerBedManager.SendMessage("MakeFlowerBed", shopItem.Level); // Create Flowerbed
+
+        // Center Farm
+        switch (shopItem.Level)
+        {
+            case 1:
+                CenterFarm.bottomUnlocked = true;
+                break;
+            case 4:
+                CenterFarm.topUnlocked = true;
+                break;
+            case 7:
+                CenterFarm.leftSideUnlocked = true;
+                break;
+        }
+    }
 }
