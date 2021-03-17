@@ -4,6 +4,7 @@ using UnityEngine;
 public class PopupManager : MonoBehaviour
 {
     public BottomPopupText BottomPopupTextPrefab;
+    public AudioSource NormalAlertSound;
     public AudioSource BadAlertSound;
 
     public void ShowBottomPopup(string message, Color color, bool goodAlert = true)
@@ -15,7 +16,9 @@ public class PopupManager : MonoBehaviour
         popupText.color = color;
 
         // Play sounds
-        if (!goodAlert)
+        if (goodAlert)
+            NormalAlertSound.Play();
+        else
             BadAlertSound.Play();
     }
     
@@ -31,7 +34,9 @@ public class PopupManager : MonoBehaviour
         popupDetails.text = description;
 
         // Play sounds
-        if (!goodAlert)
+        if (goodAlert)
+            NormalAlertSound.Play();
+        else
             BadAlertSound.Play();
     }
 }

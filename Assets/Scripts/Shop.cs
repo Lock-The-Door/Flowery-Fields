@@ -67,6 +67,7 @@ public class Shop : MonoBehaviour
         ShopItemUpgrades.CenterFarm = CenterFarm;
     }
 
+    public AudioSource BuySound;
     void BuyItem(ShopItem shopItem)
     {
         // See if enough money and take money away
@@ -87,6 +88,7 @@ public class Shop : MonoBehaviour
 
         shopItem.Upgrade(); // Run function to upgrade
 
+        BuySound.Play(); // Play buy sound
         UpdateBuyButtonVisual(shopItem); // Update visuals
 
         StorylineManager.ShowStoryline("Being Generous"); // Storyline trigger

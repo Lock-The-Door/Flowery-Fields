@@ -283,9 +283,13 @@ public class GameFlow : MonoBehaviour
         }
     };
 
+    public AudioSource MajorClick;
     void FinishDay()
     {
         Debug.Log("Finishing day!");
+
+        // Play sound
+        MajorClick.Play();
 
         // Manage Debt
         if (Player.money < 0)

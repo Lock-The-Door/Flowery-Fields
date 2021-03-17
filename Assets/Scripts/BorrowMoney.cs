@@ -112,12 +112,14 @@ public class BorrowMoney : MonoBehaviour
 
     public Player Player;
 
-    void Close() => gameObject.SetActive(false);
     void Confirm()
     {
-        Player.money += moneyBorrowing;
-        dailyPayments.Add(new BorrowedMoneyInfo(DailyPayment, (moneyPlan.value + 1) * 7, moneyBorrowing));
+        if (moneyBorrowing > 0)
+        {
+            Player.money += moneyBorrowing;
+            dailyPayments.Add(new BorrowedMoneyInfo(DailyPayment, (moneyPlan.value + 1) * 7, moneyBorrowing));
+        }
 
-        Close();
+        GetComponent<Close>().SendMessage("CloseObject");
     }
 }
