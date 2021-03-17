@@ -42,14 +42,14 @@ public class FlowerBed : MonoBehaviour, IPointerClickHandler
     public List<Flower> flowerTypes;
     void GenerateFlowers()
     {
-        transform.GetComponentsInChildren<Flower>().ToList().ForEach(flower => Destroy(flower.gameObject));
+        transform.GetComponentsInChildren<Flower>().ToList().ForEach(flower => Destroy(flower.gameObject)); // Remove existing flowers
 
-        for (int i = 0; i < flowers; i++)
+        for (int i = 0; i < flowers; i++) // create new flowers
         {
             var flower = Instantiate(flowerTypes[Random.Range(0, flowerTypes.Count)], transform);
 
-            var flowerPosition = new Vector3(Random.Range(-0.3f, 0.3f), Random.Range(-0.25f, 0.25f));
-            flowerPosition.z = flowerPosition.y - 0.26f;
+            var flowerPosition = new Vector3(Random.Range(-0.7f, 0.7f), Random.Range(-0.5f, 0.70f));
+            flowerPosition.z = flowerPosition.y - 0.75f;
 
             flower.transform.localPosition = flowerPosition;
         }
@@ -95,7 +95,7 @@ public class FlowerBed : MonoBehaviour, IPointerClickHandler
                     if (player.money < SeedsPrice)
                     {
                         Debug.Log("Not enough money...");
-                        PopupManager.ShowBottomPopup("Not enough money...", Color.red);
+                        PopupManager.ShowBottomPopup("Not enough money...", Color.red, goodAlert: false);
                         return;
                     }
                     UpdateFlowerbedState(FlowerBedState.Planted);
@@ -108,7 +108,7 @@ public class FlowerBed : MonoBehaviour, IPointerClickHandler
                     if (player.money < WaterPrice)
                     {
                         Debug.Log("Not enough money...");
-                        PopupManager.ShowBottomPopup("Not enough money...", Color.red);
+                        PopupManager.ShowBottomPopup("Not enough money...", Color.red, goodAlert: false);
                         return;
                     }
 
@@ -121,6 +121,9 @@ public class FlowerBed : MonoBehaviour, IPointerClickHandler
         }
     }
 
+    public Sprite EmptyTexture;
+    public Sprite WateredTexture;
+    public Sprite DrownedTexture;
     public void UpdateFlowerbedState(FlowerBedState flowerBedState)
     {
         state = flowerBedState;
@@ -133,32 +136,25 @@ public class FlowerBed : MonoBehaviour, IPointerClickHandler
         SpriteRenderer SpriteRenderer = GetComponent<SpriteRenderer>();
         switch (state)
         {
+            // Use empty texture
             case FlowerBedState.Empty:
-                SpriteRenderer.color = Color.white;
-                break;
             case FlowerBedState.Planted:
-                SpriteRenderer.color = new Color(0.439f, 0.231f, 0.184f);
-                break;
-            case FlowerBedState.Watered:
-                SpriteRenderer.color = Color.cyan;
-                break;
-            case FlowerBedState.DrownedFlowers:
-                SpriteRenderer.color = Color.blue;
-                break;
             case FlowerBedState.DeadFlowers:
-                SpriteRenderer.color = Color.black;
+                SpriteRenderer.sprite = EmptyTexture;
                 break;
+
+            // Use watered texture
             case FlowerBedState.WeakFlowers:
-                SpriteRenderer.color = Color.grey;
-                break;
             case FlowerBedState.NormalFlowers:
-                SpriteRenderer.color = Color.green;
-                break;
             case FlowerBedState.BeautifulFlowers:
-                SpriteRenderer.color = Color.yellow;
-                break;
             case FlowerBedState.SuperFlowers:
-                SpriteRenderer.color = Color.red;
+            case FlowerBedState.Watered:
+                SpriteRenderer.sprite = WateredTexture;
+                break;
+
+            // Use drowned texture
+            case FlowerBedState.DrownedFlowers:
+                SpriteRenderer.sprite = DrownedTexture;
                 break;
         }
     }

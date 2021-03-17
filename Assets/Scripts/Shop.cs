@@ -75,7 +75,7 @@ public class Shop : MonoBehaviour
         if (cost > Player.money)
         {
             Debug.Log("You are too poor! :(");
-            PopupManager.ShowBottomPopup("Not enough money...", Color.red);
+            PopupManager.ShowBottomPopup("Not enough money...", Color.red, goodAlert: false);
             return;
         }
 

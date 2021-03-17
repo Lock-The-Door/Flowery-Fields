@@ -299,7 +299,7 @@ public class GameFlow : MonoBehaviour
                 if (shopItems.Count == 0)
                 {
                     // Display message
-                    PopupManager.ShowWindowPopup("You've lost everything...", "Sadly, you've ended up with less money than you've started with. Luckily for you, your parents were nice enough to pay for your debts and give you a fresh start.");
+                    PopupManager.ShowWindowPopup("You've lost everything...", "Sadly, you've ended up with less money than you've started with. Luckily for you, your parents were nice enough to pay for your debts and give you a fresh start.", goodAlert: false);
 
                     // Reset values
                     Player.money = 100;
@@ -307,7 +307,7 @@ public class GameFlow : MonoBehaviour
                 else
                 { 
                     // Display message
-                    PopupManager.ShowWindowPopup($"You sold your {shopItems[0].Name}", $"Since you were still in debt, you were forced to sell some things to help you get back on your feet.");
+                    PopupManager.ShowWindowPopup($"You sold your {shopItems[0].Name}", $"Since you were still in debt, you were forced to sell some things to help you get back on your feet.", goodAlert: false);
 
                     Player.money += shopItems[0].Price; // Return money
                     int newLevel = --shopItems[0].Level;
@@ -321,7 +321,7 @@ public class GameFlow : MonoBehaviour
             else
             {
                 inDebt = true;
-                PopupManager.ShowWindowPopup("You're in debt!", "You are in debt! Get out of debt or you'll soon need to start selling your things!");
+                PopupManager.ShowWindowPopup("You're in debt!", "You are in debt! Get out of debt or you'll soon need to start selling your things!", goodAlert: false);
             }
         }
         else
@@ -364,7 +364,8 @@ public class GameFlow : MonoBehaviour
         // Go through flowerbeds
         foreach (FlowerBed flowerBed in FlowerBedScripts)
         {
-            var chances = flowerbedStateChances[flowerBed.state];
+            if (!flowerbedStateChances.TryGetValue(flowerBed.state, out var chances))
+                continue;
             float randomChance = Random.value;
 
             foreach (var possibleChance in chances)
@@ -443,7 +444,7 @@ public static class RandomEvents
     public static PopupManager PopupManager;
     static void RunEvent(RandomEvent randomEventToRun)
     {
-        PopupManager.ShowWindowPopup(randomEventToRun.name, randomEventToRun.description);
+        PopupManager.ShowWindowPopup(randomEventToRun.name, randomEventToRun.description, goodAlert: randomEventToRun.isGoodEvent);
         randomEventToRun.eventFunction.DynamicInvoke();
     }
 
