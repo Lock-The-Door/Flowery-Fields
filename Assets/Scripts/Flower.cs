@@ -5,7 +5,6 @@ public class Flower : MonoBehaviour
 {
     public SpriteRenderer SpriteRenderer;
 
-    public Sprite Seeds;
     public Sprite DeadFlowers;
     public Sprite WeakFlowers;
     public Sprite NormalFlowers;

@@ -96,8 +96,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   SpriteRenderer: {fileID: 5320495851958522944}
-  Seeds: {fileID: 0}
-  DeadFlowers: {fileID: 0}
+  DeadFlowers: {fileID: 21300000, guid: 99680ed81a0d95845b4dc468ada71184, type: 3}
   WeakFlowers: {fileID: 0}
   NormalFlowers: {fileID: 21300000, guid: ee67f3be7ec5aa04ca7179037e8b1396, type: 3}
   BeautifulFlowers: {fileID: 0}
