@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using TMPro;
@@ -284,12 +285,22 @@ public class GameFlow : MonoBehaviour
     };
 
     public AudioSource MajorClick;
-    void FinishDay()
+    public NextDayScreen NextDayScreen;
+    public int Days = 1;
+    IEnumerator FinishDay()
     {
         Debug.Log("Finishing day!");
 
         // Play sound
         MajorClick.Play();
+
+        Player.Navigate(new Vector3[] { new Vector3(6, 4, 1) }, gameObject); // Return to spawn loc
+
+        // Show black screen
+        NextDayScreen.gameObject.SetActive(true);
+        StartCoroutine(NextDayScreen.ShowScreen(++Days));
+
+        yield return new WaitUntil(() => NextDayScreen.time >= 1);
 
         // Manage Debt
         if (Player.money < 0)
@@ -342,7 +353,7 @@ public class GameFlow : MonoBehaviour
         // Game won?
         if (!finishedGame && Player.money > 5000 && Shop.IsMaxedOut)
         {
-            Debug.Log("You've made a lot of money, your family is proud of you. The end! :)");
+            Debug.Log($"You've made a lot of money, your family is proud of you. The end! :) ({Days} days to complete game)");
             StorylineManager.ShowStoryline("The End");
             finishedGame = true;
         }
@@ -350,8 +361,7 @@ public class GameFlow : MonoBehaviour
 
         // PLAYER
         Player.InHand = Player.Items.Nothing; // Empty hands
-
-
+        
         // FLOWER BEDS
         // Get Flower Beds States
         var FlowerBedScripts = FlowerBeds.GetComponentsInChildren<FlowerBed>();
