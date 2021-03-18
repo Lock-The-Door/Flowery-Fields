@@ -1,5 +1,24 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!243 &-7701081915101660092
+AudioMixerGroupController:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Music
+  m_AudioMixer: {fileID: 24100000}
+  m_GroupID: 8985ee5e45e35ee42b29d097154cbf71
+  m_Children: []
+  m_Volume: 3b4a58f8014f4c54aa8ba00f4f8cbca4
+  m_Pitch: 463ae39d88049df46a7f5c38b94a2b37
+  m_Send: 00000000000000000000000000000000
+  m_Effects:
+  - {fileID: -4928794504062093326}
+  m_UserColorIndex: 0
+  m_Mute: 0
+  m_Solo: 0
+  m_BypassEffects: 0
 --- !u!244 &-4997860890073906155
 AudioMixerEffectController:
   m_ObjectHideFlags: 3
@@ -10,6 +29,20 @@ AudioMixerEffectController:
   m_EffectID: d2fd217ba8993824dbe7344dfe4fa508
   m_EffectName: Attenuation
   m_MixLevel: d2533d63634115b48a1ec7b1164ba200
+  m_Parameters: []
+  m_SendTarget: {fileID: 0}
+  m_EnableWetMix: 0
+  m_Bypass: 0
+--- !u!244 &-4928794504062093326
+AudioMixerEffectController:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: 
+  m_EffectID: 0b75c9fc349808d42873aa20803bfa44
+  m_EffectName: Attenuation
+  m_MixLevel: 99730e836dde82a4baa640630900204e
   m_Parameters: []
   m_SendTarget: {fileID: 0}
   m_EnableWetMix: 0
@@ -34,6 +67,7 @@ AudioMixerController:
   - guids:
     - 020f30cac73161143afb71651fe6e06b
     - 304bbd03210c0834b8a419a69e682b08
+    - 8985ee5e45e35ee42b29d097154cbf71
     name: View
   m_CurrentViewIndex: 0
   m_TargetSnapshot: {fileID: 24500006}
@@ -48,6 +82,7 @@ AudioMixerGroupController:
   m_GroupID: 020f30cac73161143afb71651fe6e06b
   m_Children:
   - {fileID: 4771059846311357417}
+  - {fileID: -7701081915101660092}
   m_Volume: 5cb6469a43d7c354fa38a4d45c881837
   m_Pitch: ce2d50942b13d144a8340232bd020e4c
   m_Send: 00000000000000000000000000000000
@@ -81,7 +116,8 @@ AudioMixerSnapshotController:
   m_AudioMixer: {fileID: 24100000}
   m_SnapshotID: 0b392ba07adf0c74daa7944f19ca5da4
   m_FloatValues:
-    25a79ce18379b3e45955d4b8f907a8c3: -5
+    25a79ce18379b3e45955d4b8f907a8c3: 0
+    3b4a58f8014f4c54aa8ba00f4f8cbca4: -5
   m_TransitionOverrides: {}
 --- !u!243 &4771059846311357417
 AudioMixerGroupController:
