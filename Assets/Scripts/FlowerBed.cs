@@ -63,6 +63,7 @@ public class FlowerBed : MonoBehaviour, IPointerClickHandler
 
     public AudioSource PlantingSound;
     public AudioSource WateringSound;
+    public AudioSource DiggingSound;
 
     public void OnPointerClick(PointerEventData eventData)
     {
@@ -83,11 +84,14 @@ public class FlowerBed : MonoBehaviour, IPointerClickHandler
         switch(player.InHand)
         {
             case Player.Items.Shovel:
-                if (FlowerSellPrice.TryGetValue(state, out int sellPrice))
-                {
-                    UpdateFlowerbedState(FlowerBedState.Empty);
-                    player.money += sellPrice;
-                }
+
+                if (!FlowerSellPrice.TryGetValue(state, out int sellPrice))
+                    break;
+
+                DiggingSound.Play();
+
+                UpdateFlowerbedState(FlowerBedState.Empty);
+                player.money += sellPrice;
                 break;
             case Player.Items.Seeds:
                 if (state == FlowerBedState.Empty)
@@ -98,6 +102,9 @@ public class FlowerBed : MonoBehaviour, IPointerClickHandler
                         PopupManager.ShowBottomPopup("Not enough money...", Color.red, goodAlert: false);
                         return;
                     }
+
+                    PlantingSound.Play();
+
                     UpdateFlowerbedState(FlowerBedState.Planted);
                     player.money -= SeedsPrice;
                 }
