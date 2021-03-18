@@ -77,11 +77,13 @@ public class FlowerBed : MonoBehaviour, IPointerClickHandler
             transform.position + new Vector3(-2, 0), // left
             transform.position + new Vector3(0, -2) // down
         };
-        player.Navigate(flowerBedEndPositions, gameObject);
-
+        player.Navigate(flowerBedEndPositions, DoAction);
+    }
+    private void DoAction()
+    {
         Debug.Log("Doing action...");
 
-        switch(player.InHand)
+        switch (player.InHand)
         {
             case Player.Items.Shovel:
 

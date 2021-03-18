@@ -294,7 +294,7 @@ public class GameFlow : MonoBehaviour
         // Play sound
         MajorClick.Play();
 
-        Player.Navigate(new Vector3[] { new Vector3(6, 4, 1) }, gameObject); // Return to spawn loc
+        Player.Navigate(new Vector3[] { new Vector3(6, 4, 1) }, playSelectSound: false); // Return to spawn loc
 
         // Show black screen
         NextDayScreen.gameObject.SetActive(true);

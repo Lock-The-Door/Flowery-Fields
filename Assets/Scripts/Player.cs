@@ -26,13 +26,18 @@ public class Player : MonoBehaviour
     public PathfindingManager PathfindingManager;
     public Shop Shop;
 
+    public AudioSource SelectSound;
+
     Coroutine NavigationCoroutine;
     Vector3 nextNode;
     public float startWalkspeed;
     private float Walkspeed => startWalkspeed + .5f * Shop.ShopItems.Find(shopItem => shopItem.Name == "Shoes").Level;
 
-    public void Navigate(Vector3[] targetLocs, GameObject callback)
+    public void Navigate(Vector3[] targetLocs, System.Action callback = null, bool playSelectSound = true)
     {
+        if (playSelectSound)
+            SelectSound.Play();
+
         if (NavigationCoroutine != null)
             StopCoroutine(NavigationCoroutine); // Cancel navigation
 
@@ -91,7 +96,7 @@ public class Player : MonoBehaviour
         NavigationCoroutine = StartCoroutine(NavigatePath(path, callback, initialTime));
     }
 
-    IEnumerator NavigatePath(List<Vector3> path, GameObject callback, float initialTime = 0)
+    IEnumerator NavigatePath(List<Vector3> path, System.Action callback, float initialTime = 0)
     {
         foreach (Vector3 pathNode in path)
         {
@@ -109,6 +114,12 @@ public class Player : MonoBehaviour
 
                 yield return new WaitForFixedUpdate();
             }
+        }
+
+        if (callback != null)
+        {
+            // Finished, do callback
+            callback.Invoke();
         }
     }
 }

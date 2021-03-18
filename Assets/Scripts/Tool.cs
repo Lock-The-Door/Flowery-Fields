@@ -13,8 +13,10 @@ public class Tool : MonoBehaviour, IPointerClickHandler
         Debug.Log("Object Clicked");
 
         Debug.Log("Navigating to... " + transform.position.x + ", " + transform.position.y);
-        player.Navigate(new Vector3[] { transform.position + new Vector3(-2, 0) }, gameObject);
-
+        player.Navigate(new Vector3[] { transform.position + new Vector3(-2, 0) }, InteractTool);
+    }
+    private void InteractTool()
+    {
         Debug.Log("Grabbing Item...");
 
         PickupSound.Play();
