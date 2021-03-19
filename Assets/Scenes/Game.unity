@@ -3081,7 +3081,7 @@ MonoBehaviour:
   PathfindingManager: {fileID: 1130199448}
   Shop: {fileID: 33020146}
   SelectSound: {fileID: 684367975}
-  startWalkspeed: 2.5
+  startWalkspeed: 15
 --- !u!82 &684367975
 AudioSource:
   m_ObjectHideFlags: 0
@@ -4500,7 +4500,7 @@ MonoBehaviour:
   WeatherGui: {fileID: 594396801}
   WeatherImages:
   - {fileID: 21300000, guid: 99919ac0d2001c343a1628abaa7c3ab5, type: 3}
-  - {fileID: 0}
+  - {fileID: 21300000, guid: 7a09684595d50c84cb2128a1f47609e8, type: 3}
   - {fileID: 0}
   - {fileID: 0}
   Shop: {fileID: 33020146}
