@@ -51,7 +51,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -97,7 +97,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   SpriteRenderer: {fileID: 3412094037727511009}
   DeadFlowers: {fileID: 21300000, guid: 91b130c5866b07e4b9782e3f12f96026, type: 3}
-  WeakFlowers: {fileID: 0}
+  WeakFlowers: {fileID: 21300000, guid: 9853c603820e4344b9aa10fa99e8fc51, type: 3}
   NormalFlowers: {fileID: 21300000, guid: 9853c603820e4344b9aa10fa99e8fc51, type: 3}
-  BeautifulFlowers: {fileID: 0}
-  SuperFlowers: {fileID: 0}
+  BeautifulFlowers: {fileID: 21300000, guid: 9853c603820e4344b9aa10fa99e8fc51, type: 3}
+  SuperFlowers: {fileID: 21300000, guid: 9853c603820e4344b9aa10fa99e8fc51, type: 3}
+  NormalMaterial: {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
+  SuperFlowerMaterial: {fileID: 2100000, guid: bba609626fbfa634d932f288e69aaa5a, type: 2}

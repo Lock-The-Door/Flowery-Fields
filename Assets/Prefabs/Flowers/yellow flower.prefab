@@ -9,11 +9,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6641575788379271251}
-  - component: {fileID: 57130236369229968}
   - component: {fileID: 4200800350120340064}
   - component: {fileID: -1407032163519945816}
   m_Layer: 0
-  m_Name: yellow flower - normal
+  m_Name: yellow flower
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -33,19 +32,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &57130236369229968
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4731521657290121007}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b02dc5dbc0ace2d469094d6c453828a0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  SpriteRenderer: {fileID: 0}
 --- !u!212 &4200800350120340064
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -65,7 +51,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -111,7 +97,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   SpriteRenderer: {fileID: 4200800350120340064}
   DeadFlowers: {fileID: 21300000, guid: 91b130c5866b07e4b9782e3f12f96026, type: 3}
-  WeakFlowers: {fileID: 0}
+  WeakFlowers: {fileID: 21300000, guid: a98f6769a6c2a1349b69b57f41b0e8e3, type: 3}
   NormalFlowers: {fileID: 21300000, guid: a98f6769a6c2a1349b69b57f41b0e8e3, type: 3}
-  BeautifulFlowers: {fileID: 0}
-  SuperFlowers: {fileID: 0}
+  BeautifulFlowers: {fileID: 21300000, guid: a98f6769a6c2a1349b69b57f41b0e8e3, type: 3}
+  SuperFlowers: {fileID: 21300000, guid: a98f6769a6c2a1349b69b57f41b0e8e3, type: 3}
+  NormalMaterial: {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
+  SuperFlowerMaterial: {fileID: 2100000, guid: bba609626fbfa634d932f288e69aaa5a, type: 2}

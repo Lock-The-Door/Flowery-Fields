@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.Rendering;
 
 public class FlowerBed : MonoBehaviour, IPointerClickHandler
 {
@@ -133,6 +134,8 @@ public class FlowerBed : MonoBehaviour, IPointerClickHandler
     public Sprite EmptyTexture;
     public Sprite WateredTexture;
     public Sprite DrownedTexture;
+    public Material NormalMaterial;
+    public Material SuperFlowerMaterial;
     public void UpdateFlowerbedState(FlowerBedState flowerBedState)
     {
         state = flowerBedState;
@@ -165,6 +168,19 @@ public class FlowerBed : MonoBehaviour, IPointerClickHandler
             case FlowerBedState.DrownedFlowers:
                 SpriteRenderer.sprite = DrownedTexture;
                 break;
+        }
+
+        if (state == FlowerBedState.SuperFlowers)
+        {
+            GetComponent<Volume>().enabled = true;
+
+            SpriteRenderer.material = SuperFlowerMaterial;
+        }
+        else
+        {
+            GetComponent<Volume>().enabled = false;
+
+            SpriteRenderer.material = NormalMaterial;
         }
     }
 }

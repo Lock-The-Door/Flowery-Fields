@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 1047401575997054399}
   - component: {fileID: 7946617646183853528}
   - component: {fileID: 8532511217437580640}
+  - component: {fileID: 5126746710867908003}
   m_Layer: 0
   m_Name: Flower Bed
   m_TagString: Untagged
@@ -56,7 +57,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -107,6 +108,7 @@ MonoBehaviour:
   - {fileID: 3412094037727511008, guid: 978caa1cb91a413419b00ece7e455e80, type: 3}
   - {fileID: 9110992020297047437, guid: 9efb66e8b5cba804b90dfe6ae3b0a666, type: 3}
   - {fileID: -3732566328293332018, guid: 8aba163f4d8df714eb5b71d0e157c3a4, type: 3}
+  - {fileID: -1407032163519945816, guid: feba7de2bf955d349aaa2f20f1af36f1, type: 3}
   Shop: {fileID: 0}
   PopupManager: {fileID: 0}
   PlantingSound: {fileID: 1047401575997054399}
@@ -115,6 +117,8 @@ MonoBehaviour:
   EmptyTexture: {fileID: 21300000, guid: b113cfca438506f489a4d96853b39c28, type: 3}
   WateredTexture: {fileID: 21300000, guid: 6f8cbc1c1ad206e4b86473ecd7492535, type: 3}
   DrownedTexture: {fileID: 21300000, guid: b6ed837d5921f8548be7ea3db892536f, type: 3}
+  NormalMaterial: {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
+  SuperFlowerMaterial: {fileID: 2100000, guid: bba609626fbfa634d932f288e69aaa5a, type: 2}
 --- !u!61 &5836528327599112255
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -429,6 +433,23 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &5126746710867908003
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2664975889381648385}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 172515602e62fb746b5d573b38a5fe58, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isGlobal: 1
+  priority: 0
+  blendDistance: 0
+  weight: 1
+  sharedProfile: {fileID: 11400000, guid: 120fb050bb02d8441b961062b68e6a08, type: 2}
 --- !u!1 &6678843821215072719
 GameObject:
   m_ObjectHideFlags: 0

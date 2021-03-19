@@ -66,7 +66,7 @@ public class Player : MonoBehaviour
         // prevent diags
         if (path.Count > 1)
         {
-            if (transform.position != path[0])
+            if ((Vector2)transform.position != (Vector2)path[0])
             {
                 // compare distance from second node to the last next node and the current positional node
                 // Current node pos
@@ -104,7 +104,7 @@ public class Player : MonoBehaviour
             nextNode = pathNode;
 
             Vector3 start = transform.position;
-            Vector3 end = pathNode;
+            Vector3 end = new Vector3 (pathNode.x, pathNode.y, pathNode.y + 1);
             float time = path[0] == pathNode ? initialTime : 0;
 
             while (time < 1)

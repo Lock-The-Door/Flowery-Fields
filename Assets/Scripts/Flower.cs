@@ -21,12 +21,21 @@ public class Flower : MonoBehaviour
         { FlowerBed.FlowerBedState.SuperFlowers, SuperFlowers }
     };
 
-    Dictionary<FlowerBed.FlowerBedState, float> FlowerSizesOverride => new Dictionary<FlowerBed.FlowerBedState, float>
+    Dictionary<FlowerBed.FlowerBedState, float> FlowerShadeOverride = new Dictionary<FlowerBed.FlowerBedState, float>
     {
-        { FlowerBed.FlowerBedState.BeautifulFlowers, 3f },
-        { FlowerBed.FlowerBedState.SuperFlowers, 4f }
+        { FlowerBed.FlowerBedState.WeakFlowers, 0.65f }
     };
 
+    Dictionary<FlowerBed.FlowerBedState, float> FlowerSizesOverride = new Dictionary<FlowerBed.FlowerBedState, float>
+    {
+        { FlowerBed.FlowerBedState.DeadFlowers, 1.5f },
+        { FlowerBed.FlowerBedState.WeakFlowers, 2f },
+        { FlowerBed.FlowerBedState.BeautifulFlowers, 4f },
+        { FlowerBed.FlowerBedState.SuperFlowers, 5f }
+    };
+
+    public Material NormalMaterial;
+    public Material SuperFlowerMaterial;
     void Start() => UpdateFlower(FlowerBed.FlowerBedState.Empty);
     void UpdateFlower(FlowerBed.FlowerBedState state)
     {
@@ -39,7 +48,7 @@ public class Flower : MonoBehaviour
         transform.localScale = FlowerSizesOverride.TryGetValue(state, out float size) ? new Vector3(size, size) : new Vector3(2.5f, 2.5f);
 
         SpriteRenderer.sprite = sprite;
-
-        SpriteRenderer.color = Color.white;
+        SpriteRenderer.color = FlowerShadeOverride.TryGetValue(state, out float color) ? new Color(color, color, color) : Color.white;
+        SpriteRenderer.material = state == FlowerBed.FlowerBedState.SuperFlowers ? SuperFlowerMaterial : NormalMaterial;
     }
 }
