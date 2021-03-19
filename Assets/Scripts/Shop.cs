@@ -113,7 +113,7 @@ public class Shop : MonoBehaviour
     }
 
     public int TotalBonusFamilyPayment => ShopItems.Select(shopItem => shopItem.FamilyPaymentBonus * shopItem.Level).Sum();
-    public bool IsMaxedOut => ShopItems.Any(shopItem => shopItem.Level == shopItem.MaxLevel);
+    public bool IsMaxedOut => ShopItems.TrueForAll(shopItem => shopItem.Level == shopItem.MaxLevel);
 }
 
 public static class ShopItemUpgrades
