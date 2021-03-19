@@ -33,6 +33,11 @@ public class Player : MonoBehaviour
     public float startWalkspeed;
     private float Walkspeed => startWalkspeed + .5f * Shop.ShopItems.Find(shopItem => shopItem.Name == "Shoes").Level;
 
+    private void Start()
+    {
+        SpriteRenderer = GetComponent<SpriteRenderer>();
+    }
+
     public void Navigate(Vector3[] targetLocs, System.Action callback = null, bool playSelectSound = true)
     {
         if (playSelectSound)
@@ -96,6 +101,9 @@ public class Player : MonoBehaviour
         NavigationCoroutine = StartCoroutine(NavigatePath(path, callback, initialTime));
     }
 
+    SpriteRenderer SpriteRenderer;
+    public Sprite playerFront;
+    public Sprite playerBack;
     IEnumerator NavigatePath(List<Vector3> path, System.Action callback, float initialTime = 0)
     {
         foreach (Vector3 pathNode in path)
@@ -104,8 +112,35 @@ public class Player : MonoBehaviour
             nextNode = pathNode;
 
             Vector3 start = transform.position;
-            Vector3 end = new Vector3 (pathNode.x, pathNode.y, pathNode.y + 1);
+            Vector3 end = new Vector3 (pathNode.x, pathNode.y, pathNode.y - 1);
             float time = path[0] == pathNode ? initialTime : 0;
+
+            Vector3 direction = end - start;
+            direction.Normalize();
+            float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+            Debug.Log(angle + 90);
+            switch (angle + 90)
+            {
+                case 180: // Up
+                    SpriteRenderer.sprite = playerBack;
+                    Debug.Log("Up");
+                    break;
+                case 0: // Down
+                    SpriteRenderer.sprite = playerFront;
+                    Debug.Log("Down");
+                    break;
+                case 270: // Forward
+                    SpriteRenderer.flipX = false;
+                    Debug.Log("Forward");
+                    break;
+                case 90: // Back
+                    SpriteRenderer.flipX = true;
+                    Debug.Log("Back");
+                    break;
+                default:
+                    Debug.LogWarning("player travelling at angle " + angle);
+                    break;
+            }
 
             while (time < 1)
             {
@@ -115,6 +150,8 @@ public class Player : MonoBehaviour
                 yield return new WaitForFixedUpdate();
             }
         }
+
+        SpriteRenderer.sprite = playerFront; // Face camera again
 
         if (callback != null)
         {
