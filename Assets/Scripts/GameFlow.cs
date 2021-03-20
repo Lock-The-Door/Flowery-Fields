@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Experimental.Rendering.Universal;
 using UnityEngine.UI;
 
 public class GameFlow : MonoBehaviour
@@ -24,6 +25,9 @@ public class GameFlow : MonoBehaviour
 
     void Start()
     {
+        // Set vars
+        Color.RGBToHSV(Camera.backgroundColor, out float _, out float _, out CameraMaxBrightness);
+
         GenerateWeather(); // Generate weather for first day
 
         StorylineManager.ShowStoryline("The Adventure Begins"); // Show starter story
@@ -34,6 +38,16 @@ public class GameFlow : MonoBehaviour
         RandomEvents.FlowerBedManager = FlowerBedManager;
     }
 
+    Dictionary<Weather, float> WeatherLightingIntensity = new Dictionary<Weather, float>()
+    {
+        { Weather.Sunny, 1 },
+        { Weather.Rainy, 0.75f },
+        { Weather.SuperStorm, 0.5f },
+        { Weather.NaturalDisaster, 0.75f }
+    };
+
+    public Camera Camera;
+    float CameraMaxBrightness;
     void GenerateWeather()
     {
         int randomWeatherInt = Random.Range(0,101);
@@ -43,16 +57,30 @@ public class GameFlow : MonoBehaviour
 
         foreach (Weather randomWeather in weatherTypes)
         {
+            Debug.Log(randomWeatherInt);
+            Debug.Log(randomWeather);
+
             if (randomWeatherInt > (int)randomWeather)
+            {
+                randomWeatherInt -= (int)randomWeather;
                 continue;
+            }
 
             // Matching weather
             weather = randomWeather;
             Debug.Log("Weather is: " + weather);
             WeatherGui.GetComponentInChildren<TextMeshProUGUI>().text = weather.ToString(); // Update text
             WeatherGui.GetComponent<Image>().sprite = WeatherImages[System.Array.IndexOf(weatherTypes.Reverse().ToArray(), weather)]; // Update Image
-            return;
+            break;
         }
+
+        // Post weather generation
+        // Change lighting
+        // Camera bg
+        Color.RGBToHSV(Camera.backgroundColor, out float BgH, out float BgS, out float _);
+        Camera.backgroundColor = Color.HSVToRGB(BgH, BgS, CameraMaxBrightness * WeatherLightingIntensity[weather]);
+        // Light 2d
+        Light2D.intensity = WeatherLightingIntensity[weather];
     }
 
     public Player Player;
@@ -284,6 +312,8 @@ public class GameFlow : MonoBehaviour
         }
     };
 
+    
+    public Light2D Light2D;
     public AudioSource MajorClick;
     public NextDayScreen NextDayScreen;
     public int Days = 1;
@@ -368,8 +398,9 @@ public class GameFlow : MonoBehaviour
 
 
         // WEATHER
-        // Apply logic to flower beds
         Debug.Log(weather);
+
+        // Apply logic to flower beds
 
         // Get chances for weather
         if (!WeatherLogicData.TryGetValue(weather, out var flowerbedStateChances))
