@@ -35,6 +35,7 @@ public class Player : MonoBehaviour
 
     private void Start()
     {
+        Animator = GetComponent<Animator>();
         SpriteRenderer = GetComponent<SpriteRenderer>();
     }
 
@@ -101,11 +102,14 @@ public class Player : MonoBehaviour
         NavigationCoroutine = StartCoroutine(NavigatePath(path, callback, initialTime));
     }
 
+    Animator Animator;
     SpriteRenderer SpriteRenderer;
     public Sprite playerFront;
     public Sprite playerBack;
     IEnumerator NavigatePath(List<Vector3> path, System.Action callback, float initialTime = 0)
     {
+        Animator.SetBool("Walking", true);
+
         foreach (Vector3 pathNode in path)
         {
             Debug.Log(pathNode);
@@ -122,18 +126,20 @@ public class Player : MonoBehaviour
             switch (angle + 90)
             {
                 case 180: // Up
-                    SpriteRenderer.sprite = playerBack;
+                    Animator.SetBool("Facing Away", true);
                     Debug.Log("Up");
                     break;
                 case 0: // Down
-                    SpriteRenderer.sprite = playerFront;
+                    Animator.SetBool("Facing Away", false);
                     Debug.Log("Down");
                     break;
                 case 270: // Forward
+                    Animator.SetBool("Facing Away", false);
                     SpriteRenderer.flipX = false;
                     Debug.Log("Forward");
                     break;
                 case 90: // Back
+                    Animator.SetBool("Facing Away", false);
                     SpriteRenderer.flipX = true;
                     Debug.Log("Back");
                     break;
@@ -151,7 +157,7 @@ public class Player : MonoBehaviour
             }
         }
 
-        SpriteRenderer.sprite = playerFront; // Face camera again
+        Animator.SetBool("Walking", false); // Stop animations
 
         if (callback != null)
         {
