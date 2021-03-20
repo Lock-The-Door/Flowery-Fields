@@ -7,19 +7,28 @@ public class PathfindingManager : MonoBehaviour
     public static Pathfinding Pathfinding = new Pathfinding(new Grid<PathNode>(10, 10, 2, new Vector3(-9, -9), (Grid<PathNode> g, int x, int y) => new PathNode(g, x, y)));
 
     public GameObject Table;
+    public GameObject BankSign;
     public GameObject Flowerbeds;
 
     void Start()
     {
-        // reposition table based on screen ratio
+        // reposition objects based on screen ratio
         if (Screen.height / Screen.width > 0.75)
+        {
             Table.transform.position += new Vector3(-2, 0);
+            BankSign.transform.position += new Vector3(-2, 0);
+        }
 
         // Generate anti-pathfind squares
         // Table
         Pathfinding.GetGrid().GetXY(Table.transform.position, out int tableX, out int tableY);
         for (int tableYPos = tableY - 1; tableYPos > tableY + 1; tableYPos++)
             Pathfinding.GetNode(tableX, tableYPos).SetIsWalkable(false);
+
+        // Bank Sign
+        Pathfinding.GetGrid().GetXY(BankSign.transform.position, out int bankSignX, out int bankSignY);
+        Pathfinding.GetNode(bankSignX, bankSignY);
+
         // Flowerbeds
         Flowerbeds.GetComponentsInChildren<FlowerBed>().ToList().ForEach(flowerBed =>
         {
