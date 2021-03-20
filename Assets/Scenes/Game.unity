@@ -253,7 +253,6 @@ MonoBehaviour:
   PopupManager: {fileID: 1663070396}
   StorylineManager: {fileID: 1033100301}
   FlowerBedManager: {fileID: 2141535387}
-  CenterFarm: {fileID: 519420033}
   BuySound: {fileID: 1663070400}
 --- !u!1 &48510398
 GameObject:
@@ -904,7 +903,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1942769647892011287, guid: b8bbce4b7a6882447a3adb609515432e, type: 3}
       propertyPath: m_RootOrder
-      value: 3
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1942769647892011287, guid: b8bbce4b7a6882447a3adb609515432e, type: 3}
       propertyPath: m_LocalPosition.x
@@ -951,6 +950,10 @@ PrefabInstance:
       value: Flower Bed (Top)
       objectReference: {fileID: 0}
     - target: {fileID: 8493536864925034723, guid: b8bbce4b7a6882447a3adb609515432e, type: 3}
+      propertyPath: id
+      value: -2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8493536864925034723, guid: b8bbce4b7a6882447a3adb609515432e, type: 3}
       propertyPath: Shop
       value: 
       objectReference: {fileID: 33020146}
@@ -958,6 +961,10 @@ PrefabInstance:
       propertyPath: player
       value: 
       objectReference: {fileID: 684367974}
+    - target: {fileID: 8493536864925034723, guid: b8bbce4b7a6882447a3adb609515432e, type: 3}
+      propertyPath: CenterFarm
+      value: 
+      objectReference: {fileID: 519420033}
     - target: {fileID: 8493536864925034723, guid: b8bbce4b7a6882447a3adb609515432e, type: 3}
       propertyPath: PopupManager
       value: 
@@ -1320,7 +1327,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1942769647892011287, guid: b8bbce4b7a6882447a3adb609515432e, type: 3}
       propertyPath: m_RootOrder
-      value: 6
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 1942769647892011287, guid: b8bbce4b7a6882447a3adb609515432e, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1367,6 +1374,10 @@ PrefabInstance:
       value: Flower Bed (Top Right)
       objectReference: {fileID: 0}
     - target: {fileID: 8493536864925034723, guid: b8bbce4b7a6882447a3adb609515432e, type: 3}
+      propertyPath: id
+      value: -3
+      objectReference: {fileID: 0}
+    - target: {fileID: 8493536864925034723, guid: b8bbce4b7a6882447a3adb609515432e, type: 3}
       propertyPath: Shop
       value: 
       objectReference: {fileID: 33020146}
@@ -1374,6 +1385,10 @@ PrefabInstance:
       propertyPath: player
       value: 
       objectReference: {fileID: 684367974}
+    - target: {fileID: 8493536864925034723, guid: b8bbce4b7a6882447a3adb609515432e, type: 3}
+      propertyPath: CenterFarm
+      value: 
+      objectReference: {fileID: 519420033}
     - target: {fileID: 8493536864925034723, guid: b8bbce4b7a6882447a3adb609515432e, type: 3}
       propertyPath: PopupManager
       value: 
@@ -2274,7 +2289,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1942769647892011287, guid: b8bbce4b7a6882447a3adb609515432e, type: 3}
       propertyPath: m_RootOrder
-      value: 8
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 1942769647892011287, guid: b8bbce4b7a6882447a3adb609515432e, type: 3}
       propertyPath: m_LocalPosition.x
@@ -2321,6 +2336,10 @@ PrefabInstance:
       value: Flower Bed (Bottom Left)
       objectReference: {fileID: 0}
     - target: {fileID: 8493536864925034723, guid: b8bbce4b7a6882447a3adb609515432e, type: 3}
+      propertyPath: id
+      value: -7
+      objectReference: {fileID: 0}
+    - target: {fileID: 8493536864925034723, guid: b8bbce4b7a6882447a3adb609515432e, type: 3}
       propertyPath: Shop
       value: 
       objectReference: {fileID: 33020146}
@@ -2328,6 +2347,10 @@ PrefabInstance:
       propertyPath: player
       value: 
       objectReference: {fileID: 684367974}
+    - target: {fileID: 8493536864925034723, guid: b8bbce4b7a6882447a3adb609515432e, type: 3}
+      propertyPath: CenterFarm
+      value: 
+      objectReference: {fileID: 519420033}
     - target: {fileID: 8493536864925034723, guid: b8bbce4b7a6882447a3adb609515432e, type: 3}
       propertyPath: PopupManager
       value: 
@@ -2483,7 +2506,7 @@ Camera:
     y: 0
     width: 1
     height: 1
-  near clip plane: 0.3
+  near clip plane: 0
   far clip plane: 1000
   field of view: 60
   orthographic: 1
@@ -2669,7 +2692,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1942769647892011287, guid: b8bbce4b7a6882447a3adb609515432e, type: 3}
       propertyPath: m_RootOrder
-      value: 1
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 1942769647892011287, guid: b8bbce4b7a6882447a3adb609515432e, type: 3}
       propertyPath: m_LocalPosition.x
@@ -2716,6 +2739,10 @@ PrefabInstance:
       value: Flower Bed (Left)
       objectReference: {fileID: 0}
     - target: {fileID: 8493536864925034723, guid: b8bbce4b7a6882447a3adb609515432e, type: 3}
+      propertyPath: id
+      value: -4
+      objectReference: {fileID: 0}
+    - target: {fileID: 8493536864925034723, guid: b8bbce4b7a6882447a3adb609515432e, type: 3}
       propertyPath: Shop
       value: 
       objectReference: {fileID: 33020146}
@@ -2723,6 +2750,10 @@ PrefabInstance:
       propertyPath: player
       value: 
       objectReference: {fileID: 684367974}
+    - target: {fileID: 8493536864925034723, guid: b8bbce4b7a6882447a3adb609515432e, type: 3}
+      propertyPath: CenterFarm
+      value: 
+      objectReference: {fileID: 519420033}
     - target: {fileID: 8493536864925034723, guid: b8bbce4b7a6882447a3adb609515432e, type: 3}
       propertyPath: PopupManager
       value: 
@@ -3085,7 +3116,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   PlayerGender: 0
-  money: 100
+  Money: 100
   InHand: 0
   PathfindingManager: {fileID: 1130199448}
   Shop: {fileID: 33020146}
@@ -3964,7 +3995,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1942769647892011287, guid: b8bbce4b7a6882447a3adb609515432e, type: 3}
       propertyPath: m_RootOrder
-      value: 2
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 1942769647892011287, guid: b8bbce4b7a6882447a3adb609515432e, type: 3}
       propertyPath: m_LocalPosition.x
@@ -4011,6 +4042,10 @@ PrefabInstance:
       value: Flower Bed (Right)
       objectReference: {fileID: 0}
     - target: {fileID: 8493536864925034723, guid: b8bbce4b7a6882447a3adb609515432e, type: 3}
+      propertyPath: id
+      value: -6
+      objectReference: {fileID: 0}
+    - target: {fileID: 8493536864925034723, guid: b8bbce4b7a6882447a3adb609515432e, type: 3}
       propertyPath: Shop
       value: 
       objectReference: {fileID: 33020146}
@@ -4018,6 +4053,10 @@ PrefabInstance:
       propertyPath: player
       value: 
       objectReference: {fileID: 684367974}
+    - target: {fileID: 8493536864925034723, guid: b8bbce4b7a6882447a3adb609515432e, type: 3}
+      propertyPath: CenterFarm
+      value: 
+      objectReference: {fileID: 519420033}
     - target: {fileID: 8493536864925034723, guid: b8bbce4b7a6882447a3adb609515432e, type: 3}
       propertyPath: PopupManager
       value: 
@@ -4415,6 +4454,7 @@ MonoBehaviour:
   Light2D: {fileID: 2105277307}
   MajorClick: {fileID: 1033100302}
   NextDayScreen: {fileID: 1023733638}
+  GameFunctions: {fileID: 2146015837}
   Days: 1
 --- !u!4 &1033100300
 Transform:
@@ -4444,6 +4484,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Player: {fileID: 684367974}
   PopupManager: {fileID: 1663070396}
+  StorylinesSeen: []
 --- !u!82 &1033100302
 AudioSource:
   m_ObjectHideFlags: 0
@@ -4741,7 +4782,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1942769647892011287, guid: b8bbce4b7a6882447a3adb609515432e, type: 3}
       propertyPath: m_RootOrder
-      value: 4
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 1942769647892011287, guid: b8bbce4b7a6882447a3adb609515432e, type: 3}
       propertyPath: m_LocalPosition.x
@@ -4788,6 +4829,10 @@ PrefabInstance:
       value: Flower Bed (Bottom)
       objectReference: {fileID: 0}
     - target: {fileID: 8493536864925034723, guid: b8bbce4b7a6882447a3adb609515432e, type: 3}
+      propertyPath: id
+      value: -8
+      objectReference: {fileID: 0}
+    - target: {fileID: 8493536864925034723, guid: b8bbce4b7a6882447a3adb609515432e, type: 3}
       propertyPath: Shop
       value: 
       objectReference: {fileID: 33020146}
@@ -4795,6 +4840,10 @@ PrefabInstance:
       propertyPath: player
       value: 
       objectReference: {fileID: 684367974}
+    - target: {fileID: 8493536864925034723, guid: b8bbce4b7a6882447a3adb609515432e, type: 3}
+      propertyPath: CenterFarm
+      value: 
+      objectReference: {fileID: 519420033}
     - target: {fileID: 8493536864925034723, guid: b8bbce4b7a6882447a3adb609515432e, type: 3}
       propertyPath: PopupManager
       value: 
@@ -5573,7 +5622,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1942769647892011287, guid: b8bbce4b7a6882447a3adb609515432e, type: 3}
       propertyPath: m_RootOrder
-      value: 5
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1942769647892011287, guid: b8bbce4b7a6882447a3adb609515432e, type: 3}
       propertyPath: m_LocalPosition.x
@@ -5627,6 +5676,10 @@ PrefabInstance:
       propertyPath: player
       value: 
       objectReference: {fileID: 684367974}
+    - target: {fileID: 8493536864925034723, guid: b8bbce4b7a6882447a3adb609515432e, type: 3}
+      propertyPath: CenterFarm
+      value: 
+      objectReference: {fileID: 519420033}
     - target: {fileID: 8493536864925034723, guid: b8bbce4b7a6882447a3adb609515432e, type: 3}
       propertyPath: PopupManager
       value: 
@@ -9733,7 +9786,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1942769647892011287, guid: b8bbce4b7a6882447a3adb609515432e, type: 3}
       propertyPath: m_RootOrder
-      value: 7
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 1942769647892011287, guid: b8bbce4b7a6882447a3adb609515432e, type: 3}
       propertyPath: m_LocalPosition.x
@@ -9780,6 +9833,10 @@ PrefabInstance:
       value: Flower Bed (Bottom Right)
       objectReference: {fileID: 0}
     - target: {fileID: 8493536864925034723, guid: b8bbce4b7a6882447a3adb609515432e, type: 3}
+      propertyPath: id
+      value: -9
+      objectReference: {fileID: 0}
+    - target: {fileID: 8493536864925034723, guid: b8bbce4b7a6882447a3adb609515432e, type: 3}
       propertyPath: Shop
       value: 
       objectReference: {fileID: 33020146}
@@ -9787,6 +9844,10 @@ PrefabInstance:
       propertyPath: player
       value: 
       objectReference: {fileID: 684367974}
+    - target: {fileID: 8493536864925034723, guid: b8bbce4b7a6882447a3adb609515432e, type: 3}
+      propertyPath: CenterFarm
+      value: 
+      objectReference: {fileID: 519420033}
     - target: {fileID: 8493536864925034723, guid: b8bbce4b7a6882447a3adb609515432e, type: 3}
       propertyPath: PopupManager
       value: 
@@ -9896,6 +9957,7 @@ MonoBehaviour:
   dailyPaymentText: {fileID: 1412090659}
   totalDailyPaymentText: {fileID: 873744118}
   maxMoneyAvalibleToBorrow: 1000
+  DailyPayments: []
   Player: {fileID: 684367974}
 --- !u!114 &1909823481
 MonoBehaviour:
@@ -10955,15 +11017,15 @@ Transform:
   m_LocalPosition: {x: 0, y: -0, z: -1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
-  - {fileID: 7080961904011949018}
-  - {fileID: 551935048}
-  - {fileID: 880984911}
-  - {fileID: 141996433}
-  - {fileID: 1121898547}
   - {fileID: 1329647951}
+  - {fileID: 141996433}
   - {fileID: 191132541}
-  - {fileID: 1886260087}
+  - {fileID: 551935048}
+  - {fileID: 7080961904011949018}
+  - {fileID: 880984911}
   - {fileID: 496756909}
+  - {fileID: 1121898547}
+  - {fileID: 1886260087}
   m_Father: {fileID: 0}
   m_RootOrder: 10
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -10982,6 +11044,7 @@ MonoBehaviour:
   Player: {fileID: 684367974}
   Shop: {fileID: 33020146}
   PopupManager: {fileID: 1663070396}
+  CenterFarm: {fileID: 519420033}
   PathfindingManager: {fileID: 1130199448}
   FlowerBed: {fileID: 2664975889381648385, guid: b8bbce4b7a6882447a3adb609515432e, type: 3}
 --- !u!1 &2144771075
@@ -11148,6 +11211,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   AudioMixer: {fileID: 24100000, guid: 79b7a26f867aef64b836531ad6a5c291, type: 2}
+  GameFlow: {fileID: 1033100299}
+  Player: {fileID: 684367974}
+  StorylineManager: {fileID: 1033100301}
+  Shop: {fileID: 33020146}
+  BorrowMoney: {fileID: 1909823480}
+  FlowerBedManager: {fileID: 2141535387}
+  CenterFarm: {fileID: 519420033}
+  NextDayScreen: {fileID: 1023733638}
 --- !u!4 &2146015838
 Transform:
   m_ObjectHideFlags: 0
@@ -11276,7 +11347,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1942769647892011287, guid: b8bbce4b7a6882447a3adb609515432e, type: 3}
       propertyPath: m_RootOrder
-      value: 0
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 1942769647892011287, guid: b8bbce4b7a6882447a3adb609515432e, type: 3}
       propertyPath: m_LocalPosition.x
@@ -11323,6 +11394,10 @@ PrefabInstance:
       value: Flower Bed (Center)
       objectReference: {fileID: 0}
     - target: {fileID: 8493536864925034723, guid: b8bbce4b7a6882447a3adb609515432e, type: 3}
+      propertyPath: id
+      value: -5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8493536864925034723, guid: b8bbce4b7a6882447a3adb609515432e, type: 3}
       propertyPath: Shop
       value: 
       objectReference: {fileID: 33020146}
@@ -11330,6 +11405,10 @@ PrefabInstance:
       propertyPath: player
       value: 
       objectReference: {fileID: 684367974}
+    - target: {fileID: 8493536864925034723, guid: b8bbce4b7a6882447a3adb609515432e, type: 3}
+      propertyPath: CenterFarm
+      value: 
+      objectReference: {fileID: 519420033}
     - target: {fileID: 8493536864925034723, guid: b8bbce4b7a6882447a3adb609515432e, type: 3}
       propertyPath: PopupManager
       value: 

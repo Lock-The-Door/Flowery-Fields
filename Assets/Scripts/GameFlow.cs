@@ -28,9 +28,11 @@ public class GameFlow : MonoBehaviour
         // Set vars
         Color.RGBToHSV(Camera.backgroundColor, out float _, out float _, out CameraMaxBrightness);
 
-        GenerateWeather(); // Generate weather for first day
-
-        StorylineManager.ShowStoryline("The Adventure Begins"); // Show starter story
+        if (GameStatics.NewGame) // only do this if it's a new game
+        {
+            GenerateWeather(); // Generate weather for first day
+            StorylineManager.ShowStoryline("The Adventure Begins"); // Show starter story
+        }
 
         // Set variables in randomiser
         RandomEvents.Player = Player;
@@ -48,12 +50,10 @@ public class GameFlow : MonoBehaviour
 
     public Camera Camera;
     float CameraMaxBrightness;
+    Weather[] weatherTypes = (Weather[])System.Enum.GetValues(typeof(Weather));
     void GenerateWeather()
     {
         int randomWeatherInt = Random.Range(0,101);
-
-        var weatherTypes = (Weather[]) System.Enum.GetValues(typeof(Weather));
-
 
         foreach (Weather randomWeather in weatherTypes)
         {
@@ -67,14 +67,19 @@ public class GameFlow : MonoBehaviour
             }
 
             // Matching weather
-            weather = randomWeather;
-            Debug.Log("Weather is: " + weather);
-            WeatherGui.GetComponentInChildren<TextMeshProUGUI>().text = weather.ToString(); // Update text
-            WeatherGui.GetComponent<Image>().sprite = WeatherImages[System.Array.IndexOf(weatherTypes.Reverse().ToArray(), weather)]; // Update Image
+            SetWeather(randomWeather);
             break;
         }
+    }
+    public void SetWeather(Weather newWeather)
+    {
+        weather = newWeather;
 
         // Post weather generation
+        Debug.Log("Weather is: " + weather);
+        WeatherGui.GetComponentInChildren<TextMeshProUGUI>().text = weather.ToString(); // Update text
+        WeatherGui.GetComponent<Image>().sprite = WeatherImages[System.Array.IndexOf(weatherTypes.Reverse().ToArray(), weather)]; // Update Image
+
         // Change lighting
         // Camera bg
         Color.RGBToHSV(Camera.backgroundColor, out float BgH, out float BgS, out float _);
@@ -316,6 +321,7 @@ public class GameFlow : MonoBehaviour
     public Light2D Light2D;
     public AudioSource MajorClick;
     public NextDayScreen NextDayScreen;
+    public GameFunctions GameFunctions;
     public int Days = 1;
     IEnumerator FinishDay()
     {
@@ -324,7 +330,7 @@ public class GameFlow : MonoBehaviour
         // Play sound
         MajorClick.Play();
 
-        Player.Navigate(new Vector3[] { new Vector3(6, 4, 1) }, playSelectSound: false); // Return to spawn loc
+        Player.Navigate(new List<Vector3> { new Vector3(6, 4, 1) }, playSelectSound: false); // Return to spawn loc
 
         // Show black screen
         NextDayScreen.gameObject.SetActive(true);
@@ -333,7 +339,7 @@ public class GameFlow : MonoBehaviour
         yield return new WaitUntil(() => NextDayScreen.time >= 1);
 
         // Manage Debt
-        if (Player.money < 0)
+        if (Player.Money < 0)
         {
             if (inDebt)
             {
@@ -347,14 +353,14 @@ public class GameFlow : MonoBehaviour
                     PopupManager.ShowWindowPopup("You've lost everything...", "Sadly, you've ended up with less money than you've started with. Luckily for you, your parents were nice enough to pay for your debts and give you a fresh start.", goodAlert: false);
 
                     // Reset values
-                    Player.money = 100;
+                    Player.Money = 100;
                 }
                 else
                 { 
                     // Display message
                     PopupManager.ShowWindowPopup($"You sold your {shopItems[0].Name}", $"Since you were still in debt, you were forced to sell some things to help you get back on your feet.", goodAlert: false);
 
-                    Player.money += shopItems[0].Price; // Return money
+                    Player.Money += shopItems[0].Price; // Return money
                     int newLevel = --shopItems[0].Level;
 
                     if (shopItems[0].Name == "Flower Beds") // flower bed edge case
@@ -373,15 +379,15 @@ public class GameFlow : MonoBehaviour
         {
             inDebt = false;
 
-            Player.money -= FamilyPayment; // Pay family
-            Player.money -= BorrowMoney.TotalDailyPayment; // Pay loans
+            Player.Money -= FamilyPayment; // Pay family
+            Player.Money -= BorrowMoney.TotalDailyPayment; // Pay loans
             BorrowMoney.UpdateDailyPayments();
 
             RandomEvents.Run(); // Random events
         }
 
         // Game won?
-        if (!finishedGame && Player.money > 5000 && Shop.IsMaxedOut)
+        if (!finishedGame && Player.Money > 5000 && Shop.IsMaxedOut)
         {
             Debug.Log($"You've made a lot of money, your family is proud of you. The end! :) ({Days} days to complete game)");
             StorylineManager.ShowStoryline("The End");
@@ -427,6 +433,8 @@ public class GameFlow : MonoBehaviour
 
         // Create new weather for tomorrow
         GenerateWeather();
+
+        GameFunctions.SaveGame(); // Save data everyday
     }
 }
 
@@ -502,7 +510,7 @@ public static class RandomEvents
 
     static void ExtraCash()
     {
-        Player.money += 100;
+        Player.Money += 100;
     }
 
 

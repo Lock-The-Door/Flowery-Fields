@@ -18,7 +18,7 @@ public class StorylineManager : MonoBehaviour
     public Player Player;
     public PopupManager PopupManager;
 
-    List<string> storylinesSeen = new List<string>();
+    public List<string> StorylinesSeen = new List<string>();
     Dictionary<string, Storyline[]> storylines => new Dictionary<string, Storyline[]>
     {
         {
@@ -65,10 +65,10 @@ public class StorylineManager : MonoBehaviour
 
     public void ShowStoryline(string storylineName)
     {
-        if (storylinesSeen.Contains(storylineName) || !storylines.TryGetValue(storylineName, out var storyline))
+        if (StorylinesSeen.Contains(storylineName) || !storylines.TryGetValue(storylineName, out var storyline))
             return;
 
-        storylinesSeen.Add(storylineName);
+        StorylinesSeen.Add(storylineName);
 
         foreach (Storyline storylineLine in storyline)
             PopupManager.ShowWindowPopup(storylineLine.title, storylineLine.details);

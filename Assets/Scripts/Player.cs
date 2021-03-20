@@ -20,7 +20,7 @@ public class Player : MonoBehaviour
 
     public Gender PlayerGender = Gender.girl;
 
-    public int money = 100;
+    public int Money = 100;
     public Items InHand = Items.Nothing;
 
     public PathfindingManager PathfindingManager;
@@ -39,7 +39,7 @@ public class Player : MonoBehaviour
         SpriteRenderer = GetComponent<SpriteRenderer>();
     }
 
-    public void Navigate(Vector3[] targetLocs, System.Action callback = null, bool playSelectSound = true)
+    public void Navigate(List<Vector3> targetLocs, System.Action callback = null, bool playSelectSound = true)
     {
         if (playSelectSound)
             SelectSound.Play();
@@ -62,10 +62,15 @@ public class Player : MonoBehaviour
         PathfindingManager.Pathfinding.GetGrid().GetXY(targetLoc, out int targetx, out int targety);
         Debug.Log(targetx + ", " + targety);
 
+        Debug.Log(targetLoc);
+
         var path = PathfindingManager.Pathfinding.FindPath(transform.position, targetLoc);
 
         if (path == null || path.Count == 0)
+        {
             Debug.LogError("Not moving");
+            return;
+        }
 
         float initialTime = 0;
 

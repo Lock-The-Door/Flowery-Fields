@@ -31,6 +31,8 @@ public class ShopItem
 
     public void Upgrade()
     {
+        Level++; // Increase level
+
         Debug.Log("Running upgrade action for: " + Name);
         if (UpgradeAction != null)
             UpgradeAction.Invoke(this);
@@ -57,15 +59,6 @@ public class Shop : MonoBehaviour
 
     public StorylineManager StorylineManager;
     public FlowerBedManager FlowerBedManager;
-    public CenterFarm CenterFarm;
-
-    private void Start()
-    {
-        // Set manager refs for static class
-        ShopItemUpgrades.Player = Player;
-        ShopItemUpgrades.FlowerBedManager = FlowerBedManager;
-        ShopItemUpgrades.CenterFarm = CenterFarm;
-    }
 
     public AudioSource BuySound;
     void BuyItem(ShopItem shopItem)
@@ -73,18 +66,16 @@ public class Shop : MonoBehaviour
         // See if enough money and take money away
         var discountShopItem = ShopItems.Find(shopItem => shopItem.Name == "Discounts");
         int cost = Mathf.RoundToInt(shopItem.Price * (1 - discountShopItem.Level / discountShopItem.MaxLevel * 0.5f));
-        if (cost > Player.money)
+        if (cost > Player.Money)
         {
             Debug.Log("You are too poor! :(");
             PopupManager.ShowBottomPopup("Not enough money...", Color.red, goodAlert: false);
             return;
         }
 
-        Player.money -= cost;
+        Player.Money -= cost;
 
         Debug.Log($"Buying {shopItem.Name}. Was level {shopItem.Level}");
-
-        shopItem.Level++; // Increase level
 
         shopItem.Upgrade(); // Run function to upgrade
 

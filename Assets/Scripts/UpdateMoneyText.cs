@@ -11,8 +11,8 @@ public class UpdateMoneyText : MonoBehaviour
     {
         TextMeshPro = GetComponent<TextMeshProUGUI>();
 
-        TextMeshPro.text = Player.money.ToString();
-        animateGoal = Player.money;
+        TextMeshPro.text = Player.Money.ToString();
+        animateGoal = Player.Money;
     }
 
     int animateStart = 0;
@@ -23,19 +23,19 @@ public class UpdateMoneyText : MonoBehaviour
     void Update()
     {
         // Set Goal
-        if (Player.money != animateGoal)
+        if (Player.Money != animateGoal)
         {
-            if (Player.money > System.Convert.ToInt32(TextMeshPro.text.Substring(1)))
+            if (Player.Money > System.Convert.ToInt32(TextMeshPro.text.Substring(1)))
             {
-                animateGoal = Player.money;
+                animateGoal = Player.Money;
                 time = 0;
                 animateStart = System.Convert.ToInt32(TextMeshPro.text.Substring(1));
             }
-            else if (Player.money < System.Convert.ToInt32(TextMeshPro.text.Substring(1)))
+            else if (Player.Money < System.Convert.ToInt32(TextMeshPro.text.Substring(1)))
             {
                 time = 1;
-                TextMeshPro.text = "$" + Player.money.ToString();
-                animateGoal = Player.money;
+                TextMeshPro.text = "$" + Player.Money.ToString();
+                animateGoal = Player.Money;
             }
         }
 

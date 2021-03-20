@@ -4,6 +4,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
+[System.Serializable]
 public class BorrowedMoneyInfo
 {
     public int DailyCost;
@@ -30,20 +31,20 @@ public class BorrowMoney : MonoBehaviour
 
     public int maxMoneyAvalibleToBorrow = 1000;
     int MoneyReadyToBorrow => maxMoneyAvalibleToBorrow - MoneyBorrowed;
-    int MoneyBorrowed => dailyPayments.Select(payment => payment.MoneyBorrowed).Sum();
+    int MoneyBorrowed => DailyPayments.Select(payment => payment.MoneyBorrowed).Sum();
 
     readonly int[] interestRates = { 3, 10, 15 }; // 3%, 10%, 15%
 
-    readonly List<BorrowedMoneyInfo> dailyPayments = new List<BorrowedMoneyInfo>();
-    public int TotalDailyPayment => dailyPayments.Select(payment => payment.DailyCost).Sum();
+    public List<BorrowedMoneyInfo> DailyPayments = new List<BorrowedMoneyInfo>();
+    public int TotalDailyPayment => DailyPayments.Select(payment => payment.DailyCost).Sum();
     public void UpdateDailyPayments()
     {
         List<BorrowedMoneyInfo> toRemove = new List<BorrowedMoneyInfo>();
 
-        foreach(BorrowedMoneyInfo payment in dailyPayments)
+        foreach(BorrowedMoneyInfo payment in DailyPayments)
             if (--payment.DaysLeft == 0)
                 toRemove.Add(payment);
-        dailyPayments.RemoveAll(payment => toRemove.Contains(payment));
+        DailyPayments.RemoveAll(payment => toRemove.Contains(payment));
     }
 
     // current values
@@ -116,8 +117,8 @@ public class BorrowMoney : MonoBehaviour
     {
         if (moneyBorrowing > 0)
         {
-            Player.money += moneyBorrowing;
-            dailyPayments.Add(new BorrowedMoneyInfo(DailyPayment, (moneyPlan.value + 1) * 7, moneyBorrowing));
+            Player.Money += moneyBorrowing;
+            DailyPayments.Add(new BorrowedMoneyInfo(DailyPayment, (moneyPlan.value + 1) * 7, moneyBorrowing));
         }
 
         GetComponent<Close>().SendMessage("CloseObject");

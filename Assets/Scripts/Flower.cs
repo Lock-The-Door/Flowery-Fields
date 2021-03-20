@@ -36,7 +36,7 @@ public class Flower : MonoBehaviour
 
     public Material NormalMaterial;
     public Material SuperFlowerMaterial;
-    void Start() => UpdateFlower(FlowerBed.FlowerBedState.Empty);
+    void Start() => UpdateFlower(GetComponentInParent<FlowerBed>().state);
     void UpdateFlower(FlowerBed.FlowerBedState state)
     {
         if (!FlowerStates.TryGetValue(state, out Sprite sprite))

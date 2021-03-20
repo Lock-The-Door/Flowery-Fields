@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -13,7 +14,7 @@ public class Tool : MonoBehaviour, IPointerClickHandler
         Debug.Log("Object Clicked");
 
         Debug.Log("Navigating to... " + transform.position.x + ", " + transform.position.y);
-        player.Navigate(new Vector3[] { transform.position + new Vector3(-2, 0) }, InteractTool);
+        player.Navigate(new List<Vector3> { transform.position + new Vector3(-2, 0) }, InteractTool);
     }
     private void InteractTool()
     {

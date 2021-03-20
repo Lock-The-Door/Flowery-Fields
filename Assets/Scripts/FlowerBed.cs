@@ -61,6 +61,7 @@ public class FlowerBed : MonoBehaviour, IPointerClickHandler
     private int SeedsPrice => Mathf.RoundToInt(7 * (1 - discountShopItem.Level / discountShopItem.MaxLevel * 0.9f));
     private int WaterPrice => Mathf.RoundToInt(3 * (1 - discountShopItem.Level / discountShopItem.MaxLevel * 0.9f));
     public PopupManager PopupManager;
+    public CenterFarm CenterFarm;
 
     public AudioSource PlantingSound;
     public AudioSource WateringSound;
@@ -71,13 +72,15 @@ public class FlowerBed : MonoBehaviour, IPointerClickHandler
         Debug.Log("Flower Bed Clicked");
 
         Debug.Log("Navigating to... " + transform.position.x + ", " + transform.position.y);
-        var flowerBedEndPositions = new Vector3[]
+        List<Vector3> flowerBedEndPositions = new List<Vector3>();
+        if ((CenterFarm.topUnlocked ? 8 : 4) > (transform.position + new Vector3(0, 2)).y)
         {
-            transform.position + new Vector3(2, 0), // right
-            transform.position + new Vector3(0, 2), // up
-            transform.position + new Vector3(-2, 0), // left
-            transform.position + new Vector3(0, -2) // down
-        };
+            flowerBedEndPositions.Add(transform.position + new Vector3(2, 0)); // right
+            flowerBedEndPositions.Add(transform.position + new Vector3(0, 2)); // up
+            flowerBedEndPositions.Add(transform.position + new Vector3(-2, 0)); // left
+        }
+        if ((CenterFarm.bottomUnlocked ? -8 : -4) < (transform.position + new Vector3(0, -2)).y)
+            flowerBedEndPositions.Add(transform.position + new Vector3(0, -2)); // down
         player.Navigate(flowerBedEndPositions, DoAction);
     }
     private void DoAction()
@@ -94,12 +97,12 @@ public class FlowerBed : MonoBehaviour, IPointerClickHandler
                 DiggingSound.Play();
 
                 UpdateFlowerbedState(FlowerBedState.Empty);
-                player.money += sellPrice;
+                player.Money += sellPrice;
                 break;
             case Player.Items.Seeds:
                 if (state == FlowerBedState.Empty)
                 {
-                    if (player.money < SeedsPrice)
+                    if (player.Money < SeedsPrice)
                     {
                         Debug.Log("Not enough money...");
                         PopupManager.ShowBottomPopup("Not enough money...", Color.red, goodAlert: false);
@@ -109,13 +112,13 @@ public class FlowerBed : MonoBehaviour, IPointerClickHandler
                     PlantingSound.Play();
 
                     UpdateFlowerbedState(FlowerBedState.Planted);
-                    player.money -= SeedsPrice;
+                    player.Money -= SeedsPrice;
                 }
                 break;
             case Player.Items.WateringCan:
                 if (state == FlowerBedState.Planted)
                 {
-                    if (player.money < WaterPrice)
+                    if (player.Money < WaterPrice)
                     {
                         Debug.Log("Not enough money...");
                         PopupManager.ShowBottomPopup("Not enough money...", Color.red, goodAlert: false);
@@ -125,7 +128,7 @@ public class FlowerBed : MonoBehaviour, IPointerClickHandler
                     WateringSound.Play();
 
                     UpdateFlowerbedState(FlowerBedState.Watered);
-                    player.money -= WaterPrice;
+                    player.Money -= WaterPrice;
                 }
                 break;
         }

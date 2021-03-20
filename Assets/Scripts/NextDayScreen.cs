@@ -16,7 +16,8 @@ public class NextDayScreen : MonoBehaviour
         Image.color = new Color(0, 0, 0, 1);
         TextMeshPro.color = new Color(1, 1, 1, 1);
 
-        StartCoroutine(ShowScreen(1));
+        if (GameStatics.NewGame)
+            StartCoroutine(ShowScreen(1));
     }
 
     private void Update()
