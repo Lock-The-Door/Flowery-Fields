@@ -40,6 +40,14 @@ public class GameFlow : MonoBehaviour
         RandomEvents.FlowerBedManager = FlowerBedManager;
     }
 
+    Dictionary<Weather, string> WeatherText = new Dictionary<Weather, string>()
+    {
+        { Weather.Sunny, "Sunny" },
+        { Weather.Rainy, "Rainy" },
+        { Weather.SuperStorm, "Superstorm" },
+        { Weather.NaturalDisaster, "Natural Disaster" }
+    };
+
     Dictionary<Weather, float> WeatherLightingIntensity = new Dictionary<Weather, float>()
     {
         { Weather.Sunny, 1 },
@@ -276,7 +284,11 @@ public class GameFlow : MonoBehaviour
                 { FlowerBed.FlowerBedState.Watered,
                     new Dictionary<FlowerBed.FlowerBedState, float>
                     {
-                        { FlowerBed.FlowerBedState.DrownedFlowers, 1.00f }
+                        { FlowerBed.FlowerBedState.SuperFlowers, 0.06f }, // 6% of flowers are super flowers
+                        { FlowerBed.FlowerBedState.BeautifulFlowers, 0.06f }, // 6% chance for beautiful flowers
+                        { FlowerBed.FlowerBedState.NormalFlowers, 0.06f }, // 6% chance for normal flowers
+                        { FlowerBed.FlowerBedState.WeakFlowers, 0.06f }, // 6% chance for weak flowers
+                        { FlowerBed.FlowerBedState.DeadFlowers, 0.76f } // otherwise, dead
                     }
                 },
 
