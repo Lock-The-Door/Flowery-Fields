@@ -40,7 +40,7 @@ public class StorylineManager : MonoBehaviour
             new Storyline[]
             {
                 new Storyline("Being generous!", 
-                    "As you make more money, you decide to become more generous give more money to your family.")
+                    "As you make more money, you decide to become more generous and give more money to your family.")
             }
         },
         {
