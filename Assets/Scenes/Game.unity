@@ -11219,6 +11219,8 @@ MonoBehaviour:
   FlowerBedManager: {fileID: 2141535387}
   CenterFarm: {fileID: 519420033}
   NextDayScreen: {fileID: 1023733638}
+  Camera: {fileID: 0}
+  WindowPopup: {fileID: 8283545584610265731, guid: 099c1a53ca0115746b26d1224f7c84b1, type: 3}
 --- !u!4 &2146015838
 Transform:
   m_ObjectHideFlags: 0

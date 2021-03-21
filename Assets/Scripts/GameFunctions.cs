@@ -3,8 +3,11 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.Serialization.Formatters.Binary;
+using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.Audio;
+using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public static class GameStatics
 {
@@ -26,7 +29,11 @@ public class GameFunctions : MonoBehaviour
     private void Start()
     {
         // Hook events
-        Application.quitting += OnQuitting;
+        Application.wantsToQuit += () =>
+        {
+            SaveGame().Wait();
+            return true;
+        };
 
         // Set manager refs for static class
         ShopItemUpgrades.Player = Player;
@@ -44,40 +51,74 @@ public class GameFunctions : MonoBehaviour
             LoadGame();
     }
 
+    public Camera Camera;
+    public WindowPopup WindowPopup;
     void LoadGame()
     {
-        if (!File.Exists(Application.persistentDataPath
-                + $"/Saves/{GameStatics.GameGuid}.dat"))
+        try
         {
-            Debug.LogWarning("Save file does not exist or no save file specified");
-            return;
+            if (!File.Exists(Application.persistentDataPath
+                    + $"/Saves/{GameStatics.GameGuid}.dat"))
+            {
+                Debug.LogWarning("Save file does not exist or no save file specified");
+                throw new Exception("Save file does not exist or no save file specified");
+            }
+            // Deserialize game file
+            BinaryFormatter bf = new BinaryFormatter();
+            FileStream file =
+                       File.Open(Application.persistentDataPath
+                       + $"/Saves/{GameStatics.GameGuid}.dat", FileMode.Open);
+            GameData gameData = (GameData)bf.Deserialize(file);
+            file.Close();
+
+            // Load game data
+            Player.PlayerGender = gameData.PlayerGender;
+            GameFlow.Days = gameData.Days;
+            Player.Money = gameData.Money;
+            BorrowMoney.DailyPayments = gameData.BorrowedMoney;
+            GameFlow.SetWeather(gameData.Weather);
+            StorylineManager.StorylinesSeen = gameData.StorylinesSeen;
+            Shop.ShopItems.ForEach(shopItem => { for (int i = 0; i < gameData.ShopItemLevels[shopItem.Name]; i++) shopItem.Upgrade(); });
+            FlowerBedManager.transform.GetComponentsInChildren<FlowerBed>().ToList().ForEach(flowerbed => flowerbed.UpdateFlowerbedState(gameData.FlowerBedStates[flowerbed.id]));
+
+            Debug.Log("Game data loaded!");
+
+            StartCoroutine(NextDayScreen.ShowScreen(gameData.Days));
         }
+        catch (Exception e)
+        {
+            Debug.LogError(e);
 
-        // Deserialize game file
-        BinaryFormatter bf = new BinaryFormatter();
-        FileStream file =
-                   File.Open(Application.persistentDataPath
-                   + $"/Saves/{GameStatics.GameGuid}.dat", FileMode.Open);
-        GameData gameData = (GameData)bf.Deserialize(file);
-        file.Close();
+            Debug.LogError("Failed to load game save");
 
-        // Load game data
-        Player.PlayerGender = gameData.PlayerGender;
-        GameFlow.Days = gameData.Days;
-        Player.Money = gameData.Money;
-        BorrowMoney.DailyPayments = gameData.BorrowedMoney;
-        GameFlow.SetWeather(gameData.Weather);
-        StorylineManager.StorylinesSeen = gameData.StorylinesSeen;
-        Shop.ShopItems.ForEach(shopItem => { for (int i = 0; i < gameData.ShopItemLevels[shopItem.Name]; i++) shopItem.Upgrade(); });
-        FlowerBedManager.transform.GetComponentsInChildren<FlowerBed>().ToList().ForEach(flowerbed => flowerbed.UpdateFlowerbedState(gameData.FlowerBedStates[flowerbed.id]));
+            Canvas OverlayCanvas = new GameObject().AddComponent<Canvas>();
+            OverlayCanvas.gameObject.AddComponent<GraphicRaycaster>();
+            OverlayCanvas.renderMode = RenderMode.ScreenSpaceOverlay;
+            WindowPopup windowPopup = Instantiate(WindowPopup, OverlayCanvas.transform);
+            windowPopup.TitleText.text = "Looks like we ran into an error!";
+            windowPopup.DetailsText.text = e.Message + "\nLook in the log files for more information.";
+            windowPopup.callbackAction = () =>
+            {
+                SaveGame(true).Wait();
 
-        Debug.Log("Game data loaded!");
-
-        StartCoroutine(NextDayScreen.ShowScreen(gameData.Days));
+                SceneManager.LoadScene("Main Menu");
+            };
+        }
     }
 
-    public void SaveGame()
+    public Task SaveGame(bool makeBackupCopy = false)
     {
+        // backup copy
+        if (makeBackupCopy && File.Exists(Application.persistentDataPath
+             + $"/Saves/{GameStatics.GameGuid}.dat"))
+        {
+            File.Copy(Application.persistentDataPath
+             + $"/Saves/{GameStatics.GameGuid}.dat",
+             Application.persistentDataPath
+             + $"/Saves/{GameStatics.GameGuid}.dat.backup", true);
+            Debug.Log("Saved backup copy of save file");
+        }
+
         if (GameStatics.GameGuid == null)
             GameStatics.GameGuid = Guid.NewGuid().ToString(); // Create new game guid if not already made
 
@@ -89,6 +130,9 @@ public class GameFunctions : MonoBehaviour
 
         // Create save file data
         GameData gameData = new GameData();
+
+        gameData.GUID = GameStatics.GameGuid;
+
         gameData.PlayerGender = Player.PlayerGender;
         gameData.Days = GameFlow.Days;
         gameData.Money = Player.Money;
@@ -101,12 +145,16 @@ public class GameFunctions : MonoBehaviour
         binaryFormatter.Serialize(file, gameData);
         file.Close();
         Debug.Log("Game data saved!");
+
+        return Task.CompletedTask;
     }
 
-    public void ExitGame() => Application.Quit();
-    private void OnQuitting()
+    public void ExitGame()
     {
-        SaveGame();
+        SaveGame().Wait();
+
+        // Return to menu on exit
+        SceneManager.LoadScene("Main Menu");
     }
 }
 
@@ -115,6 +163,7 @@ class GameData
 {
     // Metadata
     public string SaveFileName = null;
+    public string GUID;
 
     // Game Data
     public Player.Gender PlayerGender;

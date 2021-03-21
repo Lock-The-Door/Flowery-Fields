@@ -16,6 +16,10 @@ public class WindowPopup : MonoBehaviour
     Vector2 endSize;
     bool closing = false;
 
+    public System.Action callbackAction;
+    public GameObject callbackObject;
+    public string callbackName;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -34,7 +38,14 @@ public class WindowPopup : MonoBehaviour
             RectTransform.localScale = Vector2.Lerp(startSize, endSize, time);
         }
         else if (closing)
+        {
+            if (callbackAction != null)
+                callbackAction.Invoke();
+            else if (callbackObject != null)
+                callbackObject.SendMessage(callbackName);
+
             Destroy(gameObject);
+        }
     }
 
     void Close()
