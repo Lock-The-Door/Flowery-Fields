@@ -134,6 +134,8 @@ public class FlowerBed : MonoBehaviour, IPointerClickHandler
         }
     }
 
+    public StorylineManager StorylineManager;
+
     public Sprite EmptyTexture;
     public Sprite WateredTexture;
     public Sprite DrownedTexture;
@@ -173,11 +175,15 @@ public class FlowerBed : MonoBehaviour, IPointerClickHandler
                 break;
         }
 
-        if (state == FlowerBedState.SuperFlowers)
+        if (state == FlowerBedState.BeautifulFlowers)
+            StorylineManager.ShowStoryline("Beatiful Flowers");
+        else if (state == FlowerBedState.SuperFlowers)
         {
             GetComponent<Volume>().enabled = true;
 
             SpriteRenderer.material = SuperFlowerMaterial;
+
+            StorylineManager.ShowStoryline("Superflowers");
         }
         else
         {

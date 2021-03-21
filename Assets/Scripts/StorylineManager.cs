@@ -35,6 +35,60 @@ public class StorylineManager : MonoBehaviour
             }
         },
         {
+            "Sunny",
+
+            new Storyline[]
+            {
+                new Storyline("It's a sunny day!",
+                    "Let's plant some flowers! Click on the flower seeds on the table and then click on a flowerbed to plant some flowers. Don't forget to water them! When you are done, press finish day!")
+            }
+        },
+        {
+            "Rainy",
+
+            new Storyline[]
+            {
+                new Storyline("It's raining!",
+                    "It's going to get wet! Remember to not water flowers today or your flowers will drown!")
+            }
+        },
+        {
+            "Superstorm",
+
+            new Storyline[]
+            {
+                new Storyline("The superstorm!",
+                    "Superstorms are rare. They may some flowers may not make it but many will survive, stronger and better than ever!")
+            }
+        },
+        {
+            "Natural Disaster",
+            
+            new Storyline[]
+            {
+                new Storyline("Uh oh! Incoming disaster!",
+                    "Natural disasters are quite dangerous and you won't get much out of it unless you're lucky. You're better off leaving some flowers unharvested today and hope they don't die.")
+            }
+        },
+        {
+            "Beautiful flowers",
+
+            new Storyline[]
+            {
+                new Storyline("Some nice flowers",
+                    "Seems like you got some beautiful flowers! These might sell for more.")
+            }
+        },
+        {
+            "Superflowers",
+
+            new Storyline[]
+            {
+                new Storyline("Superflowers!!!",
+                    "The rumours were true these ultimate beautiful flowers do exist. You'll definitely get a lot of money for that")
+            }
+        },
+        {
             "Being Generous",
 
             new Storyline[]

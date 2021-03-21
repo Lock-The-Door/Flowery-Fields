@@ -85,7 +85,7 @@ public class GameFlow : MonoBehaviour
 
         // Post weather generation
         Debug.Log("Weather is: " + weather);
-        WeatherGui.GetComponentInChildren<TextMeshProUGUI>().text = weather.ToString(); // Update text
+        WeatherGui.GetComponentInChildren<TextMeshProUGUI>().text = WeatherText[weather]; // Update text
         WeatherGui.GetComponent<Image>().sprite = WeatherImages[System.Array.IndexOf(weatherTypes.Reverse().ToArray(), weather)]; // Update Image
 
         // Change lighting
@@ -94,6 +94,8 @@ public class GameFlow : MonoBehaviour
         Camera.backgroundColor = Color.HSVToRGB(BgH, BgS, CameraMaxBrightness * WeatherLightingIntensity[weather]);
         // Light 2d
         Light2D.intensity = WeatherLightingIntensity[weather];
+
+        StorylineManager.ShowStoryline(WeatherText[weather]); // Storyline
     }
 
     public Player Player;

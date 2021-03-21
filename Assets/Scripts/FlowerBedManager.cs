@@ -7,6 +7,7 @@ public class FlowerBedManager : MonoBehaviour
     public Shop Shop;
     public PopupManager PopupManager;
     public CenterFarm CenterFarm;
+    public StorylineManager StorylineManager;
     public PathfindingManager PathfindingManager;
     public GameObject FlowerBed;
 
@@ -35,6 +36,7 @@ public class FlowerBedManager : MonoBehaviour
         NewFlowerBed.GetComponent<FlowerBed>().player = Player;
         NewFlowerBed.GetComponent<FlowerBed>().PopupManager = PopupManager;
         NewFlowerBed.GetComponent<FlowerBed>().CenterFarm = CenterFarm;
+        NewFlowerBed.GetComponent<FlowerBed>().StorylineManager = StorylineManager;
         NewFlowerBed.GetComponent<FlowerBed>().Shop = Shop;
         NewFlowerBed.GetComponent<FlowerBed>().id = level;
 

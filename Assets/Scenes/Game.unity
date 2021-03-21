@@ -969,6 +969,10 @@ PrefabInstance:
       propertyPath: PopupManager
       value: 
       objectReference: {fileID: 1663070396}
+    - target: {fileID: 8493536864925034723, guid: b8bbce4b7a6882447a3adb609515432e, type: 3}
+      propertyPath: StorylineManager
+      value: 
+      objectReference: {fileID: 1033100301}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b8bbce4b7a6882447a3adb609515432e, type: 3}
 --- !u!4 &141996433 stripped
@@ -1393,6 +1397,10 @@ PrefabInstance:
       propertyPath: PopupManager
       value: 
       objectReference: {fileID: 1663070396}
+    - target: {fileID: 8493536864925034723, guid: b8bbce4b7a6882447a3adb609515432e, type: 3}
+      propertyPath: StorylineManager
+      value: 
+      objectReference: {fileID: 1033100301}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b8bbce4b7a6882447a3adb609515432e, type: 3}
 --- !u!4 &191132541 stripped
@@ -2355,6 +2363,10 @@ PrefabInstance:
       propertyPath: PopupManager
       value: 
       objectReference: {fileID: 1663070396}
+    - target: {fileID: 8493536864925034723, guid: b8bbce4b7a6882447a3adb609515432e, type: 3}
+      propertyPath: StorylineManager
+      value: 
+      objectReference: {fileID: 1033100301}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b8bbce4b7a6882447a3adb609515432e, type: 3}
 --- !u!4 &496756909 stripped
@@ -2758,6 +2770,10 @@ PrefabInstance:
       propertyPath: PopupManager
       value: 
       objectReference: {fileID: 1663070396}
+    - target: {fileID: 8493536864925034723, guid: b8bbce4b7a6882447a3adb609515432e, type: 3}
+      propertyPath: StorylineManager
+      value: 
+      objectReference: {fileID: 1033100301}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b8bbce4b7a6882447a3adb609515432e, type: 3}
 --- !u!4 &551935048 stripped
@@ -4061,6 +4077,10 @@ PrefabInstance:
       propertyPath: PopupManager
       value: 
       objectReference: {fileID: 1663070396}
+    - target: {fileID: 8493536864925034723, guid: b8bbce4b7a6882447a3adb609515432e, type: 3}
+      propertyPath: StorylineManager
+      value: 
+      objectReference: {fileID: 1033100301}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b8bbce4b7a6882447a3adb609515432e, type: 3}
 --- !u!4 &880984911 stripped
@@ -4848,6 +4868,10 @@ PrefabInstance:
       propertyPath: PopupManager
       value: 
       objectReference: {fileID: 1663070396}
+    - target: {fileID: 8493536864925034723, guid: b8bbce4b7a6882447a3adb609515432e, type: 3}
+      propertyPath: StorylineManager
+      value: 
+      objectReference: {fileID: 1033100301}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b8bbce4b7a6882447a3adb609515432e, type: 3}
 --- !u!4 &1121898547 stripped
@@ -5684,6 +5708,10 @@ PrefabInstance:
       propertyPath: PopupManager
       value: 
       objectReference: {fileID: 1663070396}
+    - target: {fileID: 8493536864925034723, guid: b8bbce4b7a6882447a3adb609515432e, type: 3}
+      propertyPath: StorylineManager
+      value: 
+      objectReference: {fileID: 1033100301}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b8bbce4b7a6882447a3adb609515432e, type: 3}
 --- !u!4 &1329647951 stripped
@@ -9852,6 +9880,10 @@ PrefabInstance:
       propertyPath: PopupManager
       value: 
       objectReference: {fileID: 1663070396}
+    - target: {fileID: 8493536864925034723, guid: b8bbce4b7a6882447a3adb609515432e, type: 3}
+      propertyPath: StorylineManager
+      value: 
+      objectReference: {fileID: 1033100301}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b8bbce4b7a6882447a3adb609515432e, type: 3}
 --- !u!4 &1886260087 stripped
@@ -11045,6 +11077,7 @@ MonoBehaviour:
   Shop: {fileID: 33020146}
   PopupManager: {fileID: 1663070396}
   CenterFarm: {fileID: 519420033}
+  StorylineManager: {fileID: 1033100301}
   PathfindingManager: {fileID: 1130199448}
   FlowerBed: {fileID: 2664975889381648385, guid: b8bbce4b7a6882447a3adb609515432e, type: 3}
 --- !u!1 &2144771075
@@ -11415,6 +11448,10 @@ PrefabInstance:
       propertyPath: PopupManager
       value: 
       objectReference: {fileID: 1663070396}
+    - target: {fileID: 8493536864925034723, guid: b8bbce4b7a6882447a3adb609515432e, type: 3}
+      propertyPath: StorylineManager
+      value: 
+      objectReference: {fileID: 1033100301}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b8bbce4b7a6882447a3adb609515432e, type: 3}
 --- !u!4 &7080961904011949018 stripped
