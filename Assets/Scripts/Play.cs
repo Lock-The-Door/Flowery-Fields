@@ -30,6 +30,7 @@ public class Play : MonoBehaviour
         if (SaveFiles.Count == 0)
         {
             SceneManager.LoadScene("Game");
+            return;
         }
 
         GameStatics.GameGuid = SaveFiles[0].GUID;
