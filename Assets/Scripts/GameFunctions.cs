@@ -106,8 +106,13 @@ public class GameFunctions : MonoBehaviour
         }
     }
 
+    public bool SaveInEditor = false;
     public Task SaveGame(bool makeBackupCopy = false)
     {
+        // don't save in editor
+        if (!SaveInEditor)
+            return Task.CompletedTask;
+
         // backup copy
         if (makeBackupCopy && File.Exists(Application.persistentDataPath
              + $"/Saves/{GameStatics.GameGuid}.dat"))
