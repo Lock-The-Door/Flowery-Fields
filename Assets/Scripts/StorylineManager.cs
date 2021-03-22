@@ -49,7 +49,7 @@ public class StorylineManager : MonoBehaviour
             new Storyline[]
             {
                 new Storyline("It's raining!",
-                    "It's going to get wet! Remember to not water flowers today or your flowers will drown!")
+                    "It's going to get wet! Remember to not water flowers today or your all flowers will drown!")
             }
         },
         {
@@ -58,7 +58,7 @@ public class StorylineManager : MonoBehaviour
             new Storyline[]
             {
                 new Storyline("The superstorm!",
-                    "Superstorms are rare. They may some flowers may not make it but many will survive, stronger and better than ever!")
+                    "Superstorms are rare. Some flowers may not make it but many will still survive, stronger and better than ever!")
             }
         },
         {
@@ -85,7 +85,7 @@ public class StorylineManager : MonoBehaviour
             new Storyline[]
             {
                 new Storyline("Superflowers!!!",
-                    "The rumours were true these ultimate beautiful flowers do exist. You'll definitely get a lot of money for that")
+                    "The rumours were true these ultimate beautiful flowers do exist. You'll definitely get a lot of money for that.")
             }
         },
         {
