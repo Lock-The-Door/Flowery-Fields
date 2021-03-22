@@ -47,8 +47,8 @@ public class Shop : MonoBehaviour
     {
         new ShopItem(_name: "Flower Beds", _startingPrice: 300, _priceInflation: level => 25 * (level + 1), _familyPaymentBonus: 10, _maxLevel: 11, _isDowngradable: true, _upgradeAction: ShopItemUpgrades.FlowerBeds),
         new ShopItem(_name: "Shoes", _startingPrice: 150, _priceInflation: level => 10 + 2 * level, _familyPaymentBonus: 2, _maxLevel: 25, _isDowngradable: true),
-        new ShopItem(_name: "Security", _startingPrice: 250, _priceInflation: level => 50 + 5 * level, _familyPaymentBonus: 15, _maxLevel: 5, _upgradeAction: ShopItemUpgrades.ModifyLuck),
-        new ShopItem(_name: "Luck", _startingPrice: 375, _priceInflation: level => 100 + 10 * level, _familyPaymentBonus: 45, _maxLevel: 5, _upgradeAction: ShopItemUpgrades.ModifyLuck),
+        new ShopItem(_name: "Security", _startingPrice: 250, _priceInflation: level => 50 + 5 * level, _familyPaymentBonus: 15, _maxLevel: 5),
+        new ShopItem(_name: "Luck", _startingPrice: 375, _priceInflation: level => 100 + 10 * level, _familyPaymentBonus: 45, _maxLevel: 5),
         new ShopItem(_name: "Better bees", _startingPrice: 200, _priceInflation: level => 50 + 10 * level, _familyPaymentBonus: 20, _maxLevel: 3),
         new ShopItem(_name: "Discounts", _startingPrice: 500, _priceInflation: level => 25 + 25 * level, _familyPaymentBonus: 25, _maxLevel: 5, _isDowngradable: true)
     };
@@ -103,6 +103,8 @@ public class Shop : MonoBehaviour
             buyButton.BuyButton.interactable = true;
     }
 
+    public ShopItem FindByName(string shopItemName) => ShopItems.Find(shopItem => shopItem.Name == shopItemName);
+
     public int TotalBonusFamilyPayment => ShopItems.Select(shopItem => shopItem.FamilyPaymentBonus * shopItem.Level).Sum();
     public bool IsMaxedOut => ShopItems.TrueForAll(shopItem => shopItem.Level == shopItem.MaxLevel);
 }
@@ -131,17 +133,5 @@ public static class ShopItemUpgrades
                 CenterFarm.leftSideUnlocked = true;
                 break;
         }
-    }
-
-    public static void ModifyLuck(ShopItem shopItem)
-    {
-        bool isPositiveLuck = shopItem.Name == "Luck"; // if luck then give better luck, if security give less unluck
-
-        var eventList = RandomEvents.RandomEventList.FindAll(randomEvent => randomEvent.isGoodEvent == isPositiveLuck);
-
-        if (isPositiveLuck)
-            eventList.ForEach(randomEvent => randomEvent.chance = randomEvent.startingChance * (shopItem.Level + 1));
-        else
-            eventList.ForEach(randomEvent => randomEvent.chance = randomEvent.startingChance * (1 - shopItem.Level / shopItem.MaxLevel));
     }
 }

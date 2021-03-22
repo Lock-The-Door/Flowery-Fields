@@ -36,6 +36,7 @@ public class GameFlow : MonoBehaviour
 
         // Set variables in randomiser
         RandomEvents.Player = Player;
+        RandomEvents.Shop = Shop;
         RandomEvents.PopupManager = PopupManager;
         RandomEvents.FlowerBedManager = FlowerBedManager;
     }
@@ -396,8 +397,6 @@ public class GameFlow : MonoBehaviour
             Player.Money -= FamilyPayment; // Pay family
             Player.Money -= BorrowMoney.TotalDailyPayment; // Pay loans
             BorrowMoney.UpdateDailyPayments();
-
-            RandomEvents.Run(); // Random events
         }
 
         // Game won?
@@ -445,6 +444,8 @@ public class GameFlow : MonoBehaviour
             }
         }
 
+        RandomEvents.Run(); // Random events
+
         // Create new weather for tomorrow
         GenerateWeather();
 
@@ -460,16 +461,21 @@ public class RandomEvent
         Flower
     }
 
-    public string name;
-    public string description;
-    public bool isGoodEvent;
-    public EventType eventType;
-    public float startingChance;
-    public float chance;
-    public System.Delegate eventFunction;
+    ShopItem ShopItem => RandomEvents.Shop.FindByName(ShopItemName);
+    readonly string ShopItemName;
 
-    public RandomEvent (string _name, string _description, bool _isGoodEvent, EventType _eventType, float _chance, System.Delegate _eventFunction)
+    public readonly string name;
+    public readonly string description;
+    public readonly bool isGoodEvent;
+    public readonly EventType eventType;
+    public readonly int startingChance;
+    public int chance => isGoodEvent ? startingChance * (ShopItem.Level + 1) : startingChance * (1 - ShopItem.Level / ShopItem.MaxLevel);
+    public readonly System.Delegate eventFunction;
+
+    public RandomEvent(string _name, string _description, bool _isGoodEvent, EventType _eventType, int _chance, System.Delegate _eventFunction, string _shopItemName)
     {
+        ShopItemName = _shopItemName;
+
         name = _name;
         description = _description;
         isGoodEvent = _isGoodEvent;
@@ -482,18 +488,20 @@ public static class RandomEvents
 {
     public static List<RandomEvent> RandomEventList = new List<RandomEvent>
     {
-        new RandomEvent("Some Sweet Extra Cash!", "Your family managed to get a hold of some extra money", true, RandomEvent.EventType.Money, 0.10f, new System.Action(ExtraCash)),
-        new RandomEvent("Someone stole your flowers!", "Your flowers were stolen by a thief!", false, RandomEvent.EventType.Flower, 0.02f, new System.Action(StolenFlowers)),
-        new RandomEvent("Pollination", "Some of your flowers got lucky and got pollinated, making them better!", true, RandomEvent.EventType.Flower, 0.1f, new System.Action(Pollination)),
-        new RandomEvent("Pollination Storm!!!", "All your flowers were upgraded while you were gone today!", true, RandomEvent.EventType.Flower, 0.01f, new System.Action(PollinationStorm))
+        new RandomEvent("Some Sweet Extra Cash!", "Your family managed to get a hold of some extra money", true, RandomEvent.EventType.Money, 10, new System.Action(ExtraCash), "Luck"),
+        new RandomEvent("Someone stole your flowers!", "Your flowers were stolen by a thief!", false, RandomEvent.EventType.Flower, 2, new System.Action(StolenFlowers), "Security"),
+        new RandomEvent("Pollination", "Some of your flowers got lucky and got pollinated, making them better!", true, RandomEvent.EventType.Flower, 10, new System.Action(Pollination), "Luck"),
+        new RandomEvent("Pollination Storm!!!", "All your flowers were upgraded while you were gone today!", true, RandomEvent.EventType.Flower, 1, new System.Action(PollinationStorm), "Luck")
     };
 
     public static void Run()
     {
+        Debug.Log("Running random events");
+
         List<RandomEvent> RandomEventsToRun = new List<RandomEvent>();
         foreach (RandomEvent randomEvent in RandomEventList)
         {
-            if (Random.value <= randomEvent.chance)
+            if (Random.Range(0, 101) <= randomEvent.chance)
                 RandomEventsToRun.Add(randomEvent);
         }
 
@@ -511,6 +519,8 @@ public static class RandomEvents
     public static PopupManager PopupManager;
     static void RunEvent(RandomEvent randomEventToRun)
     {
+        Debug.Log("Running random event: " + randomEventToRun.name);
+
         PopupManager.ShowWindowPopup(randomEventToRun.name, randomEventToRun.description, goodAlert: randomEventToRun.isGoodEvent);
         randomEventToRun.eventFunction.DynamicInvoke();
     }
