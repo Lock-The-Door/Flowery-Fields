@@ -110,6 +110,8 @@ public class BorrowMoney : MonoBehaviour
         UpdatePrices();
     }
 
+    public void PaymentPlanUpdate(int _) => UpdatePrices();
+
 
     public Player Player;
 
