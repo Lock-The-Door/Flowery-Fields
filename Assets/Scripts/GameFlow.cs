@@ -17,7 +17,7 @@ public class GameFlow : MonoBehaviour
     }
     public Weather weather = Weather.Sunny;
 
-    public int FamilyPayment => 20 + Shop.TotalBonusFamilyPayment;
+    public int FamilyPayment => 10 + Shop.TotalBonusFamilyPayment;
 
     public GameObject FlowerBeds;
 
