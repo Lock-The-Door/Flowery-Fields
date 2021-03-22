@@ -99,7 +99,7 @@ public class GameFunctions : MonoBehaviour
             windowPopup.DetailsText.text = e.Message + "\nLook in the log files for more information.";
             windowPopup.callbackAction = () =>
             {
-                SaveGame(true).Wait();
+                SaveGame(true, "load_failure_backup").Wait();
 
                 SceneManager.LoadScene("Main Menu");
             };
@@ -107,7 +107,7 @@ public class GameFunctions : MonoBehaviour
     }
 
     public bool SaveInEditor = false;
-    public Task SaveGame(bool makeBackupCopy = false)
+    public Task SaveGame(bool makeBackupCopy = false, string backupName = "backup")
     {
         // don't save in editor
         if (!SaveInEditor && Application.isEditor)
@@ -120,7 +120,7 @@ public class GameFunctions : MonoBehaviour
             File.Copy(Application.persistentDataPath
              + $"/Saves/{GameStatics.GameGuid}.dat",
              Application.persistentDataPath
-             + $"/Saves/{GameStatics.GameGuid}.dat.backup", true);
+             + $"/Saves/{GameStatics.GameGuid}-{backupName}.dat.backup", true);
             Debug.Log("Saved backup copy of save file");
         }
 

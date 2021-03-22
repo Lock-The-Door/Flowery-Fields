@@ -449,7 +449,7 @@ public class GameFlow : MonoBehaviour
         // Create new weather for tomorrow
         GenerateWeather();
 
-        GameFunctions.SaveGame(); // Save data everyday
+        GameFunctions.SaveGame(true, "finish_day_backup"); // Save data everyday while making backup copies just in case
     }
 }
 
