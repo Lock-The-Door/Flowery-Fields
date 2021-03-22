@@ -76,8 +76,8 @@ public class GameFunctions : MonoBehaviour
             GameFlow.Days = gameData.Days;
             Player.Money = gameData.Money;
             BorrowMoney.DailyPayments = gameData.BorrowedMoney;
-            GameFlow.SetWeather(gameData.Weather);
             StorylineManager.StorylinesSeen = gameData.StorylinesSeen;
+            GameFlow.SetWeather(gameData.Weather);
             Shop.ShopItems.ForEach(shopItem => { for (int i = 0; i < gameData.ShopItemLevels[shopItem.Name]; i++) shopItem.Upgrade(); });
             FlowerBedManager.transform.GetComponentsInChildren<FlowerBed>().ToList().ForEach(flowerbed => flowerbed.UpdateFlowerbedState(gameData.FlowerBedStates[flowerbed.id]));
 
@@ -110,7 +110,7 @@ public class GameFunctions : MonoBehaviour
     public Task SaveGame(bool makeBackupCopy = false)
     {
         // don't save in editor
-        if (!SaveInEditor)
+        if (!SaveInEditor && Application.isEditor)
             return Task.CompletedTask;
 
         // backup copy
@@ -130,8 +130,6 @@ public class GameFunctions : MonoBehaviour
         Directory.CreateDirectory(Application.persistentDataPath + "/Saves"); // Create folder if not already made
 
         BinaryFormatter binaryFormatter = new BinaryFormatter();
-        FileStream file = File.Create(Application.persistentDataPath
-             + $"/Saves/{GameStatics.GameGuid}.dat");
 
         // Create save file data
         GameData gameData = new GameData();
@@ -147,6 +145,8 @@ public class GameFunctions : MonoBehaviour
         gameData.ShopItemLevels = Shop.ShopItems.Select(shopItem => new { name = shopItem.Name, level = shopItem.Level }).ToDictionary(x => x.name, x => x.level);
         gameData.FlowerBedStates = FlowerBedManager.transform.GetComponentsInChildren<FlowerBed>().Select(flowerbed => new { id = flowerbed.id, state = flowerbed.state }).ToDictionary(x => x.id, x => x.state);
 
+        FileStream file = File.Create(Application.persistentDataPath
+             + $"/Saves/{GameStatics.GameGuid}.dat");
         binaryFormatter.Serialize(file, gameData);
         file.Close();
         Debug.Log("Game data saved!");
