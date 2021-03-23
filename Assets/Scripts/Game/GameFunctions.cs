@@ -176,7 +176,7 @@ public class GameFunctions : MonoBehaviour
     {
         SaveGame().Wait();
 
-        // Remove
+        Application.wantsToQuit -= QuitConfirmation; // Remove listener on game exit
 
         // Return to menu on exit
         SceneManager.LoadScene("Main Menu");
@@ -189,6 +189,7 @@ class GameData
     // Metadata
     public string SaveFileName = "A Flowery Field";
     public string GUID;
+    public int SaveDataFormatVersion = 1;
 
     // Game Data
     public Player.Gender PlayerGender;
