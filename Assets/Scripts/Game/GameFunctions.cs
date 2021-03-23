@@ -23,6 +23,7 @@ public class GameFunctions : MonoBehaviour
     public GameFlow GameFlow;
     public Player Player;
     public StorylineManager StorylineManager;
+    public PopupManager PopupManager;
     public Shop Shop;
     public BorrowMoney BorrowMoney;
     public FlowerBedManager FlowerBedManager;
@@ -31,7 +32,7 @@ public class GameFunctions : MonoBehaviour
     private void Start()
     {
         // Hook events
-        Application.wantsToQuit += Application_wantsToQuit;
+        Application.wantsToQuit += QuitConfirmation;
 
         // Set manager refs for static class
         ShopItemUpgrades.Player = Player;
@@ -49,10 +50,21 @@ public class GameFunctions : MonoBehaviour
             LoadGame();
     }
 
-    private bool Application_wantsToQuit()
+    private bool QuitConfirmation()
     {
-        SaveGame().Wait();
-        return true;
+        // Ask quit confirmation
+        PopupManager.ShowDecisionWindowPopup("Take a break?", "Are you sure you want to take a break?", answer => 
+        {
+            if (answer)
+            {
+                PopupManager.ShowWindowPopup("Have a nice break!", "Your flower farm will be kept safe and things will stay right where you left them.");
+                SaveGame().Wait();
+                Application.wantsToQuit -= QuitConfirmation; // Unbind this function to prevent it from triggering on exit
+                Application.Quit();
+            }
+        }, false);
+
+        return false; // Cancel quit to wait for user decision
     }
 
     public WindowPopup WindowPopup;
@@ -164,7 +176,7 @@ public class GameFunctions : MonoBehaviour
     {
         SaveGame().Wait();
 
-         // Remove
+        // Remove
 
         // Return to menu on exit
         SceneManager.LoadScene("Main Menu");

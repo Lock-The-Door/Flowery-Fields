@@ -73,7 +73,7 @@ public class PopupManager : MonoBehaviour
     }
 
     public DecisionWindowPopup DecisionWindowPopup;
-    public void ShowDecisionWindowPopup(string title, string description, System.Action<bool> callback, bool goodAlert = true)
+    public void ShowDecisionWindowPopup(string title, string description, System.Action<bool> callback, bool goodAlert = true, bool priority = false)
     {
         var popup = Instantiate(DecisionWindowPopup, transform);
         TextMeshProUGUI popupTitle = popup.TitleText;
@@ -83,6 +83,9 @@ public class PopupManager : MonoBehaviour
         popupDetails.text = description;
         popup.callbackAction = callback;
 
-        QueuePopup(new KeyValuePair<GameObject, bool>(popup.gameObject, goodAlert));
+        if (!priority)
+            QueuePopup(new KeyValuePair<GameObject, bool>(popup.gameObject, goodAlert));
+        else
+            popup.gameObject.SetActive(true);
     }
 }

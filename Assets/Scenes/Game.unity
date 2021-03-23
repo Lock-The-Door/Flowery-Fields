@@ -11260,6 +11260,7 @@ MonoBehaviour:
   GameFlow: {fileID: 1033100299}
   Player: {fileID: 684367974}
   StorylineManager: {fileID: 1033100301}
+  PopupManager: {fileID: 1663070396}
   Shop: {fileID: 33020146}
   BorrowMoney: {fileID: 1909823480}
   FlowerBedManager: {fileID: 2141535387}
