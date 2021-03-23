@@ -7597,10 +7597,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0484496d8ecf51b4cafbdd094d0b540b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  BottomPopupTextPrefab: {fileID: 417492598781158081, guid: 19db16c4bbc6a334bafbc2383ebad0a6, type: 3}
   NormalAlertSound: {fileID: 1663070398}
   BadAlertSound: {fileID: 1663070397}
+  BottomPopupTextPrefab: {fileID: 417492598781158081, guid: 19db16c4bbc6a334bafbc2383ebad0a6, type: 3}
   WindowPopup: {fileID: 8283545584610265731, guid: 099c1a53ca0115746b26d1224f7c84b1, type: 3}
+  DecisionWindowPopup: {fileID: 6533486313734160346, guid: 9d74371a28fd6bc4280e8125b6779b46, type: 3}
 --- !u!82 &1663070397
 AudioSource:
   m_ObjectHideFlags: 0
@@ -11266,7 +11267,6 @@ MonoBehaviour:
   NextDayScreen: {fileID: 1023733638}
   Camera: {fileID: 0}
   WindowPopup: {fileID: 8283545584610265731, guid: 099c1a53ca0115746b26d1224f7c84b1, type: 3}
-  SaveInEditor: 0
 --- !u!4 &2146015838
 Transform:
   m_ObjectHideFlags: 0

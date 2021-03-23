@@ -12,10 +12,18 @@ public class GameFlow : MonoBehaviour
     {
         Sunny = 55,
         Rainy = 30,
-        SuperStorm = 10,
+        Superstorm = 10,
         NaturalDisaster = 5
     }
     public Weather weather = Weather.Sunny;
+    public static string ToString(Weather weather) { return WeatherText[weather]; }
+    static Dictionary<Weather, string> WeatherText = new Dictionary<Weather, string>()
+    {
+        { Weather.Sunny, "Sunny" },
+        { Weather.Rainy, "Rainy" },
+        { Weather.Superstorm, "Superstorm" },
+        { Weather.NaturalDisaster, "Natural Disaster" }
+    };
 
     public int FamilyPayment => 10 + Shop.TotalBonusFamilyPayment;
 
@@ -30,7 +38,7 @@ public class GameFlow : MonoBehaviour
 
         if (GameStatics.NewGame) // only do this if it's a new game
         {
-            GenerateWeather(); // Generate weather for first day
+            SetWeather(Weather.Sunny); // Always sunny first day
             StorylineManager.ShowStoryline("The Adventure Begins"); // Show starter story
         }
 
@@ -41,19 +49,11 @@ public class GameFlow : MonoBehaviour
         RandomEvents.FlowerBedManager = FlowerBedManager;
     }
 
-    Dictionary<Weather, string> WeatherText = new Dictionary<Weather, string>()
-    {
-        { Weather.Sunny, "Sunny" },
-        { Weather.Rainy, "Rainy" },
-        { Weather.SuperStorm, "Superstorm" },
-        { Weather.NaturalDisaster, "Natural Disaster" }
-    };
-
     Dictionary<Weather, float> WeatherLightingIntensity = new Dictionary<Weather, float>()
     {
         { Weather.Sunny, 1 },
         { Weather.Rainy, 0.75f },
-        { Weather.SuperStorm, 0.5f },
+        { Weather.Superstorm, 0.5f },
         { Weather.NaturalDisaster, 0.75f }
     };
 
@@ -86,7 +86,7 @@ public class GameFlow : MonoBehaviour
 
         // Post weather generation
         Debug.Log("Weather is: " + weather);
-        WeatherGui.GetComponentInChildren<TextMeshProUGUI>().text = WeatherText[weather]; // Update text
+        WeatherGui.GetComponentInChildren<TextMeshProUGUI>().text = ToString(weather); // Update text
         WeatherGui.GetComponent<Image>().sprite = WeatherImages[System.Array.IndexOf(weatherTypes.Reverse().ToArray(), weather)]; // Update Image
 
         // Change lighting
@@ -96,7 +96,7 @@ public class GameFlow : MonoBehaviour
         // Light 2d
         Light2D.intensity = WeatherLightingIntensity[weather];
 
-        StorylineManager.ShowStoryline(WeatherText[weather]); // Storyline
+        StorylineManager.ShowStoryline(ToString(weather)); // Storyline
     }
 
     public Player Player;
@@ -215,7 +215,7 @@ public class GameFlow : MonoBehaviour
             }
         },
 
-        { Weather.SuperStorm,
+        { Weather.Superstorm,
             new Dictionary<FlowerBed.FlowerBedState, Dictionary<FlowerBed.FlowerBedState, float>>
             {
                 // Normal Circumstances

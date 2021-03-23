@@ -11,6 +11,8 @@ using UnityEngine.UI;
 
 public static class GameStatics
 {
+    public static bool SaveInEditor = false;
+
     public static string GameGuid;
     public static bool NewGame = true;
 }
@@ -29,11 +31,7 @@ public class GameFunctions : MonoBehaviour
     private void Start()
     {
         // Hook events
-        Application.wantsToQuit += () =>
-        {
-            SaveGame().Wait();
-            return true;
-        };
+        Application.wantsToQuit += Application_wantsToQuit;
 
         // Set manager refs for static class
         ShopItemUpgrades.Player = Player;
@@ -51,8 +49,17 @@ public class GameFunctions : MonoBehaviour
             LoadGame();
     }
 
+    private bool Application_wantsToQuit()
+    {
+        SaveGame().Wait();
+        return true;
+    }
+
     public Camera Camera;
     public WindowPopup WindowPopup;
+
+    GameData GameData = new GameData();
+
     void LoadGame()
     {
         try
@@ -81,6 +88,7 @@ public class GameFunctions : MonoBehaviour
             Shop.ShopItems.ForEach(shopItem => { for (int i = 0; i < gameData.ShopItemLevels[shopItem.Name]; i++) shopItem.Upgrade(); });
             FlowerBedManager.transform.GetComponentsInChildren<FlowerBed>().ToList().ForEach(flowerbed => flowerbed.UpdateFlowerbedState(gameData.FlowerBedStates[flowerbed.id]));
 
+            GameData = gameData;
             Debug.Log("Game data loaded!");
 
             StartCoroutine(NextDayScreen.ShowScreen(gameData.Days));
@@ -106,11 +114,10 @@ public class GameFunctions : MonoBehaviour
         }
     }
 
-    public bool SaveInEditor = false;
     public Task SaveGame(bool makeBackupCopy = false, string backupName = "backup")
     {
         // don't save in editor
-        if (!SaveInEditor && Application.isEditor)
+        if (!GameStatics.SaveInEditor && Application.isEditor)
             return Task.CompletedTask;
 
         // backup copy
@@ -124,15 +131,15 @@ public class GameFunctions : MonoBehaviour
             Debug.Log("Saved backup copy of save file");
         }
 
-        if (GameStatics.GameGuid == null)
-            GameStatics.GameGuid = Guid.NewGuid().ToString(); // Create new game guid if not already made
+        if (GameStatics.NewGame)
+            GameStatics.GameGuid = Guid.NewGuid().ToString(); // Give new saves guids
 
         Directory.CreateDirectory(Application.persistentDataPath + "/Saves"); // Create folder if not already made
 
         BinaryFormatter binaryFormatter = new BinaryFormatter();
 
         // Create save file data
-        GameData gameData = new GameData();
+        GameData gameData = GameData;
 
         gameData.GUID = GameStatics.GameGuid;
 
@@ -158,6 +165,8 @@ public class GameFunctions : MonoBehaviour
     {
         SaveGame().Wait();
 
+         // Remove
+
         // Return to menu on exit
         SceneManager.LoadScene("Main Menu");
     }
@@ -167,7 +176,7 @@ public class GameFunctions : MonoBehaviour
 class GameData
 {
     // Metadata
-    public string SaveFileName = null;
+    public string SaveFileName = "A Flowery Field";
     public string GUID;
 
     // Game Data
