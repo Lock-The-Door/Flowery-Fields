@@ -38,8 +38,8 @@ public class GameFlow : MonoBehaviour
 
         if (GameStatics.NewGame) // only do this if it's a new game
         {
-            SetWeather(Weather.Sunny); // Always sunny first day
             StorylineManager.ShowStoryline("The Adventure Begins"); // Show starter story
+            SetWeather(Weather.Sunny); // Always sunny first day
         }
 
         // Set variables in randomiser

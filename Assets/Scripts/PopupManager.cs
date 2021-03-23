@@ -1,11 +1,20 @@
-using System.Linq;
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
 public class PopupManager : MonoBehaviour
 {
-    public AudioSource NormalAlertSound;
-    public AudioSource BadAlertSound;
+    public AudioSource _NormalAlertSound;
+    static AudioSource NormalAlertSound;
+    public AudioSource _BadAlertSound;
+    static AudioSource BadAlertSound;
+
+    private void Start()
+    {
+        NormalAlertSound = _NormalAlertSound;
+        BadAlertSound = _BadAlertSound;
+        Debug.Log("Set Popup Sounds");
+    }
 
     public BottomPopupText BottomPopupTextPrefab;
     public void ShowBottomPopup(string message, Color color, bool goodAlert = true)
@@ -22,9 +31,35 @@ public class PopupManager : MonoBehaviour
         else
             BadAlertSound.Play();
     }
-    
+
+    public static Queue<KeyValuePair<GameObject, bool>> PopupQueue = new Queue<KeyValuePair<GameObject, bool>>();
+    public static void NextPopup()
+    {
+        if (PopupQueue.Count == 0)
+            return;
+
+        KeyValuePair<GameObject, bool> queuedPopup = PopupQueue.Peek();
+        GameObject popup = queuedPopup.Key;
+
+        popup.SetActive(true); // Show popup
+
+        // Play sounds
+        if (queuedPopup.Value)
+            NormalAlertSound.Play();
+        else
+            BadAlertSound.Play();
+    }
+
+    public void QueuePopup(KeyValuePair<GameObject, bool> popup)
+    {
+        PopupQueue.Enqueue(popup);
+
+        if (PopupQueue.Count == 1)
+            NextPopup();
+    }
+
     public WindowPopup WindowPopup;
-    public void ShowWindowPopup(string title, string description, bool goodAlert = true)
+    public void ShowWindowPopup(string title, string description, System.Action callback = null, bool goodAlert = true)
     {
         var popup = Instantiate(WindowPopup, transform);
         TextMeshProUGUI popupTitle = popup.TitleText;
@@ -32,12 +67,9 @@ public class PopupManager : MonoBehaviour
 
         popupTitle.text = title;
         popupDetails.text = description;
+        popup.callbackAction = callback;
 
-        // Play sounds
-        if (goodAlert)
-            NormalAlertSound.Play();
-        else
-            BadAlertSound.Play();
+        QueuePopup(new KeyValuePair<GameObject, bool>(popup.gameObject, goodAlert));
     }
 
     public DecisionWindowPopup DecisionWindowPopup;
@@ -51,10 +83,6 @@ public class PopupManager : MonoBehaviour
         popupDetails.text = description;
         popup.callbackAction = callback;
 
-        // Play sounds
-        if (goodAlert)
-            NormalAlertSound.Play();
-        else
-            BadAlertSound.Play();
+        QueuePopup(new KeyValuePair<GameObject, bool>(popup.gameObject, goodAlert));
     }
 }

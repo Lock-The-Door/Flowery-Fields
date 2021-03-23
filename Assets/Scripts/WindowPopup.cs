@@ -1,13 +1,10 @@
 using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class WindowPopup : MonoBehaviour
 {
     public TextMeshProUGUI TitleText;
     public TextMeshProUGUI DetailsText;
-
-    public Button OkButton;
 
     RectTransform RectTransform;
     Vector2 startSize = new Vector2(0, 0);
@@ -17,8 +14,6 @@ public class WindowPopup : MonoBehaviour
     bool closing = false;
 
     public System.Action callbackAction;
-    public GameObject callbackObject;
-    public string callbackName;
 
     // Start is called before the first frame update
     void Start()
@@ -41,8 +36,6 @@ public class WindowPopup : MonoBehaviour
         {
             if (callbackAction != null)
                 callbackAction.Invoke();
-            else if (callbackObject != null)
-                callbackObject.SendMessage(callbackName);
 
             Destroy(gameObject);
         }
@@ -56,5 +49,9 @@ public class WindowPopup : MonoBehaviour
         endSize = new Vector2(0, 0);
         time = 0;
         closing = true;
+
+        Debug.Log("Showing next popup");
+        PopupManager.PopupQueue.Dequeue();
+        PopupManager.NextPopup();
     }
 }

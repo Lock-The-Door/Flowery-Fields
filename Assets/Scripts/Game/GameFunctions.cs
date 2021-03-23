@@ -55,7 +55,6 @@ public class GameFunctions : MonoBehaviour
         return true;
     }
 
-    public Camera Camera;
     public WindowPopup WindowPopup;
 
     GameData GameData = new GameData();

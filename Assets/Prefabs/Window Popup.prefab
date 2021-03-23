@@ -361,7 +361,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &8283545584610265740
 RectTransform:
   m_ObjectHideFlags: 0
@@ -434,7 +434,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   TitleText: {fileID: 8283545585548895665}
   DetailsText: {fileID: 8283545584274039993}
-  OkButton: {fileID: 8283545584406315416}
   speed: 3
 --- !u!1 &8283545584752479673
 GameObject:

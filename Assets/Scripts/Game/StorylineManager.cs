@@ -26,12 +26,12 @@ public class StorylineManager : MonoBehaviour
 
             new Storyline[]
             {
-                new Storyline("Supporting your family!",
-                    "Knowing your family needs some help, you'll start by giving $20 to your family everyday."),
                 new Storyline("The adventure begins!",
                     $"You are a young {Player.PlayerGender} who's with a failing middle class family. " +
                     "As a last resort, your parents let you use your creativity to make some money. " +
-                    "And as someone who loves flowers, you decided to start a flower farm to sell some flowers!")
+                    "And as someone who loves flowers, you decided to start a flower farm to sell some flowers!"),
+                new Storyline("Supporting your family!",
+                    "Knowing your family needs some help, you start by giving $10 to your family everyday.")
             }
         },
         {

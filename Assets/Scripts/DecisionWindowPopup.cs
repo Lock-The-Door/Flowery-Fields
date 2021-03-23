@@ -50,5 +50,9 @@ public class DecisionWindowPopup : MonoBehaviour
         endSize = new Vector2(0, 0);
         time = 0;
         closing = true;
+
+        Debug.Log("Showing next popup");
+        PopupManager.PopupQueue.Dequeue();
+        PopupManager.NextPopup();
     }
 }
