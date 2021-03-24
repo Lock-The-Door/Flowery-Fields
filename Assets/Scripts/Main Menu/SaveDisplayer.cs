@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Runtime.Serialization.Formatters.Binary;
+using System.Threading.Tasks;
 using UnityEngine;
 
 public class SaveDisplayer : MonoBehaviour
@@ -13,31 +13,23 @@ public class SaveDisplayer : MonoBehaviour
 
     float savesUiGap = 170;
 
-    public List<GameMetadata> ReloadSaves()
+    public async Task<List<GameMetadata>> ReloadSaves()
     {
         if (!Directory.Exists(Application.persistentDataPath + "/Saves"))
             return new List<GameMetadata>();
 
+        await GameData.ConvertDirectory(); // Convert save files
+
         List<GameMetadata> _saveFiles = new List<GameMetadata>();
 
-        string[] gameDataPaths = Directory.GetFiles(Application.persistentDataPath + "/Saves", "*dat");
-        foreach (string path in gameDataPaths)
+        var directoriesToSearch = Directory.EnumerateDirectories(Application.persistentDataPath + "/Saves");
+        foreach (var directory in directoriesToSearch)
         {
-            try
-            {
-                Debug.Log(path);
-                BinaryFormatter bf = new BinaryFormatter();
-                FileStream file = File.Open(path, FileMode.Open);
-                GameData gameData = (GameData)bf.Deserialize(file);
-
-                _saveFiles.Add(new GameMetadata(gameData.SaveFileName, gameData.Days, gameData.Weather, File.GetLastWriteTime(path), gameData.GUID));
-            }
-            catch (System.Exception e)
-            {
-                Debug.LogWarning("Error trying while loading save file information: " + e);
-            }
+            string GUID = new DirectoryInfo(directory).Name;
+            _saveFiles.Add(await new GameMetadata().Load(GUID));
         }
-        _saveFiles.Sort((metadata1, metadata2) => metadata1.LastVisit.CompareTo(metadata2.LastVisit));
+        
+        _saveFiles.Sort((metadata1, metadata2) => metadata2.LastVisit.CompareTo(metadata1.LastVisit));
 
         return _saveFiles;
     }

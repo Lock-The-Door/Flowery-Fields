@@ -1,6 +1,4 @@
-using System;
 using System.IO;
-using System.Runtime.Serialization.Formatters.Binary;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -43,19 +41,13 @@ public class SaveFileUI : MonoBehaviour
     }
     public void Renamed(string newName)
     {
-        BinaryFormatter bf = new BinaryFormatter();
-        FileStream file = File.Open(Application.persistentDataPath
-                       + $"/Saves/{GameMetadata.GUID}.dat", FileMode.Open);
-        GameData gameData = (GameData)bf.Deserialize(file);
-        file.Close();
+        // Save the new metadata to the game file
+        GameData gameData = new GameData().Load(GameMetadata.GUID).Result;
+        gameData.GameMetadata.SaveName = newName;
+        GameStatics.NewGame = false;
+        gameData.Save();
 
-        gameData.SaveFileName = newName;
-        file = File.Create(Application.persistentDataPath
-                       + $"/Saves/{GameMetadata.GUID}.dat");
-        bf.Serialize(file, gameData);
-        file.Close();
-
-        SaveDisplayer.DisplaySaves(SaveDisplayer.ReloadSaves());
+        SaveDisplayer.DisplaySaves(SaveDisplayer.ReloadSaves().Result);
     }
 
     public void DeleteSave()
@@ -65,27 +57,9 @@ public class SaveFileUI : MonoBehaviour
             if (!answer)
                 return;
 
-            File.Delete(Application.persistentDataPath
-                + $"/Saves/{GameMetadata.GUID}.dat");
-            SaveDisplayer.DisplaySaves(SaveDisplayer.ReloadSaves());
+            Directory.Delete(Application.persistentDataPath
+                + $"/Saves/{GameMetadata.GUID}", true);
+            SaveDisplayer.DisplaySaves(SaveDisplayer.ReloadSaves().Result);
         });
-    }
-}
-
-public class GameMetadata
-{
-    public string SaveName;
-    public int Days;
-    public GameFlow.Weather Weather;
-    public DateTime LastVisit;
-    public string GUID;
-
-    public GameMetadata(string _name, int _days, GameFlow.Weather _weather, DateTime _lastVisit, string _GUID)
-    {
-        SaveName = _name;
-        Days = _days;
-        Weather = _weather;
-        LastVisit = _lastVisit;
-        GUID = _GUID;
     }
 }

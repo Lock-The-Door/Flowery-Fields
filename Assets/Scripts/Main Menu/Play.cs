@@ -12,7 +12,7 @@ public class Play : MonoBehaviour
     {
         GameStatics.SaveInEditor = true; // I'm likely going to need to save the game if I'm coming from the main menu
 
-        SaveFiles = SaveDisplayer.ReloadSaves();
+        SaveFiles = SaveDisplayer.ReloadSaves().Result;
     }
 
     public void PlayGame()
@@ -23,7 +23,7 @@ public class Play : MonoBehaviour
             return;
         }
 
-        // Do select a save menu (not implemented)
+        // Do select a save menu
         SaveDisplayer.gameObject.SetActive(true); 
         SaveDisplayer.DisplaySaves(SaveFiles);
     }
