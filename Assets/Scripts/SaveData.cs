@@ -17,12 +17,13 @@ public class GameMetadata
 
     public Task<GameMetadata> Load(string GUID)
     {
-        Debug.Log("Reading metadata file...");
+        Debug.Log("Reading metadata file... " + GUID);
         StreamReader metadataReader = File.OpenText(Application.persistentDataPath
                        + $"/Saves/{GUID}/metadata.json");
         string jsonMetadata = metadataReader.ReadToEnd();
         Debug.Log("Read JSON file");
         metadataReader.Close();
+        Debug.Log(jsonMetadata);
         GameMetadata gameMetadata = JsonConvert.DeserializeObject<GameMetadata>(jsonMetadata);
         Debug.Log("JSON Deserialized");
         Debug.Log("Metadata read and loaded as game metadata");
