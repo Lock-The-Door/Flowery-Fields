@@ -51,8 +51,8 @@ public class TutorialFlowerBedManager : MonoBehaviour
 
         if (objective == "Conditional Harvest") // Can't blindly show arrows
             GetComponentsInChildren<TutorialFlowerBed>().Where(flowerBed => flowerBed.state == global::TutorialFlowerBed.FlowerBedState.SuperFlowers).ToList().ForEach(flowerBed => flowerBed.SendMessage("ShowArrow"));
-        else if (System.Enum.TryParse<TutorialFlowerBed.FlowerBedState>(objective, out _)) // all flowerbeds need to match new condition since this ensures it is a flowerbed objective
-            GetComponentsInChildren<TutorialFlowerBed>().ToList().ForEach(flowerBed => flowerBed.SendMessage("ShowArrow"));
+        else if (System.Enum.TryParse<TutorialFlowerBed.FlowerBedState>(objective, out var enumObjective)) // all flowerbeds need to match new condition since this ensures it is a flowerbed objective
+            GetComponentsInChildren<TutorialFlowerBed>().Where(flowerBed => flowerBed.state != enumObjective).ToList().ForEach(flowerBed => flowerBed.SendMessage("ShowArrow"));
     }
     void CheckFlowerBedStates()
     {

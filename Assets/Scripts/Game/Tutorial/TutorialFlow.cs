@@ -186,7 +186,7 @@ public class TutorialFlow : MonoBehaviour
         {
             new Objective("Shovel", true, true, "You got some superflowers!", "You got pretty lucky with the superstorm and most of your flowers became superflowers with none of your flowers dying! Unfortunately some of your flowers became weak flowers, selling for less."),
             new Objective("Conditional Harvest", true, true, "Natural disaster incoming!!!", "Uh oh! There is going to be a natural disaster. Usually you should harvest your good flowers and keep the rest for a chance to upgrade them."),
-            new Objective("Finish Day", true, true, "Hoping for the best", "Hopefully, you plants will survive. Hopefully you'll get superflowers and not dead flowers...")
+            new Objective("Finish Day", true, true, "Hoping for the best", "Hopefully, your plants will survive. Hopefully you'll get superflowers and not dead flowers...")
         },
 
         // Day 5
