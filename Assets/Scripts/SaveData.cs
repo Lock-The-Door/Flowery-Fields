@@ -172,6 +172,8 @@ public class GameData
                     oldGameData.GameMetadata.GUID = GUID;
                     oldGameData.GameMetadata.SaveName = "A Flowery Field"; // Assign a save file name
                     await oldGameData.Save();
+
+                    GameStatics.NewGame = true; // Reset game statics
                     break;
             }
         }
