@@ -74,6 +74,7 @@ public class GameFunctions : MonoBehaviour
             Debug.Log("Loading game data to variables");
             Player.PlayerGender = GameStatics.LoadedGame.PlayerGender;
             GameFlow.Days = GameStatics.LoadedGame.Days;
+            GameFlow.InDebt = GameStatics.LoadedGame.InDebt;
             Player.Money = GameStatics.LoadedGame.Money;
             BorrowMoney.DailyPayments = GameStatics.LoadedGame.BorrowedMoney;
             StorylineManager.StorylinesSeen = GameStatics.LoadedGame.StorylinesSeen;
@@ -112,6 +113,7 @@ public class GameFunctions : MonoBehaviour
         Debug.Log("Copying game variables to game data class...");
         GameStatics.LoadedGame.PlayerGender = Player.PlayerGender;
         GameStatics.LoadedGame.Days = GameFlow.Days;
+        GameStatics.LoadedGame.InDebt = GameFlow.InDebt;
         GameStatics.LoadedGame.Money = Player.Money;
         GameStatics.LoadedGame.BorrowedMoney = BorrowMoney.DailyPayments;
         GameStatics.LoadedGame.Weather = GameFlow.weather;

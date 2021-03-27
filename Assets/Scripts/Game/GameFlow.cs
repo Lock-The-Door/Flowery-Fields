@@ -107,7 +107,7 @@ public class GameFlow : MonoBehaviour
     public Shop Shop;
     public BorrowMoney BorrowMoney;
     public bool finishedGame = false;
-    public bool inDebt = false;
+    public bool InDebt = false;
 
     public Dictionary<Weather, Dictionary<FlowerBed.FlowerBedState, Dictionary<FlowerBed.FlowerBedState, float>>> WeatherLogicData = new Dictionary<Weather, Dictionary<FlowerBed.FlowerBedState, Dictionary<FlowerBed.FlowerBedState, float>>>
     {
@@ -358,7 +358,7 @@ public class GameFlow : MonoBehaviour
         // Manage Debt
         if (Player.Money < 0)
         {
-            if (inDebt)
+            if (InDebt)
             {
                 Debug.Log("You are in debt");
                 // Try to sell flowerbeds first to cover debt
@@ -388,13 +388,13 @@ public class GameFlow : MonoBehaviour
             }
             else
             {
-                inDebt = true;
+                InDebt = true;
                 PopupManager.ShowWindowPopup("You're in debt!", "You are in debt! Get out of debt or you'll soon need to start selling your things!", goodAlert: false);
             }
         }
         else
         {
-            inDebt = false;
+            InDebt = false;
 
             Player.Money -= FamilyPayment; // Pay family
             Player.Money -= BorrowMoney.TotalDailyPayment; // Pay loans
