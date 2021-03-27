@@ -27,7 +27,7 @@ public class TutorialFlowerBedManager : MonoBehaviour
         new Vector3(-8, -8, -8)
     };
 
-    void MakeFlowerBed(int level)
+    public void MakeFlowerBed(int level)
     {
         // Create Flowerbed
         var NewFlowerBed = Instantiate(TutorialFlowerBed, transform);
@@ -43,9 +43,9 @@ public class TutorialFlowerBedManager : MonoBehaviour
         TutorialPathfindingManager.Pathfinding.GetNode(flowerBedX, flowerBedY).SetIsWalkable(false);
     }
 
-    void RemoveFlowerBed(int level) => Destroy(GetComponentsInChildren<TutorialFlowerBed>().First(flowerBed => flowerBed.id == level).gameObject);
+    public void RemoveFlowerBed(int level) => Destroy(GetComponentsInChildren<TutorialFlowerBed>().First(flowerBed => flowerBed.id == level).gameObject);
 
-    void ObjectiveCheck()
+    public void ObjectiveCheck()
     {
         string objective = TutorialFlow.CurrentObjective.ObjectiveReferenceName;
 
@@ -54,7 +54,7 @@ public class TutorialFlowerBedManager : MonoBehaviour
         else if (System.Enum.TryParse<TutorialFlowerBed.FlowerBedState>(objective, out var enumObjective)) // all flowerbeds need to match new condition since this ensures it is a flowerbed objective
             GetComponentsInChildren<TutorialFlowerBed>().Where(flowerBed => flowerBed.state != enumObjective).ToList().ForEach(flowerBed => flowerBed.SendMessage("ShowArrow"));
     }
-    void CheckFlowerBedStates()
+    public void CheckFlowerBedStates()
     {
         string objectiveName = TutorialFlow.CurrentObjective.ObjectiveReferenceName;
 

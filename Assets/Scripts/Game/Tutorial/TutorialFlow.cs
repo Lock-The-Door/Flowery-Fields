@@ -12,7 +12,7 @@ public class TutorialFlow : MonoBehaviour
 {
     public Weather weather = Weather.Sunny;
     public static string ToString(Weather weather) { return WeatherText[weather]; }
-    static Dictionary<Weather, string> WeatherText = new Dictionary<Weather, string>()
+    static readonly Dictionary<Weather, string> WeatherText = new Dictionary<Weather, string>()
     {
         { Weather.Sunny, "Sunny" },
         { Weather.Rainy, "Rainy" },
@@ -29,8 +29,8 @@ public class TutorialFlow : MonoBehaviour
     public Camera Camera;
     public Light2D Light2D;
     float CameraMaxBrightness;
-    Weather[] weatherTypes = (Weather[])System.Enum.GetValues(typeof(Weather));
-    Dictionary<Weather, float> WeatherLightingIntensity = new Dictionary<Weather, float>()
+    readonly Weather[] weatherTypes = (Weather[])System.Enum.GetValues(typeof(Weather));
+    readonly Dictionary<Weather, float> WeatherLightingIntensity = new Dictionary<Weather, float>()
     {
         { Weather.Sunny, 1 },
         { Weather.Rainy, 0.75f },
@@ -70,7 +70,7 @@ public class TutorialFlow : MonoBehaviour
     }
 
     int Days = 1;
-    IEnumerator FinishDay()
+    private IEnumerator FinishDay()
     {
         Debug.Log("Finishing a totally not rigged day");
 
@@ -148,7 +148,7 @@ public class TutorialFlow : MonoBehaviour
         UpdateObjective();
     }
 
-    List<List<Objective>> DailyObjectives = new List<List<Objective>>()
+    readonly List<List<Objective>> DailyObjectives = new List<List<Objective>>()
     {
         // Day 1
         new List<Objective>()
@@ -212,8 +212,8 @@ public class TutorialFlow : MonoBehaviour
 
         // Update arrows
         Table.BroadcastMessage("ObjectiveUpdated"); // Tools
-        TutorialFlowerBedManager.SendMessage("ObjectiveCheck"); // Flowerbeds
-        TutorialUIShower.SendMessage("CheckForObjectives"); // Ui for finish day and shop
+        TutorialFlowerBedManager.ObjectiveCheck(); // Flowerbeds
+        TutorialUIShower.CheckForObjectives(); // Ui for finish day and shop
     }
 }
 

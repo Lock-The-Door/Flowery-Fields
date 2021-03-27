@@ -28,6 +28,10 @@ public class SaveFileUI : MonoBehaviour
         if (ExtraActions.activeSelf) // Prevent accidental loading by not accepting clicks while the extra actions menu is open
             return;
 
+        SaveDisplayer.ScreenBlocker.GetComponentInChildren<TextMeshProUGUI>().text = "Day " + GameMetadata.Days;
+        SaveDisplayer.ScreenBlocker.SetActive(true);
+
+        GameStatics.Loading = true;
         GameStatics.NewGame = false;
         GameStatics.GameGuid = GameMetadata.GUID;
 

@@ -65,6 +65,10 @@ AudioMixerController:
   m_ExposedParameters:
   - guid: 5cb6469a43d7c354fa38a4d45c881837
     name: MasterVolume
+  - guid: 3b4a58f8014f4c54aa8ba00f4f8cbca4
+    name: MusicVolume
+  - guid: 25a79ce18379b3e45955d4b8f907a8c3
+    name: SoundEffectVolume
   m_AudioMixerGroupViews:
   - guids:
     - 020f30cac73161143afb71651fe6e06b
@@ -83,8 +87,8 @@ AudioMixerGroupController:
   m_AudioMixer: {fileID: 24100000}
   m_GroupID: 020f30cac73161143afb71651fe6e06b
   m_Children:
-  - {fileID: 4771059846311357417}
   - {fileID: -7701081915101660092}
+  - {fileID: 4771059846311357417}
   m_Volume: 5cb6469a43d7c354fa38a4d45c881837
   m_Pitch: ce2d50942b13d144a8340232bd020e4c
   m_Send: 00000000000000000000000000000000
@@ -118,9 +122,9 @@ AudioMixerSnapshotController:
   m_AudioMixer: {fileID: 24100000}
   m_SnapshotID: 0b392ba07adf0c74daa7944f19ca5da4
   m_FloatValues:
-    25a79ce18379b3e45955d4b8f907a8c3: 0
-    3b4a58f8014f4c54aa8ba00f4f8cbca4: 0
-    5cb6469a43d7c354fa38a4d45c881837: -9.833286
+    25a79ce18379b3e45955d4b8f907a8c3: -5
+    3b4a58f8014f4c54aa8ba00f4f8cbca4: -10
+    5cb6469a43d7c354fa38a4d45c881837: 0
   m_TransitionOverrides: {}
 --- !u!243 &4771059846311357417
 AudioMixerGroupController:

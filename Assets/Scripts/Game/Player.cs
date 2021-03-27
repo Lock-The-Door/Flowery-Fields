@@ -109,8 +109,6 @@ public class Player : MonoBehaviour
 
     Animator Animator;
     SpriteRenderer SpriteRenderer;
-    public Sprite playerFront;
-    public Sprite playerBack;
     IEnumerator NavigatePath(List<Vector3> path, System.Action callback, float initialTime = 0)
     {
         Animator.SetBool("Walking", true);

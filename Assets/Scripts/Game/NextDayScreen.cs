@@ -47,6 +47,8 @@ public class NextDayScreen : MonoBehaviour
         }
 
         yield return new WaitForSeconds(3);
+        if (GameStatics.Loading)
+            yield return new WaitUntil(() => !GameStatics.Loading);
         yield return new WaitForEndOfFrame();
 
         time = 0;

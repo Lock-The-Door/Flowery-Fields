@@ -55,7 +55,7 @@ public class TutorialShop : MonoBehaviour
     public TutorialFlowerBedManager FlowerBedManager;
 
     public AudioSource BuySound;
-    void BuyItem(TutorialShopItem shopItem)
+    public void BuyItem(TutorialShopItem shopItem)
     {
         // See if enough money and take money away
         if (shopItem.Price > Player.Money)
@@ -108,7 +108,7 @@ public static class TutorialShopItemUpgrades
 
     public static void FlowerBeds(TutorialShopItem shopItem)
     {
-        FlowerBedManager.SendMessage("MakeFlowerBed", shopItem.Level - 1); // Create Flowerbed
+        FlowerBedManager.MakeFlowerBed(shopItem.Level - 1); // Create Flowerbed
 
         // Center Farm
         switch (shopItem.Level)

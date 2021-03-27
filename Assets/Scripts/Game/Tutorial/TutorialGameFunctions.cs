@@ -1,10 +1,8 @@
 using UnityEngine;
-using UnityEngine.Audio;
 using UnityEngine.SceneManagement;
 
 public class TutorialGameFunctions : MonoBehaviour
 {
-    public AudioMixer AudioMixer;
     public TutorialPlayer Player;
     public PopupManager PopupManager;
     public TutorialFlowerBedManager FlowerBedManager;
@@ -18,11 +16,6 @@ public class TutorialGameFunctions : MonoBehaviour
         TutorialShopItemUpgrades.Player = Player;
         TutorialShopItemUpgrades.FlowerBedManager = FlowerBedManager;
         TutorialShopItemUpgrades.CenterFarm = CenterFarm;
-
-        // Load & Apply Settings
-        // Audio
-        float MasterVolume = PlayerPrefs.GetFloat("MasterVolume", 1);
-        AudioMixer.SetFloat("MasterVolume", Mathf.Log10(MasterVolume) * 20 - 10);
     }
 
     private bool QuitConfirmation()
