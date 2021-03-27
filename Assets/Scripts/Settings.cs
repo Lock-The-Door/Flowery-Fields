@@ -8,6 +8,8 @@ public class Settings : MonoBehaviour
 
     public AudioMixer AudioMixer;
     public Slider MasterVolumeSlider;
+    public Slider MusicVolumeSlider;
+    public Slider SoundEffectVolumeSlider;
 
     private void Start()
     {
@@ -18,6 +20,8 @@ public class Settings : MonoBehaviour
 
         // Audio
         MasterVolumeSlider.value = PlayerPrefs.GetFloat("MasterVolume", 1);
+        MusicVolumeSlider.value = PlayerPrefs.GetFloat("MusicVolume", 0.35f);
+        SoundEffectVolumeSlider.value = PlayerPrefs.GetFloat("SoundEffectVolume", 0.5f);
     }
 
     private void Update()
@@ -26,9 +30,13 @@ public class Settings : MonoBehaviour
             SettingsPanel.SetActive(!SettingsPanel.activeSelf);
     }
 
-    public void VolumeChanged(float newVolume)
+    // SOUND SETTINGS
+    private void VolumeChanged(string volumeName, float newVolume)
     {
-        AudioMixer.SetFloat("MasterVolume", Mathf.Log10(newVolume) * 20 - 10);
-        PlayerPrefs.SetFloat("MasterVolume", newVolume);
+        AudioMixer.SetFloat(volumeName, Mathf.Log10(newVolume) * 20);
+        PlayerPrefs.SetFloat(volumeName, newVolume);
     }
+    public void MasterVolumeChanged(float newVolume) => VolumeChanged("MasterVolume", newVolume);
+    public void MusicVolumeChanged(float newVolume) => VolumeChanged("MusicVolume", newVolume);
+    public void SoundEffectVolumeChanged(float newVolume) => VolumeChanged("SoundEffectVolume", newVolume);
 }

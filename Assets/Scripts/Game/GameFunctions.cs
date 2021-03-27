@@ -2,7 +2,6 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 using UnityEngine;
-using UnityEngine.Audio;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
@@ -17,7 +16,6 @@ public static class GameStatics
 
 public class GameFunctions : MonoBehaviour
 {
-    public AudioMixer AudioMixer;
     public GameFlow GameFlow;
     public Player Player;
     public StorylineManager StorylineManager;
@@ -36,12 +34,6 @@ public class GameFunctions : MonoBehaviour
         ShopItemUpgrades.Player = Player;
         ShopItemUpgrades.FlowerBedManager = FlowerBedManager;
         ShopItemUpgrades.CenterFarm = CenterFarm;
-
-        // Load & Apply Settings
-        // Audio
-        float MasterVolume = PlayerPrefs.GetFloat("MasterVolume", 1);
-        AudioMixer.SetFloat("MasterVolume", Mathf.Log10(MasterVolume) * 20 - 10);
-
 
         // Load game data
         if (!GameStatics.NewGame)
