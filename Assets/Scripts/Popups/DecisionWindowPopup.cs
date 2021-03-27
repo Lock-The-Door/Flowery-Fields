@@ -43,6 +43,9 @@ public class DecisionWindowPopup : MonoBehaviour
 
     public void Close(bool _answer)
     {
+        if (closing)
+            return;
+
         Debug.Log("Closing window popup");
         answer = _answer;
 

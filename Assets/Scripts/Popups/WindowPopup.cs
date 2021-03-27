@@ -43,6 +43,9 @@ public class WindowPopup : MonoBehaviour
 
     void Close()
     {
+        if (closing)
+            return;
+
         Debug.Log("Closing window popup");
 
         startSize = endSize;
