@@ -26,7 +26,7 @@ public class ShopBuyButton : MonoBehaviour
             return;
         }
 
-        BuyButton.onClick.AddListener(() => Shop.SendMessage("BuyItem", ShopItem));
+        BuyButton.onClick.AddListener(() => Shop.BuyItem(ShopItem));
 
         Shop.UpdateBuyButtonVisual(ShopItem);
     }

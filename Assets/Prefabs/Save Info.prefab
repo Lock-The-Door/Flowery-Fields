@@ -34,8 +34,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: 247.5, y: 5}
-  m_SizeDelta: {x: -505, y: 50}
+  m_AnchoredPosition: {x: 197.5, y: 5}
+  m_SizeDelta: {x: -405, y: 50}
   m_Pivot: {x: 0.5, y: 0}
 --- !u!222 &1263600280344291625
 CanvasRenderer:
@@ -285,6 +285,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   SaveDisplayer: {fileID: 0}
+  GameMetadata:
+    GUID: 00000000-0000-0000-0000-000000000000
+    SaveName: A Flowery Field
+    Days: 0
+    Weather: 55
   SaveNameText: {fileID: 3029855194809760921}
   DayAndWeatherText: {fileID: 1263600281091364590}
   LastVisitText: {fileID: 1263600280344291624}

@@ -7,11 +7,11 @@ using UnityEngine;
 public class SaveDisplayer : MonoBehaviour
 {
     public PopupManager PopupManager;
+    public GameObject ScreenBlocker;
 
     public RectTransform SavesScrollView;
     public SaveFileUI SaveFile;
-
-    float savesUiGap = 170;
+    readonly float savesUiGap = 170;
 
     public async Task<List<GameMetadata>> ReloadSaves()
     {

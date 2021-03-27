@@ -12,6 +12,8 @@ public static class GameStatics
     public static string GameGuid;
     public static bool NewGame = true;
     public static GameData LoadedGame = new GameData();
+
+    public static bool Loading = false;
 }
 
 public class GameFunctions : MonoBehaviour
@@ -38,6 +40,8 @@ public class GameFunctions : MonoBehaviour
         // Load game data
         if (!GameStatics.NewGame)
             LoadGame().Wait();
+
+        GameStatics.Loading = false;
     }
 
     private bool QuitConfirmation()
@@ -113,7 +117,7 @@ public class GameFunctions : MonoBehaviour
         GameStatics.LoadedGame.Weather = GameFlow.weather;
         GameStatics.LoadedGame.StorylinesSeen = StorylineManager.StorylinesSeen;
         GameStatics.LoadedGame.ShopItemLevels = Shop.ShopItems.Select(shopItem => new { name = shopItem.Name, level = shopItem.Level }).ToDictionary(x => x.name, x => x.level);
-        GameStatics.LoadedGame.FlowerBedStates = FlowerBedManager.transform.GetComponentsInChildren<FlowerBed>().Select(flowerbed => new { id = flowerbed.id, state = flowerbed.state }).ToDictionary(x => x.id, x => x.state);
+        GameStatics.LoadedGame.FlowerBedStates = FlowerBedManager.transform.GetComponentsInChildren<FlowerBed>().Select(flowerbed => new { flowerbed.id, flowerbed.state }).ToDictionary(x => x.id, x => x.state);
         Debug.Log("Game variables copied!");
 
         await GameStatics.LoadedGame.Save(makeBackupCopy, backupName);

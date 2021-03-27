@@ -28,7 +28,7 @@ public class FlowerBedManager : MonoBehaviour
         new Vector3(-8, -8, -8)
     };
 
-    void MakeFlowerBed(int level)
+    public void MakeFlowerBed(int level)
     {
         // Create Flowerbed
         var NewFlowerBed = Instantiate(FlowerBed, transform);
@@ -45,5 +45,5 @@ public class FlowerBedManager : MonoBehaviour
         PathfindingManager.Pathfinding.GetNode(flowerBedX, flowerBedY).SetIsWalkable(false);
     }
 
-    void RemoveFlowerBed(int level) => Destroy(GetComponentsInChildren<FlowerBed>().First(flowerBed => flowerBed.id == level).gameObject);
+    public void RemoveFlowerBed(int level) => Destroy(GetComponentsInChildren<FlowerBed>().First(flowerBed => flowerBed.id == level).gameObject);
 }

@@ -19,7 +19,7 @@ public class StorylineManager : MonoBehaviour
     public PopupManager PopupManager;
 
     public List<string> StorylinesSeen = new List<string>();
-    Dictionary<string, Storyline[]> storylines => new Dictionary<string, Storyline[]>
+    Dictionary<string, Storyline[]> Storylines => new Dictionary<string, Storyline[]>
     {
         {
             "The Adventure Begins",
@@ -119,7 +119,7 @@ public class StorylineManager : MonoBehaviour
 
     public void ShowStoryline(string storylineName)
     {
-        if (StorylinesSeen.Contains(storylineName) || !storylines.TryGetValue(storylineName, out var storyline))
+        if (StorylinesSeen.Contains(storylineName) || !Storylines.TryGetValue(storylineName, out var storyline))
             return;
 
         StorylinesSeen.Add(storylineName);

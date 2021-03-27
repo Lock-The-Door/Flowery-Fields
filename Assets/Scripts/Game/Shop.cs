@@ -61,7 +61,7 @@ public class Shop : MonoBehaviour
     public FlowerBedManager FlowerBedManager;
 
     public AudioSource BuySound;
-    void BuyItem(ShopItem shopItem)
+    public void BuyItem(ShopItem shopItem)
     {
         // See if enough money and take money away
         var discountShopItem = ShopItems.Find(shopItem => shopItem.Name == "Discounts");

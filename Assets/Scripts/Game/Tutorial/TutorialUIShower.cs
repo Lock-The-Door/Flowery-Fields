@@ -11,7 +11,7 @@ public class TutorialUIShower : MonoBehaviour
     public GameObject BuyButton;
     public GameObject CloseButton;
     public TutorialShop Shop;
-    void CheckForObjectives()
+    public void CheckForObjectives()
     {
         string objectiveName = TutorialFlow.CurrentObjective.ObjectiveReferenceName;
 

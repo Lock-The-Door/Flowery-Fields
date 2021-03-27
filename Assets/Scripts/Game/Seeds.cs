@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class Seeds : MonoBehaviour
 {
-    FlowerBed.FlowerBedState[] SeedsEnabledState =
+    readonly FlowerBed.FlowerBedState[] SeedsEnabledState =
     {
         FlowerBed.FlowerBedState.Planted,
         FlowerBed.FlowerBedState.Watered

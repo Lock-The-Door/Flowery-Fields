@@ -144,7 +144,7 @@ public class TutorialFlowerBed : MonoBehaviour, IPointerClickHandler
     }
 
     public GameObject Arrow;
-    void ShowArrow() =>
+    public void ShowArrow() =>
         Arrow.SetActive(true);
 
     public Sprite EmptyTexture;

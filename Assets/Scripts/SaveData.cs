@@ -168,9 +168,11 @@ public class GameData
                     GameData oldGameData = new GameData();
                     await oldGameData.Load(GUID);
                     GameStatics.NewGame = false; // Don't assign new GUID
-                    oldGameData.GameMetadata = new GameMetadata();
-                    oldGameData.GameMetadata.GUID = GUID;
-                    oldGameData.GameMetadata.SaveName = "A Flowery Field"; // Assign a save file name
+                    oldGameData.GameMetadata = new GameMetadata
+                    {
+                        GUID = GUID,
+                        SaveName = "A Flowery Field" // Assign a save file name
+                    };
                     await oldGameData.Save();
 
                     GameStatics.NewGame = true; // Reset game statics

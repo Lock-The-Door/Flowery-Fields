@@ -21,12 +21,12 @@ public class TutorialFlower : MonoBehaviour
         { TutorialFlowerBed.FlowerBedState.SuperFlowers, SuperFlowers }
     };
 
-    Dictionary<TutorialFlowerBed.FlowerBedState, float> FlowerShadeOverride = new Dictionary<TutorialFlowerBed.FlowerBedState, float>
+    readonly Dictionary <TutorialFlowerBed.FlowerBedState, float> FlowerShadeOverride = new Dictionary<TutorialFlowerBed.FlowerBedState, float>
     {
         { TutorialFlowerBed.FlowerBedState.WeakFlowers, 0.65f }
     };
 
-    Dictionary<TutorialFlowerBed.FlowerBedState, float> FlowerSizesOverride = new Dictionary<TutorialFlowerBed.FlowerBedState, float>
+    readonly Dictionary<TutorialFlowerBed.FlowerBedState, float> FlowerSizesOverride = new Dictionary<TutorialFlowerBed.FlowerBedState, float>
     {
         { TutorialFlowerBed.FlowerBedState.DeadFlowers, 1.5f },
         { TutorialFlowerBed.FlowerBedState.WeakFlowers, 2f },

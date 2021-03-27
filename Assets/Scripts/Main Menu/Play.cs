@@ -5,6 +5,7 @@ using UnityEngine.SceneManagement;
 public class Play : MonoBehaviour
 {
     public SaveDisplayer SaveDisplayer;
+    public GameObject ScreenBlocker;
 
     List<GameMetadata> SaveFiles = new List<GameMetadata>();
 
@@ -30,6 +31,10 @@ public class Play : MonoBehaviour
 
     public void NewGame()
     {
+        // Show screen blocker
+        ScreenBlocker.SetActive(true);
+
+        GameStatics.Loading = true;
         GameStatics.NewGame = true;
         GameStatics.GameGuid = null;
 
