@@ -730,7 +730,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d115e01764cb9a40b68c5b3d07aedbf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ScreenBlocker: {fileID: 0}
+  ScreenBlocker: {fileID: 325212535}
 --- !u!1 &698675192
 GameObject:
   m_ObjectHideFlags: 0
