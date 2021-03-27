@@ -22,9 +22,11 @@ public class FlowerBed : MonoBehaviour, IPointerClickHandler
     public Player player;
     public int id = -1;
     public FlowerBedState state = FlowerBedState.Empty;
-    private readonly Dictionary<FlowerBedState, int> FlowerSellPrice = new Dictionary<FlowerBedState, int> { 
+    private Dictionary<FlowerBedState, int> FlowerSellPrice => new Dictionary<FlowerBedState, int> { 
         {FlowerBedState.DeadFlowers, 0},
         {FlowerBedState.DrownedFlowers, 0},
+        {FlowerBedState.Planted, Mathf.FloorToInt(SeedsPrice * 0.5f) },
+        {FlowerBedState.Watered, Mathf.FloorToInt(SeedsPrice * 0.5f) },
         {FlowerBedState.WeakFlowers, 5},
         {FlowerBedState.NormalFlowers, 15},
         {FlowerBedState.BeautifulFlowers, 50},
