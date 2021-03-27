@@ -33,7 +33,7 @@ public class BorrowMoney : MonoBehaviour
     int MoneyReadyToBorrow => maxMoneyAvalibleToBorrow - MoneyBorrowed;
     int MoneyBorrowed => DailyPayments.Select(payment => payment.MoneyBorrowed).Sum();
 
-    readonly int[] interestRates = { 3, 10, 15 }; // 3%, 10%, 15%
+    readonly int[] interestRates = { 3, 7, 12 }; // 3%, 7%, 12%
 
     public List<BorrowedMoneyInfo> DailyPayments = new List<BorrowedMoneyInfo>();
     public int TotalDailyPayment => DailyPayments.Select(payment => payment.DailyCost).Sum();
