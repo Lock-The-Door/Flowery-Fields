@@ -112,7 +112,6 @@ public class TutorialPlayer : MonoBehaviour
 
         foreach (Vector3 pathNode in path)
         {
-            Debug.Log(pathNode);
             nextNode = pathNode;
 
             Vector3 start = transform.position;
@@ -122,26 +121,21 @@ public class TutorialPlayer : MonoBehaviour
             Vector3 direction = end - start;
             direction.Normalize();
             float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
-            Debug.Log(angle + 90);
             switch (angle + 90)
             {
                 case 180: // Up
                     Animator.SetBool("Facing Away", true);
-                    Debug.Log("Up");
                     break;
                 case 0: // Down
                     Animator.SetBool("Facing Away", false);
-                    Debug.Log("Down");
                     break;
                 case 270: // Forward
                     Animator.SetBool("Facing Away", false);
                     SpriteRenderer.flipX = false;
-                    Debug.Log("Forward");
                     break;
                 case 90: // Back
                     Animator.SetBool("Facing Away", false);
                     SpriteRenderer.flipX = true;
-                    Debug.Log("Back");
                     break;
                 default:
                     Debug.LogWarning("player travelling at angle " + angle);
