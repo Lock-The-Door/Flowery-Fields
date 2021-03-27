@@ -41,9 +41,17 @@ public class BorrowMoney : MonoBehaviour
     {
         List<BorrowedMoneyInfo> toRemove = new List<BorrowedMoneyInfo>();
 
-        foreach(BorrowedMoneyInfo payment in DailyPayments)
+        foreach (BorrowedMoneyInfo payment in DailyPayments)
+        {
             if (--payment.DaysLeft == 0)
+            {
+                // Remove daily payments that are finished
                 toRemove.Add(payment);
+                // Allow player to borrow more money next time (25% more of borrowed amount)
+                maxMoneyAvalibleToBorrow += Mathf.FloorToInt(payment.MoneyBorrowed * 0.25f);
+            }
+        }
+
         DailyPayments.RemoveAll(payment => toRemove.Contains(payment));
     }
 
@@ -115,7 +123,7 @@ public class BorrowMoney : MonoBehaviour
 
     public Player Player;
 
-    void Confirm()
+    public void Confirm()
     {
         if (moneyBorrowing > 0)
         {
