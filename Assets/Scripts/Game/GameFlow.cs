@@ -36,9 +36,11 @@ public class GameFlow : MonoBehaviour
         // Set vars
         Color.RGBToHSV(Camera.backgroundColor, out float _, out float _, out CameraMaxBrightness);
 
+        // Show today's storyline
+        StorylineManager.CheckForNewStoryline(Days);
+
         if (GameStatics.NewGame) // only do this if it's a new game
         {
-            StorylineManager.ShowStoryline("The Adventure Begins"); // Show starter story
             SetWeather(Weather.Sunny); // Always sunny first day
         }
 
@@ -412,6 +414,9 @@ public class GameFlow : MonoBehaviour
 
         // PLAYER
         Player.InHand = Player.Items.Nothing; // Empty hands
+
+        // STORYLINE
+        StorylineManager.CheckForNewStoryline(Days);
         
         // FLOWER BEDS
         // Get Flower Beds States

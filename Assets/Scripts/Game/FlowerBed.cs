@@ -178,7 +178,7 @@ public class FlowerBed : MonoBehaviour, IPointerClickHandler
         }
 
         if (state == FlowerBedState.BeautifulFlowers)
-            StorylineManager.ShowStoryline("Beatiful Flowers");
+            StorylineManager.ShowStoryline("Beautiful Flowers");
         else if (state == FlowerBedState.SuperFlowers)
         {
             GetComponent<Volume>().enabled = true;

@@ -3988,6 +3988,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Player: {fileID: 684367974}
   PopupManager: {fileID: 1663070396}
+  BorrowMoneySign: {fileID: 1550989565}
   StorylinesSeen: []
 --- !u!82 &1033100302
 AudioSource:
@@ -6039,7 +6040,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1550989566
 MonoBehaviour:
   m_ObjectHideFlags: 0

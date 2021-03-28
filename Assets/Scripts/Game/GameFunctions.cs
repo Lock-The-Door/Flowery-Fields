@@ -78,6 +78,7 @@ public class GameFunctions : MonoBehaviour
             Player.Money = GameStatics.LoadedGame.Money;
             BorrowMoney.DailyPayments = GameStatics.LoadedGame.BorrowedMoney;
             StorylineManager.StorylinesSeen = GameStatics.LoadedGame.StorylinesSeen;
+            StorylineManager.Storylines.FindAll(storyline => (storyline.DayOfTrigger > 0 && storyline.DayOfTrigger <= GameFlow.Days) || StorylineManager.StorylinesSeen.Contains(storyline.Name)).ForEach(storyline => storyline.RunStoryline(PopupManager)); // Redo all storyline actions
             GameFlow.SetWeather(GameStatics.LoadedGame.Weather);
             Shop.ShopItems.ForEach(shopItem => { for (int i = 0; i < GameStatics.LoadedGame.ShopItemLevels[shopItem.Name]; i++) shopItem.Upgrade(); });
             FlowerBedManager.transform.GetComponentsInChildren<FlowerBed>().ToList().ForEach(flowerbed => flowerbed.UpdateFlowerbedState(GameStatics.LoadedGame.FlowerBedStates[flowerbed.id]));

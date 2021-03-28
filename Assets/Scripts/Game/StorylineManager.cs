@@ -1,12 +1,32 @@
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class Storyline
 {
+    public string Name;
+    public int DayOfTrigger;
+    public StorylinePopup[] Popups;
+    public System.Action Action = null;
+
+    public void RunStoryline(PopupManager PopupManager)
+    {
+        if (!StorylineManager.StorylinesSeen.Contains(Name))
+        {
+            foreach (StorylinePopup popup in Popups)
+                PopupManager.ShowWindowPopup(popup.title, popup.details);
+        }
+
+        if (Action != null)
+            Action.Invoke();
+    }
+}
+public class StorylinePopup
+{
     public string title;
     public string details;
 
-    public Storyline(string _title, string _details)
+    public StorylinePopup(string _title, string _details)
     {
         title = _title;
         details = _details;
@@ -18,113 +38,127 @@ public class StorylineManager : MonoBehaviour
     public Player Player;
     public PopupManager PopupManager;
 
-    public List<string> StorylinesSeen = new List<string>();
-    Dictionary<string, Storyline[]> Storylines => new Dictionary<string, Storyline[]>
-    {
-        {
-            "The Adventure Begins",
+    // Objects interacted with
+    public GameObject BorrowMoneySign;
 
-            new Storyline[]
+    public static List<string> StorylinesSeen = new List<string>();
+    public List<Storyline> Storylines => new List<Storyline>()
+    {
+        // MAIN STORYLINE
+        new Storyline() {
+            Name = "The Adventure Begins",
+            DayOfTrigger = 1,
+            Popups = new StorylinePopup[]
             {
-                new Storyline("The adventure begins!",
+                new StorylinePopup("The adventure begins!",
                     $"You are a young {Player.PlayerGender} who's with a failing middle class family. " +
                     "As a last resort, your parents let you use your creativity to make some money. " +
                     "And as someone who loves flowers, you decided to start a flower farm to sell some flowers!"),
-                new Storyline("Supporting your family!",
+                new StorylinePopup("Supporting your family!",
                     "Knowing your family needs some help, you start by giving $10 to your family everyday.")
             }
         },
-        {
-            "Sunny",
-
-            new Storyline[]
+        new Storyline() {
+            Name = "Borrowing Money",
+            DayOfTrigger = 7,
+            Popups = new StorylinePopup[]
             {
-                new Storyline("It's a sunny day!",
+                new StorylinePopup("Borrowing money",
+                    "Your family is nice enough to let you borrow some money from the bank to expand your business, but make sure you can return it!")
+            },
+            Action = new System.Action(() =>
+            {
+                BorrowMoneySign.SetActive(true); // Enable the borrow money sign
+            })
+        },
+        new Storyline() {
+            Name = "The End",
+
+            Popups = new StorylinePopup[]
+            {
+                new StorylinePopup("You did it!",
+                    "You've made a lot of money, you've upgraded your flower farm to the best form it can be. Your family is proud of you. The end! :)")
+            }
+        },
+        // WEATHER
+        new Storyline() {
+            Name = "Sunny",
+
+            Popups = new StorylinePopup[]
+            {
+                new StorylinePopup("It's a sunny day!",
                     "Let's plant some flowers! Click on the flower seeds on the table and then click on a flowerbed to plant some flowers. Don't forget to water them! When you are done, press finish day!")
             }
         },
-        {
-            "Rainy",
+        new Storyline() {
+            Name = "Rainy",
 
-            new Storyline[]
+            Popups = new StorylinePopup[]
             {
-                new Storyline("It's raining!",
+                new StorylinePopup("It's raining!",
                     "It's going to get wet! Remember to not water flowers today or your all flowers will drown!")
             }
         },
-        {
-            "Superstorm",
+        new Storyline() {
+            Name = "Superstorm",
 
-            new Storyline[]
-            {
-                new Storyline("The superstorm!",
-                    "Superstorms are rare. Some flowers may not make it but many will still survive, stronger and better than ever!")
+            Popups = new StorylinePopup[] {
+                new StorylinePopup("The superstorm!", 
+                    "Superstorms are rare. Some flowers may not make it but many will still survive, stronger and better than ever!")  
             }
         },
-        {
-            "Natural Disaster",
+        new Storyline() {
+            Name = "Natural Disaster",
             
-            new Storyline[]
+            Popups =  new StorylinePopup[]
             {
-                new Storyline("Uh oh! Incoming disaster!",
+                new StorylinePopup("Uh oh! Incoming disaster!",
                     "Natural disasters are quite dangerous and you won't get much out of it unless you're lucky. You're better off leaving some flowers unharvested today and hope they don't die.")
             }
         },
-        {
-            "Beautiful flowers",
+        // FLOWER DISCOVERIES
+        new Storyline() {
+            Name = "Beautiful Flowers",
 
-            new Storyline[]
+            Popups = new StorylinePopup[]
             {
-                new Storyline("Some nice flowers",
+                new StorylinePopup("Some nice flowers",
                     "Seems like you got some beautiful flowers! These might sell for more.")
             }
         },
-        {
-            "Superflowers",
+        new Storyline() {
+            Name = "Superflowers",
 
-            new Storyline[]
+            Popups = new StorylinePopup[]
             {
-                new Storyline("Superflowers!!!",
+                new StorylinePopup("Superflowers!!!",
                     "The rumours were true these ultimate beautiful flowers do exist. You'll definitely get a lot of money for that.")
             }
         },
-        {
-            "Being Generous",
+        // INTERACTIONS
+        new Storyline() {
+            Name = "Being Generous",
 
-            new Storyline[]
+            Popups = new StorylinePopup[]
             {
-                new Storyline("Being generous!", 
+                new StorylinePopup("Being generous!", 
                     "As you make more money, you decide to become more generous and give more money to your family.")
-            }
-        },
-        {
-            "Borrowing Money",
-
-            new Storyline[]
-            {
-                new Storyline("Borrowing money", 
-                    "Your family is nice enough to let you borrow some money from the bank to expand your business, but make sure you can return it!")
-            }
-        },
-        {
-            "The End",
-
-            new Storyline[]
-            {
-                new Storyline("You did it!", 
-                    "You've made a lot of money, your family is proud of you. The end! :)")
             }
         },
     };
 
     public void ShowStoryline(string storylineName)
     {
-        if (StorylinesSeen.Contains(storylineName) || !Storylines.TryGetValue(storylineName, out var storyline))
+        var storyline = Storylines.FirstOrDefault(storyline => storyline.Name == storylineName);
+
+        if (StorylinesSeen.Contains(storylineName) || storyline == null)
             return;
 
         StorylinesSeen.Add(storylineName);
 
-        foreach (Storyline storylineLine in storyline)
-            PopupManager.ShowWindowPopup(storylineLine.title, storylineLine.details);
+        storyline.RunStoryline(PopupManager);
     }
+
+    public void CheckForNewStoryline(int day) => 
+        Storylines.FindAll(storyline => storyline.DayOfTrigger == day).ForEach(storyline => ShowStoryline(storyline.Name)); // Call storyline actions for the day specified
 }
