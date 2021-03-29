@@ -51,7 +51,7 @@ public class SaveFileUI : MonoBehaviour
         GameStatics.NewGame = false;
         gameData.Save();
 
-        SaveDisplayer.DisplaySaves(SaveDisplayer.ReloadSaves().Result);
+        SaveDisplayer.DisplaySaves();
     }
 
     public void DeleteSave()
@@ -63,7 +63,7 @@ public class SaveFileUI : MonoBehaviour
 
             Directory.Delete(Application.persistentDataPath
                 + $"/Saves/{GameMetadata.GUID}", true);
-            SaveDisplayer.DisplaySaves(SaveDisplayer.ReloadSaves().Result);
+            SaveDisplayer.DisplaySaves();
         });
     }
 }

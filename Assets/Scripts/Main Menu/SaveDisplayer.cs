@@ -18,7 +18,7 @@ public class SaveDisplayer : MonoBehaviour
         if (!Directory.Exists(Application.persistentDataPath + "/Saves"))
             return new List<GameMetadata>();
 
-        await GameData.ConvertDirectory(); // Convert save files
+        GameData.ConvertDirectory().Wait(); // Convert save files
 
         List<GameMetadata> _saveFiles = new List<GameMetadata>();
 
@@ -34,8 +34,10 @@ public class SaveDisplayer : MonoBehaviour
         return _saveFiles;
     }
 
-    public void DisplaySaves(List<GameMetadata> saves)
+    public void DisplaySaves(List<GameMetadata> saves = null)
     {
+        saves ??= ReloadSaves().Result; // Refresh saves if not provided a pre-existing list
+
         SavesScrollView.GetComponentsInChildren<SaveFileUI>().ToList().ForEach(saveFileUi => Destroy(saveFileUi.gameObject)); // Remove all children
 
         SavesScrollView.sizeDelta = new Vector2(SavesScrollView.sizeDelta.x, savesUiGap * saves.Count); // Set size based on # of saves

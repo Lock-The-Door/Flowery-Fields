@@ -2252,6 +2252,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8e0326b8d7cc2fd46aab2c3f130c6f7c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  PopupManager: {fileID: 730364204}
+  LoadTutorialScene: {fileID: 697405425}
   SaveDisplayer: {fileID: 842471824}
   ScreenBlocker: {fileID: 325212535}
 --- !u!114 &1381287997 stripped
