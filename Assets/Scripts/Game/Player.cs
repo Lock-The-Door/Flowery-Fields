@@ -72,8 +72,6 @@ public class Player : MonoBehaviour
             return;
         }
 
-        float initialTime = 0;
-
         // prevent diags
         if (path.Count > 1)
         {
@@ -89,7 +87,7 @@ public class Player : MonoBehaviour
 
                 path[0] = Vector3.Distance(path[1], currentWorldGridPos) < Vector3.Distance(path[1], nextNode) ? currentWorldGridPos : nextNode;
 
-                Debug.Log("Going to: " + path[0] + " with initial time: " + initialTime);
+                Debug.Log("Going to: " + path[0]);
             }
             else
             {
@@ -104,12 +102,13 @@ public class Player : MonoBehaviour
             pathInString += pathNode;
         Debug.Log(pathInString);
 
-        NavigationCoroutine = StartCoroutine(NavigatePath(path, callback, initialTime));
+        NavigationCoroutine = StartCoroutine(NavigatePath(path, callback));
     }
 
     Animator Animator;
     SpriteRenderer SpriteRenderer;
-    IEnumerator NavigatePath(List<Vector3> path, System.Action callback, float initialTime = 0)
+    Vector3 start;
+    IEnumerator NavigatePath(List<Vector3> path, System.Action callback)
     {
         Animator.SetBool("Walking", true);
 
@@ -117,31 +116,33 @@ public class Player : MonoBehaviour
         {
             nextNode = pathNode;
 
-            Vector3 start = transform.position;
-            Vector3 end = new Vector3 (pathNode.x, pathNode.y, pathNode.y - 1);
-            float time = path[0] == pathNode ? initialTime : 0;
+            if (start == default)
+                start = transform.position;
+            Vector3 currentPos = transform.position;
+            Vector3 end = new Vector3(pathNode.x, pathNode.y, pathNode.y - 1);
+            float time = path[0] == pathNode ? 1-(Vector2.Distance(currentPos, end)/2) : 0;
 
-            Vector3 direction = end - start;
+            Vector3 direction = end - currentPos;
             direction.Normalize();
             float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
-            switch (angle + 90)
+            switch (angle - 90)
             {
-                case 180: // Up
+                case 0: // Up
                     Animator.SetBool("Facing Away", true);
                     break;
-                case 0: // Down
+                case -180: // Down
                     Animator.SetBool("Facing Away", false);
                     break;
-                case 270: // Forward
+                case 90: // Forward
                     Animator.SetBool("Facing Away", false);
                     SpriteRenderer.flipX = false;
                     break;
-                case 90: // Back
+                case -90: // Back
                     Animator.SetBool("Facing Away", false);
                     SpriteRenderer.flipX = true;
                     break;
                 default:
-                    Debug.LogWarning("player travelling at angle " + angle);
+                    Debug.LogWarning("Player travelling at angle " + angle);
                     break;
             }
 
@@ -152,6 +153,8 @@ public class Player : MonoBehaviour
 
                 yield return new WaitForFixedUpdate();
             }
+
+            start = end;
         }
 
         Animator.SetBool("Walking", false); // Stop animations
@@ -161,5 +164,7 @@ public class Player : MonoBehaviour
             // Finished, do callback
             callback.Invoke();
         }
+
+        start = default;
     }
 }
