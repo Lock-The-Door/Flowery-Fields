@@ -2831,6 +2831,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e157409be90a7c24cb722ae2a8f43e33, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  PopupManager: {fileID: 730364204}
   AudioMixer: {fileID: 24100000, guid: 79b7a26f867aef64b836531ad6a5c291, type: 2}
 --- !u!4 &1846548041
 Transform:
