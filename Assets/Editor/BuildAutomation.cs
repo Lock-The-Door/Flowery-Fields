@@ -112,46 +112,43 @@ public class MultiBuildWindow : EditorWindow
 	{
 		// Get existing open window or if none, make a new one:
 		MultiBuildWindow window = (MultiBuildWindow)EditorWindow.GetWindow(typeof(MultiBuildWindow), false, "Build Menu");
+		window.versionNumber = PlayerSettings.bundleVersion;
 		window.Show();
 	}
 
-	bool buildWebGL = true;
-	bool buildWindows = true;
-	bool buildMac = true;
-	bool buildLinux = true;
-
-	string versionNumber = "1.0";
+	string versionNumber;
 	void OnGUI()
 	{
 		// Platforms
 		GUILayout.Label("Platforms", EditorStyles.boldLabel);
-		EditorGUILayout.Toggle("WebGL", buildWebGL);
-		EditorGUILayout.Toggle("Windows", buildWindows);
-		EditorGUILayout.Toggle("MacOS", buildMac);
-		EditorGUILayout.Toggle("Linux", buildLinux);
+		var updatedTargets = new Dictionary<BuildAutomation.BuildTargetAndGroup, bool>();
+		foreach (var target in BuildAutomation.BuildTargets)
+        {
+			updatedTargets[target.Key] = EditorGUILayout.Toggle(target.Key.platformName, target.Value);
+        }
+		BuildAutomation.BuildTargets = updatedTargets;
 
 		EditorGUILayout.Space();
 
-		EditorGUILayout.TextField(new GUIContent("Version:", "The version number that will be specified in the build"), "1.0");
+		versionNumber = EditorGUILayout.TextField(new GUIContent("Version:", "The version number that will be specified in the build"), versionNumber);
 
 		if (GUILayout.Button(new GUIContent("Build!")))
 			StartBuild();
-		Debug.Log(PlayerSettings.bundleVersion);
 	}
 
 	void StartBuild()
     {
 		PlayerSettings.bundleVersion = versionNumber;
 
-		// Set targets to build
-		BuildAutomation.BuildTargets[BuildAutomation.BuildTargets.First(target => target.Key.platformName == "WebGL").Key] = buildWebGL;
-		BuildAutomation.BuildTargets[BuildAutomation.BuildTargets.First(target => target.Key.platformName == "Windows").Key] = buildWindows;
-		BuildAutomation.BuildTargets[BuildAutomation.BuildTargets.First(target => target.Key.platformName == "macOS").Key] = buildMac;
-		BuildAutomation.BuildTargets[BuildAutomation.BuildTargets.First(target => target.Key.platformName == "Linux").Key] = buildLinux;
+		Debug.Log("Starting build for version: " + PlayerSettings.bundleVersion);
 
 		// Build
 		string buildPath = EditorUtility.SaveFolderPanel("Build location", new System.IO.DirectoryInfo(Application.dataPath).Parent.FullName, "bin");
-		if (buildPath != null)
+		if (buildPath.Length > 0)
+		{
 			BuildAutomation.BuildApplication(buildPath);
+			
+			Close();
+		}
     }
 }
