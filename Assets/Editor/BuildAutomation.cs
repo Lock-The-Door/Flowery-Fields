@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEditor;
 using System.Linq;
-using System.IO;
+using System.Collections.Generic;
 
 public class BuildAutomation
 {
@@ -20,12 +20,14 @@ public class BuildAutomation
 		}
 	}
 
-	[MenuItem("Build/Build all")]
-	public static void BuildAll()
+	public static Dictionary<BuildTargetAndGroup, bool> BuildTargets = new Dictionary<BuildTargetAndGroup, bool>()
 	{
-		string path = EditorUtility.SaveFolderPanel("Choose Location of Built Applications", "Builds", "");
-		BuildApplication(path);
-	}
+		{ new BuildTargetAndGroup(BuildTargetGroup.WebGL, BuildTarget.WebGL), true },
+		{ new BuildTargetAndGroup(BuildTargetGroup.Standalone, BuildTarget.StandaloneWindows, "Windows", ".exe"), true },
+		{ new BuildTargetAndGroup(BuildTargetGroup.Standalone, BuildTarget.StandaloneOSX, "macOS"), true },
+		{ new BuildTargetAndGroup(BuildTargetGroup.Standalone, BuildTarget.StandaloneLinux64, "Linux", ".x86_64"), true }
+	};
+
 	public static void BuildApplication(string path)
 	{
 		string appName = "Flowery Fields";
@@ -37,20 +39,17 @@ public class BuildAutomation
 		PlayerSettings.defaultScreenWidth = 900;
 		PlayerSettings.defaultScreenHeight = 600;
 		PlayerSettings.fullScreenMode = FullScreenMode.FullScreenWindow;
-        //...
+		//...
 
-        BuildPlayerOptions buildPlayerOptions = new BuildPlayerOptions
-        {
-            scenes = new string[] { "Main Menu" }.Select(sceneName => path = "Assets/Scenes/" + sceneName).ToArray(), // Append the needed strings to the scene paths
+		BuildPlayerOptions buildPlayerOptions = new BuildPlayerOptions
+		{
+			scenes = EditorBuildSettings.scenes.Select(scene => scene.path).ToArray(),
             locationPathName = path,
             options = BuildOptions.None
         };
 
         BuildForTargetes(buildPlayerOptions, appName, icon,
-			new BuildTargetAndGroup(BuildTargetGroup.WebGL, BuildTarget.WebGL),
-			new BuildTargetAndGroup(BuildTargetGroup.Standalone, BuildTarget.StandaloneWindows, "Windows", ".exe"),
-			new BuildTargetAndGroup(BuildTargetGroup.Standalone, BuildTarget.StandaloneOSX, "macOS"),
-			new BuildTargetAndGroup(BuildTargetGroup.Standalone, BuildTarget.StandaloneLinux64, "Linux", ".x86_64"));
+			BuildTargets.Where(target => target.Value).Select(target => target.Key).ToArray());
 	}
 
 	public static void BuildForTargetes(BuildPlayerOptions options, string appName, Texture2D icon, params BuildTargetAndGroup[] targets)
@@ -58,7 +57,6 @@ public class BuildAutomation
 		string locationPathName = options.locationPathName;
 		foreach (BuildTargetAndGroup target in targets)
 		{
-
 			// https://forum.unity.com/threads/cant-change-resolution-for-standalone-build.323931/
 			PlayerSettings.SetApplicationIdentifier(target.group, PlayerSettings.applicationIdentifier);
 			DeletePreference();
@@ -104,4 +102,56 @@ public class BuildAutomation
 			// https://forum.unity.com/threads/cant-change-resolution-for-standalone-build.323931/
 		}
 	}
+}
+
+public class MultiBuildWindow : EditorWindow
+{
+	// Add menu named "My Window" to the Window menu
+	[MenuItem("Build/Build")]
+	static void Init()
+	{
+		// Get existing open window or if none, make a new one:
+		MultiBuildWindow window = (MultiBuildWindow)EditorWindow.GetWindow(typeof(MultiBuildWindow), false, "Build Menu");
+		window.Show();
+	}
+
+	bool buildWebGL = true;
+	bool buildWindows = true;
+	bool buildMac = true;
+	bool buildLinux = true;
+
+	string versionNumber = "1.0";
+	void OnGUI()
+	{
+		// Platforms
+		GUILayout.Label("Platforms", EditorStyles.boldLabel);
+		EditorGUILayout.Toggle("WebGL", buildWebGL);
+		EditorGUILayout.Toggle("Windows", buildWindows);
+		EditorGUILayout.Toggle("MacOS", buildMac);
+		EditorGUILayout.Toggle("Linux", buildLinux);
+
+		EditorGUILayout.Space();
+
+		EditorGUILayout.TextField(new GUIContent("Version:", "The version number that will be specified in the build"), "1.0");
+
+		if (GUILayout.Button(new GUIContent("Build!")))
+			StartBuild();
+		Debug.Log(PlayerSettings.bundleVersion);
+	}
+
+	void StartBuild()
+    {
+		PlayerSettings.bundleVersion = versionNumber;
+
+		// Set targets to build
+		BuildAutomation.BuildTargets[BuildAutomation.BuildTargets.First(target => target.Key.platformName == "WebGL").Key] = buildWebGL;
+		BuildAutomation.BuildTargets[BuildAutomation.BuildTargets.First(target => target.Key.platformName == "Windows").Key] = buildWindows;
+		BuildAutomation.BuildTargets[BuildAutomation.BuildTargets.First(target => target.Key.platformName == "macOS").Key] = buildMac;
+		BuildAutomation.BuildTargets[BuildAutomation.BuildTargets.First(target => target.Key.platformName == "Linux").Key] = buildLinux;
+
+		// Build
+		string buildPath = EditorUtility.SaveFolderPanel("Build location", new System.IO.DirectoryInfo(Application.dataPath).Parent.FullName, "bin");
+		if (buildPath != null)
+			BuildAutomation.BuildApplication(buildPath);
+    }
 }
