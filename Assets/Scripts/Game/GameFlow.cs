@@ -36,9 +36,11 @@ public class GameFlow : MonoBehaviour
         // Set vars
         Color.RGBToHSV(Camera.backgroundColor, out float _, out float _, out CameraMaxBrightness);
 
+        // Show today's storyline
+        StorylineManager.CheckForNewStoryline(Days);
+
         if (GameStatics.NewGame) // only do this if it's a new game
         {
-            StorylineManager.ShowStoryline("The Adventure Begins"); // Show starter story
             SetWeather(Weather.Sunny); // Always sunny first day
         }
 
@@ -107,7 +109,7 @@ public class GameFlow : MonoBehaviour
     public Shop Shop;
     public BorrowMoney BorrowMoney;
     public bool finishedGame = false;
-    public bool inDebt = false;
+    public bool InDebt = false;
 
     public Dictionary<Weather, Dictionary<FlowerBed.FlowerBedState, Dictionary<FlowerBed.FlowerBedState, float>>> WeatherLogicData = new Dictionary<Weather, Dictionary<FlowerBed.FlowerBedState, Dictionary<FlowerBed.FlowerBedState, float>>>
     {
@@ -358,7 +360,7 @@ public class GameFlow : MonoBehaviour
         // Manage Debt
         if (Player.Money < 0)
         {
-            if (inDebt)
+            if (InDebt)
             {
                 Debug.Log("You are in debt");
                 // Try to sell flowerbeds first to cover debt
@@ -388,13 +390,13 @@ public class GameFlow : MonoBehaviour
             }
             else
             {
-                inDebt = true;
+                InDebt = true;
                 PopupManager.ShowWindowPopup("You're in debt!", "You are in debt! Get out of debt or you'll soon need to start selling your things!", goodAlert: false);
             }
         }
         else
         {
-            inDebt = false;
+            InDebt = false;
 
             Player.Money -= FamilyPayment; // Pay family
             Player.Money -= BorrowMoney.TotalDailyPayment; // Pay loans
@@ -412,6 +414,9 @@ public class GameFlow : MonoBehaviour
 
         // PLAYER
         Player.InHand = Player.Items.Nothing; // Empty hands
+
+        // STORYLINE
+        StorylineManager.CheckForNewStoryline(Days);
         
         // FLOWER BEDS
         // Get Flower Beds States

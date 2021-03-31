@@ -89,7 +89,7 @@ public class Shop : MonoBehaviour
     {
         Debug.Log("Update shop visual: " + shopItem.Name);
 
-        var buyButton = GetComponentsInChildren<ShopBuyButton>().First(buyButton => buyButton.ShopItem == shopItem);
+        var buyButton = GetComponentsInChildren<ShopBuyButton>().First(buyButton => buyButton.ShopItemName == shopItem.Name);
 
         buyButton.text.text = "$" + shopItem.Price.ToString(); // Update price text
 

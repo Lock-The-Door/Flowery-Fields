@@ -79,7 +79,10 @@ public class TutorialFlow : MonoBehaviour
 
         // Check if tutorial is over
         if (Days == 5)
-            SceneManager.LoadScene(0);
+        {
+            PlayerPrefs.SetInt("TutorialComplete", 1); // Set variable
+            SceneManager.LoadScene(0); // Go back to main menu
+        }
 
         // Show black screen
         NextDayScreen.gameObject.SetActive(true);

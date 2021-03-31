@@ -10,10 +10,23 @@ using Newtonsoft.Json;
 public class GameMetadata
 {
     public string GUID = Guid.Empty.ToString();
+    public int SaveVersion = 2;
     public string SaveName = "A Flowery Field";
     public int Days = 0;
     public GameFlow.Weather Weather = GameFlow.Weather.Sunny;
     public DateTime LastVisit = DateTime.MinValue;
+
+    public GameMetadata() { }
+    [JsonConstructor]
+    public GameMetadata(string guid, int saveVersion, string saveName, int days, GameFlow.Weather weather, DateTime lastVisit)
+    {
+        GUID = guid;
+        SaveVersion = saveVersion != default ? saveVersion : 1;
+        SaveName = saveName;
+        Days = days;
+        Weather = weather;
+        LastVisit = lastVisit;
+    }
 
     public Task<GameMetadata> Load(string GUID)
     {
@@ -49,6 +62,7 @@ public class GameData
     // Game Data
     public Player.Gender PlayerGender;
     public int Days;
+    public bool InDebt;
     public int Money;
     public List<BorrowedMoneyInfo> BorrowedMoney;
     public GameFlow.Weather Weather;
@@ -56,11 +70,11 @@ public class GameData
     public Dictionary<string, int> ShopItemLevels;
     public Dictionary<int, FlowerBed.FlowerBedState> FlowerBedStates;
 
-    public Task<GameData> Load(string GUID)
+    public async Task<GameData> Load(string GUID, bool isConversionLoad = false)
     {
         try
         {
-            Debug.Log("Deserializing data...");
+            Debug.Log("Deserializing data... " + GUID);
             if (!File.Exists(Application.persistentDataPath
                     + $"/Saves/{GUID}/save.dat"))
             {
@@ -76,10 +90,20 @@ public class GameData
             file.Close();
             Debug.Log("Game data deserialized!");
 
+            Debug.Log("Checking for game save format updates...");
+            if (!isConversionLoad && deserializedData.GameMetadata.SaveVersion != new GameMetadata().SaveVersion)
+            {
+                await Convert(GUID, deserializedData.GameMetadata.SaveVersion);
+                Debug.Log("Old format detected! Converting...");
+            }
+            else
+                Debug.Log("No conversions needed");
+
             Debug.Log("Copying object data...");
             GameMetadata = deserializedData.GameMetadata;
             PlayerGender = deserializedData.PlayerGender;
             Days = deserializedData.Days;
+            InDebt = deserializedData.InDebt;
             Money = deserializedData.Money;
             BorrowedMoney = deserializedData.BorrowedMoney;
             Weather = deserializedData.Weather;
@@ -88,7 +112,7 @@ public class GameData
             FlowerBedStates = deserializedData.FlowerBedStates;
             Debug.Log("Object data copied!");
 
-            return Task.FromResult(this);
+            return this;
             
         }
         catch (Exception e)
@@ -99,7 +123,14 @@ public class GameData
             Debug.Log("Saving loaded data and creating backup copy");
             Save(true, "load_failure_backup").Wait(); // this will create a backup of the old corrupted copy and by saving, we create a fresh save that will likely work
 
-            throw e;
+            return new GameData()
+            {
+                GameMetadata = new GameMetadata()
+                {
+                    GUID = Guid.NewGuid().ToString(),
+                    SaveName = "Corrupted Or Missing Save"
+                }
+            };
         }
     }
 
@@ -153,8 +184,18 @@ public class GameData
 
     public static async Task Convert(string pathOrGUID, int saveFileVersion)
     {
+        Debug.Log($"Converting game save {pathOrGUID} from version {saveFileVersion} to latest version of {new GameMetadata().SaveVersion}");
+
         try
         {
+            // Load game save
+            GameData oldGameData = new GameData();
+            GameStatics.NewGame = false; // Don't assign new GUID
+            if (Guid.TryParse(pathOrGUID, out _))
+            {
+                await oldGameData.Load(pathOrGUID, true);
+            }
+
             switch (saveFileVersion)
             {
                 case 0:
@@ -165,19 +206,39 @@ public class GameData
                     File.Copy(pathOrGUID, Application.persistentDataPath + $"/Saves/{GUID}/save.dat"); // Copy the file with new file name
                     File.Delete(pathOrGUID); // Remove the old file
                     // Game data has moved metadata to separate class, simply resave the file with new metadata class to create metadata file
-                    GameData oldGameData = new GameData();
-                    await oldGameData.Load(GUID);
-                    GameStatics.NewGame = false; // Don't assign new GUID
+                    await oldGameData.Load(GUID, true);
+
                     oldGameData.GameMetadata = new GameMetadata
                     {
                         GUID = GUID,
-                        SaveName = "A Flowery Field" // Assign a save file name
+                        SaveName = "A Flowery Field", // Assign a save file name
+                        SaveVersion = 1 // Assign a version number
                     };
                     await oldGameData.Save();
 
-                    GameStatics.NewGame = true; // Reset game statics
+                    pathOrGUID = GUID; // Set the outer variable for recursive conversion
+                    break;
+                case 1:
+                    // Somehow I deleted the game version and need to re assign it
+                    // Need to also assign inDebt variable to fix a bug
+                    oldGameData.GameMetadata = new GameMetadata
+                    {
+                        GUID = pathOrGUID,
+                        SaveVersion = 2 // Assign a version number
+                    };
+                    oldGameData.InDebt = oldGameData.Money < 0; // Assign new variable, inDebt
+
+                    await oldGameData.Save();
                     break;
             }
+
+            GameStatics.NewGame = true; // Reset game statics
+
+            // See if further conversion is needed
+            if (oldGameData.GameMetadata.SaveVersion != new GameMetadata().SaveVersion)
+                await Convert(pathOrGUID, oldGameData.GameMetadata.SaveVersion);
+
+            Debug.Log("Finished converting to version " + oldGameData.GameMetadata.SaveVersion);
         }
         catch (Exception e)
         {
@@ -186,12 +247,30 @@ public class GameData
     }
     public static async Task ConvertDirectory()
     {
+        Debug.Log("Finding saves to be converted in the saves directory");
+
         // VERSION 0
         string[] gameDataPaths = Directory.GetFiles(Application.persistentDataPath + "/Saves", "*dat");
         foreach (string path in gameDataPaths)
         {
-            Debug.Log(path);
+            Debug.Log("Converting " + path);
             await Convert(path, 0);
         }
+
+        // VERSION 1
+        string[] directoryPaths = Directory.GetDirectories(Application.persistentDataPath + "/Saves");
+        foreach (string path in directoryPaths)
+        {
+            Debug.Log("Testing " + path);
+
+            StreamReader streamReader = File.OpenText(path + "/metadata.json");
+            GameMetadata metadata = JsonConvert.DeserializeObject<GameMetadata>(streamReader.ReadToEnd());
+            streamReader.Close();
+
+            if (metadata.SaveVersion == 1)
+                await Convert(metadata.GUID, 1);
+        }
+
+        // VERSION 2+ WILL BE CONVERTED ON LOAD
     }
 }

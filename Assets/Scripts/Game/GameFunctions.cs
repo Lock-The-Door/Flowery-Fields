@@ -74,9 +74,11 @@ public class GameFunctions : MonoBehaviour
             Debug.Log("Loading game data to variables");
             Player.PlayerGender = GameStatics.LoadedGame.PlayerGender;
             GameFlow.Days = GameStatics.LoadedGame.Days;
+            GameFlow.InDebt = GameStatics.LoadedGame.InDebt;
             Player.Money = GameStatics.LoadedGame.Money;
             BorrowMoney.DailyPayments = GameStatics.LoadedGame.BorrowedMoney;
             StorylineManager.StorylinesSeen = GameStatics.LoadedGame.StorylinesSeen;
+            StorylineManager.Storylines.FindAll(storyline => (storyline.DayOfTrigger > 0 && storyline.DayOfTrigger <= GameFlow.Days) || StorylineManager.StorylinesSeen.Contains(storyline.Name)).ForEach(storyline => storyline.RunStoryline(PopupManager)); // Redo all storyline actions
             GameFlow.SetWeather(GameStatics.LoadedGame.Weather);
             Shop.ShopItems.ForEach(shopItem => { for (int i = 0; i < GameStatics.LoadedGame.ShopItemLevels[shopItem.Name]; i++) shopItem.Upgrade(); });
             FlowerBedManager.transform.GetComponentsInChildren<FlowerBed>().ToList().ForEach(flowerbed => flowerbed.UpdateFlowerbedState(GameStatics.LoadedGame.FlowerBedStates[flowerbed.id]));
@@ -112,6 +114,7 @@ public class GameFunctions : MonoBehaviour
         Debug.Log("Copying game variables to game data class...");
         GameStatics.LoadedGame.PlayerGender = Player.PlayerGender;
         GameStatics.LoadedGame.Days = GameFlow.Days;
+        GameStatics.LoadedGame.InDebt = GameFlow.InDebt;
         GameStatics.LoadedGame.Money = Player.Money;
         GameStatics.LoadedGame.BorrowedMoney = BorrowMoney.DailyPayments;
         GameStatics.LoadedGame.Weather = GameFlow.weather;
