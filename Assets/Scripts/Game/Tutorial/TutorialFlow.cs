@@ -66,8 +66,12 @@ public class TutorialFlow : MonoBehaviour
     {
         Color.RGBToHSV(Camera.backgroundColor, out _, out _, out CameraMaxBrightness);
 
+        DiscordRichPresenceManager.UpdateActivity("Tutorial", 1);
+
         UpdateObjective();
     }
+
+    void Update() => DiscordRichPresenceManager.RunCallbacks();
 
     int Days = 1;
     private IEnumerator FinishDay()
@@ -88,6 +92,8 @@ public class TutorialFlow : MonoBehaviour
         NextDayScreen.gameObject.SetActive(true);
         StartCoroutine(NextDayScreen.ShowScreen(++Days));
         yield return new WaitUntil(() => NextDayScreen.time >= 1);
+
+        DiscordRichPresenceManager.UpdateActivity("Tutorial", Days); // Discord Rich Presence
 
         // PLAYER
         Player.InHand = TutorialPlayer.Items.Nothing; // Empty hands

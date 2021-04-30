@@ -41,7 +41,12 @@ public class GameFlow : MonoBehaviour
 
         if (GameStatics.NewGame) // only do this if it's a new game
         {
+            DiscordRichPresenceManager.UpdateActivity("Playing", Days); // Rich Presence 1st day
             SetWeather(Weather.Sunny); // Always sunny first day
+        }
+        else
+        {
+            StartCoroutine(WaitForData());
         }
 
         // Set variables in randomiser
@@ -50,6 +55,17 @@ public class GameFlow : MonoBehaviour
         RandomEvents.PopupManager = PopupManager;
         RandomEvents.FlowerBedManager = FlowerBedManager;
     }
+
+    IEnumerator WaitForData()
+    {
+        if (GameStatics.Loading)
+            yield return new WaitUntil(() => !GameStatics.Loading);
+
+        // Code after wait
+        DiscordRichPresenceManager.UpdateActivity("Playing", Days); // Load rich presence
+    }
+
+    void Update() => DiscordRichPresenceManager.RunCallbacks();
 
     readonly Dictionary<Weather, float> WeatherLightingIntensity = new Dictionary<Weather, float>()
     {
@@ -356,6 +372,8 @@ public class GameFlow : MonoBehaviour
         StartCoroutine(NextDayScreen.ShowScreen(++Days));
 
         yield return new WaitUntil(() => NextDayScreen.time >= 1);
+
+        DiscordRichPresenceManager.UpdateActivity("Playing", Days); // Discord Rich Presence
 
         // Manage Debt
         if (Player.Money < 0)
