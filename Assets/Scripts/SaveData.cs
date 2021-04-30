@@ -65,6 +65,7 @@ public class GameData
     public bool InDebt;
     public int Money;
     public List<BorrowedMoneyInfo> BorrowedMoney;
+    public int BorrowLimit = 1000;
     public GameFlow.Weather Weather;
     public List<string> StorylinesSeen;
     public Dictionary<string, int> ShopItemLevels;
@@ -106,6 +107,7 @@ public class GameData
             InDebt = deserializedData.InDebt;
             Money = deserializedData.Money;
             BorrowedMoney = deserializedData.BorrowedMoney;
+            BorrowLimit = deserializedData.BorrowLimit;
             Weather = deserializedData.Weather;
             StorylinesSeen = deserializedData.StorylinesSeen;
             ShopItemLevels = deserializedData.ShopItemLevels;

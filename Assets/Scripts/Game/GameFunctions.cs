@@ -78,6 +78,7 @@ public class GameFunctions : MonoBehaviour
             GameFlow.InDebt = GameStatics.LoadedGame.InDebt;
             Player.Money = GameStatics.LoadedGame.Money;
             BorrowMoney.DailyPayments = GameStatics.LoadedGame.BorrowedMoney;
+            BorrowMoney.maxMoneyAvalibleToBorrow = GameStatics.LoadedGame.BorrowLimit;
             StorylineManager.StorylinesSeen = GameStatics.LoadedGame.StorylinesSeen;
             StorylineManager.Storylines.FindAll(storyline => (storyline.DayOfTrigger > 0 && storyline.DayOfTrigger <= GameFlow.Days) || StorylineManager.StorylinesSeen.Contains(storyline.Name)).ForEach(storyline => storyline.RunStoryline(PopupManager)); // Redo all storyline actions
             GameFlow.SetWeather(GameStatics.LoadedGame.Weather);
@@ -123,6 +124,7 @@ public class GameFunctions : MonoBehaviour
         GameStatics.LoadedGame.InDebt = GameFlow.InDebt;
         GameStatics.LoadedGame.Money = Player.Money;
         GameStatics.LoadedGame.BorrowedMoney = BorrowMoney.DailyPayments;
+        GameStatics.LoadedGame.BorrowLimit = BorrowMoney.maxMoneyAvalibleToBorrow;
         GameStatics.LoadedGame.Weather = GameFlow.weather;
         GameStatics.LoadedGame.StorylinesSeen = StorylineManager.StorylinesSeen;
         GameStatics.LoadedGame.ShopItemLevels = Shop.ShopItems.Select(shopItem => new { name = shopItem.Name, level = shopItem.Level }).ToDictionary(x => x.name, x => x.level);
