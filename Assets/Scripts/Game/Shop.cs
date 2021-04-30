@@ -43,14 +43,14 @@ public class ShopItem
 
 public class Shop : MonoBehaviour
 {
-    public List<ShopItem> ShopItems = new List<ShopItem>
+    public static List<ShopItem> ShopItems = new List<ShopItem>
     {
         new ShopItem(_name: "Flower Beds", _startingPrice: 300, _priceInflation: level => 25 * (level + 1), _familyPaymentBonus: 10, _maxLevel: 11, _isDowngradable: true, _upgradeAction: ShopItemUpgrades.FlowerBeds),
         new ShopItem(_name: "Shoes", _startingPrice: 150, _priceInflation: level => 10 + 2 * level, _familyPaymentBonus: 2, _maxLevel: 25, _isDowngradable: true),
-        new ShopItem(_name: "Security", _startingPrice: 250, _priceInflation: level => 50 + 5 * level, _familyPaymentBonus: 15, _maxLevel: 5),
+        new ShopItem(_name: "Security", _startingPrice: 250, _priceInflation: level => 50 + 5 * level, _familyPaymentBonus: 15, _maxLevel: 5, _isDowngradable: true),
         new ShopItem(_name: "Luck", _startingPrice: 375, _priceInflation: level => 100 + 10 * level, _familyPaymentBonus: 45, _maxLevel: 5),
         new ShopItem(_name: "Better bees", _startingPrice: 200, _priceInflation: level => 50 + 10 * level, _familyPaymentBonus: 20, _maxLevel: 3),
-        new ShopItem(_name: "Discounts", _startingPrice: 500, _priceInflation: level => 25 + 25 * level, _familyPaymentBonus: 25, _maxLevel: 5, _isDowngradable: true)
+        new ShopItem(_name: "Discounts", _startingPrice: 500, _priceInflation: level => 25 + 25 * level, _familyPaymentBonus: 25, _maxLevel: 5)
     };
 
     public Player Player;
@@ -65,7 +65,7 @@ public class Shop : MonoBehaviour
     {
         // See if enough money and take money away
         var discountShopItem = ShopItems.Find(shopItem => shopItem.Name == "Discounts");
-        int cost = Mathf.RoundToInt(shopItem.Price * (1 - discountShopItem.Level / discountShopItem.MaxLevel * 0.5f));
+        int cost = Mathf.RoundToInt(shopItem.Price * (1 - (float)discountShopItem.Level / discountShopItem.MaxLevel * 0.5f));
         if (cost > Player.Money)
         {
             Debug.Log("You are too poor! :(");
@@ -80,10 +80,12 @@ public class Shop : MonoBehaviour
         shopItem.Upgrade(); // Run function to upgrade
 
         BuySound.Play(); // Play buy sound
-        UpdateBuyButtonVisual(shopItem); // Update visuals
+        UpdateBuyButtonVisuals(); // Update visuals
 
         StorylineManager.ShowStoryline("Being Generous"); // Storyline trigger
     }
+
+    public void UpdateBuyButtonVisuals() => ShopItems.ForEach(shopItem => UpdateBuyButtonVisual(shopItem));
 
     public void UpdateBuyButtonVisual(ShopItem shopItem)
     {
@@ -91,7 +93,9 @@ public class Shop : MonoBehaviour
 
         var buyButton = GetComponentsInChildren<ShopBuyButton>().First(buyButton => buyButton.ShopItemName == shopItem.Name);
 
-        buyButton.text.text = "$" + shopItem.Price.ToString(); // Update price text
+        var discountShopItem = ShopItems.Find(shopItem => shopItem.Name == "Discounts");
+        int cost = Mathf.RoundToInt(shopItem.Price * (1 - (float)discountShopItem.Level / discountShopItem.MaxLevel * 0.5f));
+        buyButton.text.text = "$" + cost.ToString(); // Update price text
 
         // Prevent Overleveling
         if (shopItem.Level == shopItem.MaxLevel)
