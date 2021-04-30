@@ -24,6 +24,7 @@ public class BorrowMoney : MonoBehaviour
     public Slider moneySlider;
     public TMP_InputField moneyInput;
     public TMP_Dropdown moneyPlan;
+    public TextMeshProUGUI moneyOwedText;
     public TextMeshProUGUI borrowLimit;
     public TextMeshProUGUI toReturnText;
     public TextMeshProUGUI dailyPaymentText;
@@ -31,6 +32,7 @@ public class BorrowMoney : MonoBehaviour
 
     public int maxMoneyAvalibleToBorrow = 1000;
     int MoneyReadyToBorrow => maxMoneyAvalibleToBorrow - MoneyBorrowed;
+    int MoneyOwed => DailyPayments.Select(payment => payment.DailyCost * payment.DaysLeft).Sum();
     int MoneyBorrowed => DailyPayments.Select(payment => payment.MoneyBorrowed).Sum();
 
     readonly int[] interestRates = { 3, 7, 12 }; // 3%, 7%, 12%
@@ -58,7 +60,7 @@ public class BorrowMoney : MonoBehaviour
     // current values
     int moneyBorrowing = 0;
     int MoneyToReturn => Mathf.RoundToInt(moneyBorrowing * ((float)interestRates[moneyPlan.value] / 100 + 1));
-    int DailyPayment => MoneyToReturn/((moneyPlan.value+1)*7);
+    int DailyPayment => Mathf.RoundToInt((float)MoneyToReturn / ((moneyPlan.value + 1) * 7));
 
     void Start() => Open();
     
@@ -69,6 +71,7 @@ public class BorrowMoney : MonoBehaviour
         lastInput = "0";
 
         // Set default values
+        moneyOwedText.text = $"You currently owe ${MoneyOwed}";
         borrowLimit.text = $"You can borrow up to ${MoneyReadyToBorrow}";
 
         moneySlider.value = 0;
