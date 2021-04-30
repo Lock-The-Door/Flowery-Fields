@@ -43,7 +43,7 @@ public class ShopItem
 
 public class Shop : MonoBehaviour
 {
-    public static List<ShopItem> ShopItems = new List<ShopItem>
+    public List<ShopItem> ShopItems = new List<ShopItem>
     {
         new ShopItem(_name: "Flower Beds", _startingPrice: 300, _priceInflation: level => 25 * (level + 1), _familyPaymentBonus: 10, _maxLevel: 11, _isDowngradable: true, _upgradeAction: ShopItemUpgrades.FlowerBeds),
         new ShopItem(_name: "Shoes", _startingPrice: 150, _priceInflation: level => 10 + 2 * level, _familyPaymentBonus: 2, _maxLevel: 25, _isDowngradable: true),
