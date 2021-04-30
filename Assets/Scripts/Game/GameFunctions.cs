@@ -99,6 +99,7 @@ public class GameFunctions : MonoBehaviour
             windowPopup.TitleText.text = "Looks like we ran into an error!";
             windowPopup.DetailsText.text = e.Message + "\nLook in the log files for more information.";
             windowPopup.callbackAction = () => SceneManager.LoadScene("Main Menu");;
+            windowPopup.gameObject.SetActive(true);
         }
     }
 
