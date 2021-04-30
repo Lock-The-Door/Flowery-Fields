@@ -154,9 +154,9 @@ public class StorylineManager : MonoBehaviour
         if (StorylinesSeen.Contains(storylineName) || storyline == null)
             return;
 
-        StorylinesSeen.Add(storylineName);
-
         storyline.RunStoryline(PopupManager);
+
+        StorylinesSeen.Add(storylineName);
     }
 
     public void CheckForNewStoryline(int day) => 
