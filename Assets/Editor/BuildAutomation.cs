@@ -146,8 +146,14 @@ public class MultiBuildWindow : EditorWindow
 		string buildPath = EditorUtility.SaveFolderPanel("Build location", new System.IO.DirectoryInfo(Application.dataPath).Parent.FullName, "bin");
 		if (buildPath.Length > 0)
 		{
+			// Do the building
 			BuildAutomation.BuildApplication(buildPath);
-			
+
+			// Create version number file
+			var versionFile = System.IO.File.CreateText(buildPath + "/version.txt");
+			versionFile.Write("v" + versionNumber);
+			versionFile.Close();
+
 			Close();
 		}
     }
