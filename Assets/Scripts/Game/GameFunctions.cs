@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using System.Threading.Tasks;
+using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -91,14 +92,18 @@ public class GameFunctions : MonoBehaviour
         catch (Exception e)
         {
             Debug.LogError("Failed to load game save");
+            Debug.LogError(e);
 
             Canvas OverlayCanvas = new GameObject().AddComponent<Canvas>();
             OverlayCanvas.gameObject.AddComponent<GraphicRaycaster>();
             OverlayCanvas.renderMode = RenderMode.ScreenSpaceOverlay;
             WindowPopup windowPopup = Instantiate(WindowPopup, OverlayCanvas.transform);
+            windowPopup.queuedPopup = false;
             windowPopup.TitleText.text = "Looks like we ran into an error!";
-            windowPopup.DetailsText.text = e.Message + "\nLook in the log files for more information.";
-            windowPopup.callbackAction = () => SceneManager.LoadScene("Main Menu");;
+            windowPopup.DetailsText.text = e.Message + "\nLook in the log files for more information and maybe make a Github issue.";
+            windowPopup.callbackAction = () => SceneManager.LoadScene("Main Menu");
+            windowPopup.transform.GetChild(0).GetComponent<RectTransform>().offsetMin = new Vector2(100, 50);
+            windowPopup.transform.GetChild(0).GetComponent<RectTransform>().offsetMax = new Vector2(-100, -50);
             windowPopup.gameObject.SetActive(true);
         }
     }

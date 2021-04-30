@@ -12,6 +12,7 @@ public class WindowPopup : MonoBehaviour
     public float speed = 3; 
     Vector2 endSize;
     bool closing = false;
+    public bool queuedPopup = true;
 
     public System.Action callbackAction;
 
@@ -53,8 +54,11 @@ public class WindowPopup : MonoBehaviour
         time = 0;
         closing = true;
 
-        Debug.Log("Showing next popup");
-        PopupManager.PopupQueue.Dequeue();
-        PopupManager.NextPopup();
+        if (queuedPopup)
+        {
+            Debug.Log("Showing next popup");
+            PopupManager.PopupQueue.Dequeue();
+            PopupManager.NextPopup();
+        }
     }
 }
