@@ -4,11 +4,40 @@ using System.Collections.Generic;
 
 public static class DiscordRichPresenceManager
 {
-    private static Discord.Discord discord = new Discord.Discord(836697022471471154, (ulong)CreateFlags.NoRequireDiscord);
+    private static Discord.Discord discord;
+    private static Discord.Discord GetOrCreateDiscord()
+    {
+        if (discord == null)
+        {
+            try
+            {
+                discord = new Discord.Discord(836697022471471154, (ulong)CreateFlags.NoRequireDiscord);
+            }
+            catch (ResultException e)
+            {
+                if (e.Result == Result.NotRunning)
+                {
+                    return null;
+                }
+            }
+        }
 
-    public static void RunCallbacks() => discord.RunCallbacks();
+        return discord;
+    }
 
-    private static readonly ActivityManager activityManager = discord.GetActivityManager();
+    public static void RunCallbacks()
+    {
+        try
+        {
+            GetOrCreateDiscord().RunCallbacks();
+        }
+        catch
+        {
+            discord = null;
+            return;
+        }
+    }
+
     private static readonly Dictionary<string, Activity> activities = new Dictionary<string, Activity>()
     {
         {"Main Menu", new Activity()
@@ -47,7 +76,15 @@ public static class DiscordRichPresenceManager
     private static long LastTimestamp = 0;
     public static void UpdateActivity(string activityName, int day = 0)
     {
+        if (GetOrCreateDiscord() == null)
+        {
+            Debug.Log("Discord unavailable");
+            return;
+        }
+
         Debug.Log("Updating discord rich presence for " + activityName);
+
+        ActivityManager activityManager = GetOrCreateDiscord().GetActivityManager();
 
         var activity = activities[activityName];
 
