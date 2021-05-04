@@ -25,7 +25,7 @@ public class Play : MonoBehaviour
         {
             if (PlayerPrefs.GetInt("TutorialComplete", 0) == 0)
             {
-                PopupManager.ShowDecisionWindowPopup("You haven't finished the tutorial!", "Are you sure you don't want to do the tutorial before playing the game?", willDoTutorial =>
+                PopupManager.ShowDecisionWindowPopup("You haven't finished the tutorial!", "Do you want to do the tutorial first?", willDoTutorial =>
                 {
                     if (willDoTutorial)
                     {

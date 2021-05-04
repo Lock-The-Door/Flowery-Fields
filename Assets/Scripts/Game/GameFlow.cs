@@ -41,7 +41,12 @@ public class GameFlow : MonoBehaviour
 
         if (GameStatics.NewGame) // only do this if it's a new game
         {
+            DiscordRichPresenceManager.UpdateActivity("Playing", Days); // Rich Presence 1st day
             SetWeather(Weather.Sunny); // Always sunny first day
+        }
+        else
+        {
+            StartCoroutine(WaitForData());
         }
 
         // Set variables in randomiser
@@ -50,6 +55,17 @@ public class GameFlow : MonoBehaviour
         RandomEvents.PopupManager = PopupManager;
         RandomEvents.FlowerBedManager = FlowerBedManager;
     }
+
+    IEnumerator WaitForData()
+    {
+        if (GameStatics.Loading)
+            yield return new WaitUntil(() => !GameStatics.Loading);
+
+        // Code after wait
+        DiscordRichPresenceManager.UpdateActivity("Playing", Days); // Load rich presence
+    }
+
+    void Update() => DiscordRichPresenceManager.RunCallbacks();
 
     readonly Dictionary<Weather, float> WeatherLightingIntensity = new Dictionary<Weather, float>()
     {
@@ -357,6 +373,8 @@ public class GameFlow : MonoBehaviour
 
         yield return new WaitUntil(() => NextDayScreen.time >= 1);
 
+        DiscordRichPresenceManager.UpdateActivity("Playing", Days); // Discord Rich Presence
+
         // Manage Debt
         if (Player.Money < 0)
         {
@@ -375,17 +393,21 @@ public class GameFlow : MonoBehaviour
                     Player.Money = 100;
                 }
                 else
-                { 
+                {
+                    int shopItemIndex = 0;
+                    while (shopItems[shopItemIndex].Price + Player.Money < 0 && shopItemIndex < shopItems.Count)
+                        shopItemIndex++;
+
                     // Display message
-                    PopupManager.ShowWindowPopup($"You sold your {shopItems[0].Name}", $"Since you were still in debt, you were forced to sell some things to help you get back on your feet.", goodAlert: false);
+                    PopupManager.ShowWindowPopup($"You sold your {shopItems[shopItemIndex].Name}", $"Since you were still in debt, you were forced to sell some things to help you get back on your feet.", goodAlert: false);
 
-                    Player.Money += shopItems[0].Price; // Return money
-                    int newLevel = --shopItems[0].Level;
+                    Player.Money += shopItems[shopItemIndex].Price; // Return money
+                    int newLevel = --shopItems[shopItemIndex].Level;
 
-                    if (shopItems[0].Name == "Flower Beds") // flower bed edge case
+                    if (shopItems[shopItemIndex].Name == "Flower Beds") // flower bed edge case
                         FlowerBedManager.SendMessage("RemoveFlowerBed", newLevel); // Sell flowerbed
 
-                    Shop.UpdateBuyButtonVisual(shopItems[0]); // Update visuals
+                    Shop.UpdateBuyButtonVisual(shopItems[shopItemIndex]); // Update visuals
                 }
             }
             else

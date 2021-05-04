@@ -30,7 +30,11 @@ public class MainMenuScript : MonoBehaviour
         AudioMixer.SetFloat("SoundEffectVolume", Mathf.Log10(SoundEffectVolume) * 20);
 
         GameUpdates.CheckForUpdates(PopupManager); // Check for game updates
+
+        DiscordRichPresenceManager.UpdateActivity("Main Menu");
     }
+
+    private void Update() => DiscordRichPresenceManager.RunCallbacks();
 }
 
 public static class GameUpdates

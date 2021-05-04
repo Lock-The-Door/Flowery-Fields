@@ -23,9 +23,9 @@ public class BuildAutomation
 	public static Dictionary<BuildTargetAndGroup, bool> BuildTargets = new Dictionary<BuildTargetAndGroup, bool>()
 	{
 		{ new BuildTargetAndGroup(BuildTargetGroup.WebGL, BuildTarget.WebGL), true },
-		{ new BuildTargetAndGroup(BuildTargetGroup.Standalone, BuildTarget.StandaloneWindows, "Windows", ".exe"), true },
+		{ new BuildTargetAndGroup(BuildTargetGroup.Standalone, BuildTarget.StandaloneLinux64, "Linux", ".x86_64"), true },
 		{ new BuildTargetAndGroup(BuildTargetGroup.Standalone, BuildTarget.StandaloneOSX, "macOS"), true },
-		{ new BuildTargetAndGroup(BuildTargetGroup.Standalone, BuildTarget.StandaloneLinux64, "Linux", ".x86_64"), true }
+		{ new BuildTargetAndGroup(BuildTargetGroup.Standalone, BuildTarget.StandaloneWindows, "Windows", ".exe"), true }
 	};
 
 	public static void BuildApplication(string path)
@@ -146,8 +146,14 @@ public class MultiBuildWindow : EditorWindow
 		string buildPath = EditorUtility.SaveFolderPanel("Build location", new System.IO.DirectoryInfo(Application.dataPath).Parent.FullName, "bin");
 		if (buildPath.Length > 0)
 		{
+			// Do the building
 			BuildAutomation.BuildApplication(buildPath);
-			
+
+			// Create version number file
+			var versionFile = System.IO.File.CreateText(buildPath + "/version.txt");
+			versionFile.Write("v" + versionNumber);
+			versionFile.Close();
+
 			Close();
 		}
     }

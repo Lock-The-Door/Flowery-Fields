@@ -12,7 +12,7 @@ public class GameMetadata
     public string GUID = Guid.Empty.ToString();
     public int SaveVersion = 2;
     public string SaveName = "A Flowery Field";
-    public int Days = 0;
+    public int Days = 1;
     public GameFlow.Weather Weather = GameFlow.Weather.Sunny;
     public DateTime LastVisit = DateTime.MinValue;
 
@@ -60,13 +60,14 @@ public class GameData
     public GameMetadata GameMetadata = new GameMetadata();
 
     // Game Data
-    public Player.Gender PlayerGender;
-    public int Days;
-    public bool InDebt;
-    public int Money;
-    public List<BorrowedMoneyInfo> BorrowedMoney;
-    public GameFlow.Weather Weather;
-    public List<string> StorylinesSeen;
+    public Player.Gender PlayerGender = Player.Gender.boy;
+    public int Days = 1;
+    public bool InDebt = false;
+    public int Money = 100;
+    public List<BorrowedMoneyInfo> BorrowedMoney = new List<BorrowedMoneyInfo>();
+    public int BorrowLimit = 1000;
+    public GameFlow.Weather Weather = GameFlow.Weather.Sunny;
+    public List<string> StorylinesSeen = new List<string>();
     public Dictionary<string, int> ShopItemLevels;
     public Dictionary<int, FlowerBed.FlowerBedState> FlowerBedStates;
 
@@ -106,6 +107,7 @@ public class GameData
             InDebt = deserializedData.InDebt;
             Money = deserializedData.Money;
             BorrowedMoney = deserializedData.BorrowedMoney;
+            BorrowLimit = deserializedData.BorrowLimit;
             Weather = deserializedData.Weather;
             StorylinesSeen = deserializedData.StorylinesSeen;
             ShopItemLevels = deserializedData.ShopItemLevels;
